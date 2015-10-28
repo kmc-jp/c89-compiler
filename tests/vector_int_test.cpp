@@ -1,4 +1,6 @@
+extern "C" {
 #include "vector_int.h"
+}
 #include "gtest/gtest.h"
 
 TEST(VectorIntTest, ctor) {
