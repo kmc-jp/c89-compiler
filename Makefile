@@ -1,6 +1,7 @@
 CC ?= gcc
 CXX ?= g++
 CFLAGS ?= -Wall -Wextra -O2
+CXXFLAGS ?= -Wall -Wextra -O2
 
 SRC_DIR = src
 
@@ -18,11 +19,21 @@ TESTS_CFLAGS ?= -ansi -pedantic $(CFLAGS)
 TESTS_LIBS_STAGE1_DIR = $(STAGE1_DIR)/lib
 TESTS_LIBS_STAGE1 = $(TESTS_LIBS_STAGE1_DIR)/print.o
 TESTS_LIBS_STAGE1_CFLAGS ?= $(TESTS_CFLAGS)
+
 GTEST_DIR = $(TEST_DIR)/gtest
-GTEST_FLAGS ?= -Wno-missing-field-init -lpthread -I$(TEST_DIR)
 GTEST_SRCS = $(wildcard $(GTEST_DIR)/*.cc)
 GTEST_OBJS = $(GTEST_SRCS:.cc=.o)
 GTEST_LIB = libgtest.so
+GTEST_INCLUDE = -I$(TEST_DIR)
+GTEST_LDFLAGS = -lpthread
+
+VECTOR_HEADER = $(SRC_DIR)/vector.h
+VECTOR_OBJ = $(SRC_DIR)/vector.o
+TEST_VECTOR_DIR = $(TEST_DIR)/vector_test
+TEST_VECTOR_C_SRCS = $(wildcard $(TEST_VECTOR_DIR)/*.c)
+TEST_VECTOR_CXX_SRCS = $(wildcard $(TEST_VECTOR_DIR)/*.cpp)
+TEST_VECTOR_OBJS = $(TEST_VECTOR_C_SRCS:.c=.o) $(TEST_VECTOR_CXX_SRCS:.cpp=.o)
+
 .SUFFIXES: $(TESTSUFFIX)
 
 RM = rm -f
@@ -48,6 +59,7 @@ $(TESTS_LIBS_STAGE1_DIR)/%.o: $(TESTS_LIBS_STAGE1_DIR)/%.c
 
 $(STAGE2_DIR)/%$(TESTSUFFIX): $(STAGE2_DIR)/%.c
 	$(CC) $(TESTS_CFLAGS) $< -o $@
+
 
 unittests: $(UNITTESTS)
 
