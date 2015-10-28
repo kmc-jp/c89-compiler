@@ -23,7 +23,7 @@ TESTS_LIBS_STAGE1_CFLAGS ?= $(TESTS_CFLAGS)
 GTEST_DIR = $(TEST_DIR)/gtest
 GTEST_SRCS = $(wildcard $(GTEST_DIR)/*.cc)
 GTEST_OBJS = $(GTEST_SRCS:.cc=.o)
-GTEST_LIB = libgtest.so
+GTEST_LIB = libgtest.a
 GTEST_FLAGS = -Wno-missing-field-initializers
 GTEST_INCLUDE = -I$(TEST_DIR)
 GTEST_LDFLAGS = -lpthread
