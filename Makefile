@@ -1,15 +1,13 @@
 CC ?= gcc
 CXX ?= g++
-
-SRC_DIR = src
 CFLAGS ?= -Wall -Wextra -O2
 
+SRC_DIR = src
+
 TESTSUFFIX = .out
-TESTS_DIR = tests
-GTEST_DIR = $(TESTS_DIR)/gtest
-GTEST_FLAGS ?= -Wno-missing-field-init -lpthread -I$(TESTS_DIR)
-STAGE1_DIR = $(TESTSDIR)/stage1
-STAGE2_DIR = $(TESTSDIR)/stage2
+TEST_DIR = tests
+STAGE1_DIR = $(TEST_DIR)/stage1
+STAGE2_DIR = $(TEST_DIR)/stage2
 TESTS_STAGE1 = $(wildcard $(STAGE1_DIR)/*.c)
 TESTS_STAGE2 = $(wildcard $(STAGE2_DIR)/*.c)
 TESTS = $(TESTS_STAGE1) $(TESTS_STAGE2)
@@ -20,13 +18,21 @@ TESTS_CFLAGS ?= -ansi -pedantic $(CFLAGS)
 TESTS_LIBS_STAGE1_DIR = $(STAGE1_DIR)/lib
 TESTS_LIBS_STAGE1 = $(TESTS_LIBS_STAGE1_DIR)/print.o
 TESTS_LIBS_STAGE1_CFLAGS ?= $(TESTS_CFLAGS)
+GTEST_DIR = $(TEST_DIR)/gtest
+GTEST_FLAGS ?= -Wno-missing-field-init -lpthread -I$(TEST_DIR)
+GTEST_SRCS = $(wildcard $(GTEST_DIR)/*.cc)
+GTEST_OBJS = $(GTEST_SRCS:.cc=.o)
+GTEST_LIB = libgtest.so
 .SUFFIXES: $(TESTSUFFIX)
 
 RM = rm -f
+AR = ar rcs
+
+UNITTESTS = $(TEST_DIR)/vector_int_test
 
 all:
 
-test: testsource_test
+test: testsource_test unittests
 
 testsource_test: tests_stage1 tests_stage2
 
@@ -43,28 +49,27 @@ $(TESTS_LIBS_STAGE1_DIR)/%.o: $(TESTS_LIBS_STAGE1_DIR)/%.c
 $(STAGE2_DIR)/%$(TESTSUFFIX): $(STAGE2_DIR)/%.c
 	$(CC) $(TESTS_CFLAGS) $< -o $@
 
-clean:
-	$(RM) $(TESTS_OBJS)
+unittests: $(UNITTESTS)
 
-vector_int_test: $(GTEST_DIR)/%.o vector.o vector_int.o vector_int_test.o
-	$(CXX) -o $@ gtest_main.o gtest-all.o vector.o vector_int.o vector_int_test.o -lpthread
+$(GTEST_LIB): $(GTEST_OBJS)
+	$(AR) $@ $(GTEST_OBJS)
+
+$(TEST_DIR)/vector_int_test: $(SRC_DIR)/vector.o $(SRC_DIR)/vector_int.o $(TEST_DIR)/vector_int_test.o $(GTEST_LIB)
+	$(CXX) -o $@ $(SRC_DIR)/vector.o $(SRC_DIR)/vector_int.o $(TEST_DIR)/vector_int_test.o $(GTEST_LIB) -lpthread
 
 $(GTEST_DIR)/%.o: $(GTEST_DIR)/%.cc
-	$(CXX) -c $< $(GTEST_FLAGS)
+	$(CXX) -c $< $(GTEST_FLAGS) -o $@
 
-vector.o: $(SRC_DIR)/vector.c
-	$(CC) -c $(SRC_DIR)/vector.c
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/vector.h
+	$(CC) -c $< -o $@
 
-vector.o: $(SRC_DIR)/vector.h
+$(TEST_DIR)/%.o: $(TEST_DIR)/%.cpp $(SRC_DIR)/vector.h
+	$(CXX) -c $< -o $@
 
-vector_int.o: $(TESTS_DIR)/vector_int.c
-	$(CC) -c $(TESTS_DIR)/vector_int.c
+clean:
+	$(RM) $(TESTS_OBJS) $(UNITTESTS)
 
-vector_int.o: $(SRC_DIR)/vector.h
-
-vector_int_test.o: $(TESTS_DIR)/vector_int_test.cpp
-	$(CXX) -c $(TESTS_DIR)/vector_int_test.cpp
-
-vector_int_test.o: $(SRC_DIR)/vector.h
+distclean: clean
+	$(RM) $(GTEST_LIB) $(GTEST_OBJS)
 
 .PHONY: test clean
