@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_INTEGER_LITERAL_HPP
+#define KMC_C89_COMPILER_AST_INTEGER_LITERAL_HPP
+
+class ASTIntegerLiteral : public ASTBase {
+};
+
+#endif
