@@ -1,0 +1,6 @@
+#ifndef KMC_C89_COMPILER_AST_FUNCTION_DEFINITION_CPP
+#define KMC_C89_COMPILER_AST_FUNCTION_DEFINITION_CPP
+
+#include "function_definition.hpp"
+
+#endif

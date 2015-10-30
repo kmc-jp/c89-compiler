@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_FUNCTION_DEFINITION_HPP
+#define KMC_C89_COMPILER_AST_FUNCTION_DEFINITION_HPP
+
+class ASTFunctionDefinition {
+};
+
+#endif
