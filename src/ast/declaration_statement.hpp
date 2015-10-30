@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_DECLARATION_STATEMENT_HPP
+#define KMC_C89_COMPILER_AST_DECLARATION_STATEMENT_HPP
+
+class ASTDeclarationStatement : public ASTBase {
+};
+
+#endif
