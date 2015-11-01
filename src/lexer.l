@@ -133,11 +133,3 @@ void copy_yytext() {
   exit(EXIT_FAILURE);
 }
 %%
-#include <stdio.h>
-
-int main(argc,argv)
-int argc;
-char *argv;
-{
-  yylex();
-}
