@@ -30,3 +30,6 @@
 
 # Debug files
 *.dSYM/
+
+# Automatically generated
+src/lex.yy.c

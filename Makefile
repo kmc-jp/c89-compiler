@@ -2,6 +2,7 @@ CC ?= gcc
 CXX ?= g++
 CFLAGS ?= -Wall -Wextra -O2
 CXXFLAGS ?= -Wall -Wextra -O2
+LEX = flex
 
 SRC_DIR = src
 
@@ -38,6 +39,15 @@ TEST_VECTOR_C_OBJS = $(TEST_VECTOR_C_SRCS:.c=.o)
 TEST_VECTOR_CXX_OBJS = $(TEST_VECTOR_CXX_SRCS:.cpp=.o)
 TEST_VECTOR_OBJS = $(TEST_VECTOR_C_OBJS) $(TEST_VECTOR_CXX_OBJS)
 
+LEXER_HEADER = $(SRC_DIR)/lex.yy.h $(SRC_DIR)/token.h $(SRC_DIR)/yacc_mock.h $(SRC_DIR)/lexer_adapter.h
+LEXER_OBJS = $(SRC_DIR)/lex.yy.o $(SRC_DIR)/lexer_adapter.o $(SRC_DIR)/yacc_mock.o
+TEST_LEXER_DIR = $(TESTS_DIR)/lexer_test
+TEST_LEXER_C_SRCS = $(wildcard $(TEST_LEXER_DIR)/*.c)
+TEST_LEXER_CXX_SRCS = $(wildcard $(TEST_LEXER_DIR)/*.cpp)
+TEST_LEXER_C_OBJS = $(TEST_LEXER_C_SRCS:.c=.o)
+TEST_LEXER_CXX_OBJS = $(TEST_LEXER_CXX_SRCS:.cpp=.o)
+TEST_LEXER_OBJS = $(TEST_LEXER_C_OBJS) $(TEST_LEXER_CXX_OBJS)
+
 KMC89_C_SRCS = $(wildcard $(SRC_DIR)/*.c)
 KMC89_CXX_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 KMC89_C_OBJS = $(KMC89_C_SRCS:.c=.o)
@@ -57,6 +67,7 @@ AR = ar rcs
 
 UNITTESTS = $(TARGET)
 # UNITTESTS = $(TEST_VECTOR_DIR)/vector_int_test.out
+UNITTESTS += $(TEST_LEXER_DIR)/lexer_test.out
 
 all:
 
@@ -86,6 +97,9 @@ $(GTEST_LIB): $(GTEST_OBJS)
 $(GTEST_DIR)/%.o: $(GTEST_DIR)/%.cc
 	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) $(GTEST_FLAGS) -c $< -o $@
 
+$(SRC_DIR)/lex.yy.c $(SRC_DIR)/lex.yy.h: $(SRC_DIR)/lexer.l
+	$(LEX) --header-file=$(SRC_DIR)/lex.yy.h -o $(SRC_DIR)/lex.yy.c $(SRC_DIR)/lexer.l
+
 $(TEST_VECTOR_DIR)/vector_int_test.out: $(VECTOR_OBJ) $(TEST_VECTOR_OBJS) $(GTEST_LIB)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(GTEST_LDFLAGS)
 
@@ -95,6 +109,14 @@ $(TEST_VECTOR_DIR)/%.o: $(TEST_VECTOR_DIR)/%.cpp $(VECTOR_HEADER)
 $(TEST_VECTOR_DIR)/%.o: $(TEST_VECTOR_DIR)/%.c $(VECTOR_HEADER)
 	$(CC) $(CFLAGS) $(GTEST_INCLUDE) -c $< -o $@
 
+$(TEST_LEXER_DIR)/lexer_test.out: $(LEXER_OBJS) $(TEST_LEXER_OBJS) $(GTEST_LIB)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(GTEST_LDFLAGS)
+
+$(TEST_LEXER_DIR)/%.o: $(TEST_LEXER_DIR)/%.cpp $(LEXER_HEADER)
+	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) -I$(SRC_DIR) -c $< -o $@
+
+$(TEST_LEXER_DIR)/%.o: $(TEST_LEXER_DIR)/%.c $(LEXER_HEADER)
+	$(CC) $(CFLAGS) $(GTEST_INCLUDE) -I$(SRC_DIR) -c $< -o $@
 
 $(TARGET): $(KMC89_OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LLVM_LIBS) $(LLVM_LDFLAGS)
@@ -104,7 +126,6 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(LLVM_CXXFLAGS) -c $< -o $@
-
 
 clean:
 	$(RM) $(TESTS_OBJS) $(UNITTESTS) $(GTEST_OBJS) $(VECTOR_OBJ) $(TEST_VECTOR_OBJS) $(KMC89_OBJS)
