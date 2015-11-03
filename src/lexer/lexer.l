@@ -1,7 +1,7 @@
 %option yywrap
 %{
-#include "token.h"
-#include "yacc_mock.h"
+#include "lexer/token.h"
+#include "lexer/yacc_mock.h"
 /* #include "y.tab.h" */
 
 int yywrap(void) {

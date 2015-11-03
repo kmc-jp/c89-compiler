@@ -32,5 +32,5 @@
 *.dSYM/
 
 # Automatically generated
-src/lex.yy.c
-src/lex.yy.h
+**/lex.yy.c
+**/lex.yy.h

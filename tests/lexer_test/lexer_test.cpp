@@ -1,8 +1,8 @@
 extern "C" {
 #include <stdio.h>
 #include <string.h>
-#include "lexer_adapter.h"
-#include "token.h"
+#include "lexer/lexer_adapter.h"
+#include "lexer/token.h"
 }
 #include "gtest/gtest.h"
 #include <vector>
