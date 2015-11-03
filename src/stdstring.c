@@ -3,15 +3,15 @@
 #include "utility.h"
 
 size_t string_length(StringRef str) {
-  return str->leng;
+  return str->length_;
 }
 
 size_t string_capacity(StringRef str) {
-  return str->cap;
+  return str->capacity_;
 }
 
 char *string_data(StringRef str) {
-  return str->dat;
+  return str->data_;
 }
 
 size_t smin(size_t a, size_t b) {
@@ -20,14 +20,14 @@ size_t smin(size_t a, size_t b) {
 
 void string_resize(StringRef str, size_t leng) {
   size_t cap = leng + 1;
-  size_t end = smin(str->leng, leng);
+  size_t end = smin(str->length_, leng);
   char *dat = safe_malloc(sizeof(char) * cap);
-  strncpy(dat, str->dat, end);
+  strncpy(dat, str->data_, end);
   dat[end] = '\0';
 
-  str->dat = dat;
-  str->leng = end;
-  str->cap = cap;
+  str->data_ = dat;
+  str->length_ = end;
+  str->capacity_ = cap;
 }
 
 size_t string_copy(StringRef target, StringRef src, size_t leng, size_t idx) {

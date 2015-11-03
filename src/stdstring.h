@@ -2,9 +2,9 @@
 #define KMC_C89_COMPILER_STDSTRING_H
 
 struct String {
-  char* dat;
-  size_t leng;
-  size_t cap;
+  char* data_;
+  size_t length_;
+  size_t capacity_;
 };
 
 typedef struct String* StringRef;
