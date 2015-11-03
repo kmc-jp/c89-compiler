@@ -24,10 +24,7 @@ void string_reserve(StringRef self, size_t length) {
   }
   data = safe_array_malloc(char, capacity);
   strncpy(data, string_data(self), end);
-
-  for (i = end; i < capacity; ++i) {
-    data[i] = '\0';
-  }
+  memset(data + end, '\0', capacity - end);
 
   self->data_ = data;
   self->length_ = end;
