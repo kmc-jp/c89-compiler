@@ -18,11 +18,11 @@ void string_reserve(StringRef self, size_t length) {
   size_t capacity = length + 1;
   size_t end = min_size_t(string_length(self), length);
   size_t i;
-  char *data = safe_malloc(sizeof(char) * capacity);
+  char *data;
   if (string_capacity(self) >= capacity) {
     return;
   }
-
+  data = safe_array_malloc(char, capacity);
   strncpy(data, string_data(self), end);
 
   for (i = end; i < capacity; ++i) {
