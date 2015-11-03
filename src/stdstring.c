@@ -16,9 +16,9 @@ char *string_data(StringRef self) {
 
 void string_resize(StringRef self, size_t length) {
   size_t capacity = length + 1;
-  size_t end = min_size_t(self->length_, length);
+  size_t end = min_size_t(string_length(self), length);
   char *data = safe_malloc(sizeof(char) * capacity);
-  strncpy(data, self->data_, end);
+  strncpy(data, string_data(self), end);
   data[end] = '\0';
 
   self->data_ = data;
