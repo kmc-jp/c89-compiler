@@ -14,12 +14,20 @@ char *string_data(StringRef self) {
   return self->data_;
 }
 
-void string_resize(StringRef self, size_t length) {
+void string_reserve(StringRef self, size_t length) {
   size_t capacity = length + 1;
   size_t end = min_size_t(string_length(self), length);
+  size_t i;
   char *data = safe_malloc(sizeof(char) * capacity);
+  if (string_capacity(self) >= capacity) {
+    return;
+  }
+
   strncpy(data, string_data(self), end);
-  data[end] = '\0';
+
+  for (i = end; i < capacity; ++i) {
+    data[i] = '\0';
+  }
 
   self->data_ = data;
   self->length_ = end;
@@ -28,7 +36,7 @@ void string_resize(StringRef self, size_t length) {
 
 size_t string_copy(StringRef self, StringRef src, size_t length, size_t index) {
   length = min_size_t(length, string_length(src));
-  string_resize(self, length);
+  string_reserve(self, length);
   strncpy(string_data(self), string_data(src) + index, length);
 }
 
@@ -36,7 +44,7 @@ void string_append(StringRef self, StringRef after) {
   size_t oldlength = string_length(self);
   size_t length = string_length(self) + string_length(after);
   char *data;
-  string_resize(self, length);
+  string_reserve(self, length);
   data = string_data(self);
   strcpy(data + oldlength, string_data(after));
 }
