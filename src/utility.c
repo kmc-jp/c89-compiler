@@ -17,3 +17,10 @@ void safe_free_impl(void** ptr) {
   free(&ptr);
   *ptr = NULL;
 }
+
+size_t min_size_t(size_t a, size_t b) {
+  return a < b ? a : b;
+}
+size_t max_size_t(size_t a, size_t b) {
+  return a < b ? b : a;
+}

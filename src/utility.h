@@ -16,4 +16,7 @@ void safe_free_impl(void** ptr);
 #define safe_free(ptr)                          \
   do { safe_free_impl(&ptr); } while(false)
 
+size_t min_size_t(size_t a, size_t b);
+size_t max_size_t(size_t a, size_t b);
+
 #endif  /* KMC_C89_COMPILER_UTILITY_H */
