@@ -18,33 +18,33 @@ size_t smin(size_t a, size_t b) {
   return (a < b ? a:b);
 }
 
-void string_resize(StringRef self, size_t leng) {
-  size_t cap = leng + 1;
-  size_t end = smin(self->length_, leng);
-  char *dat = safe_malloc(sizeof(char) * cap);
-  strncpy(dat, self->data_, end);
-  dat[end] = '\0';
+void string_resize(StringRef self, size_t length) {
+  size_t capacity = length + 1;
+  size_t end = smin(self->length_, length);
+  char *data = safe_malloc(sizeof(char) * capacity);
+  strncpy(data, self->data_, end);
+  data[end] = '\0';
 
-  self->data_ = dat;
+  self->data_ = data;
   self->length_ = end;
-  self->capacity_ = cap;
+  self->capacity_ = capacity;
 }
 
-size_t string_copy(StringRef self, StringRef src, size_t leng, size_t idx) {
-  leng = smin(leng, string_length(src));
-  string_resize(self, leng);
-  strncpy(string_data(self), string_data(src) + idx, leng);
+size_t string_copy(StringRef self, StringRef src, size_t length, size_t index) {
+  length = smin(length, string_length(src));
+  string_resize(self, length);
+  strncpy(string_data(self), string_data(src) + index, length);
 }
 
-void string_append(StringRef self, StringRef aft) {
-  size_t oldleng = string_length(self);
-  size_t leng = string_length(self) + string_length(aft);
-  char *dat;
-  string_resize(self, leng);
-  dat = string_data(self);
-  strcpy(dat + oldleng, string_data(aft));
+void string_append(StringRef self, StringRef after) {
+  size_t oldlength = string_length(self);
+  size_t length = string_length(self) + string_length(after);
+  char *data;
+  string_resize(self, length);
+  data = string_data(self);
+  strcpy(data + oldlength, string_data(after));
 }
 
-char* string_at(StringRef self, int idx) {
-  return string_data(self) + idx;
+char* string_at(StringRef self, int index) {
+  return string_data(self) + index;
 }
