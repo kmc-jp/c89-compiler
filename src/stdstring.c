@@ -34,10 +34,10 @@ void string_reserve(StringRef self, size_t length) {
   self->capacity_ = capacity;
 }
 
-size_t string_copy(StringRef self, StringRef src, size_t length, size_t index) {
-  length = min_size_t(length, string_length(src));
+size_t string_copy(StringRef self, StringRef src) {
+  size_t length = min_size_t(length, string_length(src));
   string_reserve(self, length);
-  strncpy(string_data(self), string_data(src) + index, length);
+  strncpy(string_data(self), string_data(src), length);
 }
 
 void string_append(StringRef self, StringRef after) {
