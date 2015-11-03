@@ -24,13 +24,13 @@ TESTS_CFLAGS ?= -ansi -pedantic $(CFLAGS)
 GTEST_DIR = $(TESTS_DIR)/gtest
 GTEST_SRCS = $(wildcard $(GTEST_DIR)/*.cc)
 GTEST_OBJS = $(GTEST_SRCS:.cc=.o)
-GTEST_LIB = libgtest.a
+GTEST_TARGET = $(GTEST_DIR)/libgtest.a
 GTEST_FLAGS = -Wno-missing-field-initializers
 GTEST_INCLUDE = -I$(TESTS_DIR)
+GTEST_LIBS = -L$(GTEST_DIR) -lgtest
 GTEST_LDFLAGS = -lpthread
 
-VECTOR_HEADER = $(SRC_DIR)/vector.h
-VECTOR_OBJ = $(SRC_DIR)/vector.o
+UTILITY_OBJ = $(SRC_DIR)/utility.o
 TEST_VECTOR_DIR = $(TESTS_DIR)/vector_test
 TEST_VECTOR_C_SRCS = $(wildcard $(TEST_VECTOR_DIR)/*.c)
 TEST_VECTOR_CXX_SRCS = $(wildcard $(TEST_VECTOR_DIR)/*.cpp)
@@ -55,8 +55,7 @@ LLVM_LIBS = `llvm-config --libs $(LLVM_MODULES)` -lpthread -ldl -lncurses
 RM = rm -f
 AR = ar rcs
 
-UNITTESTS = $(TARGET)
-# UNITTESTS = $(TEST_VECTOR_DIR)/vector_int_test.out
+UNITTESTS = $(TARGET) $(TEST_VECTOR_DIR)/vector_int_test.out
 
 all:
 
@@ -80,14 +79,14 @@ $(STAGE2_DIR)/%$(TESTSUFFIX): $(STAGE2_DIR)/%.c
 
 unittests: $(UNITTESTS)
 
-$(GTEST_LIB): $(GTEST_OBJS)
+$(GTEST_TARGET): $(GTEST_OBJS)
 	$(AR) $@ $^
 
 $(GTEST_DIR)/%.o: $(GTEST_DIR)/%.cc
 	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) $(GTEST_FLAGS) -c $< -o $@
 
-$(TEST_VECTOR_DIR)/vector_int_test.out: $(VECTOR_OBJ) $(TEST_VECTOR_OBJS) $(GTEST_LIB)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(GTEST_LDFLAGS)
+$(TEST_VECTOR_DIR)/vector_int_test.out: $(TEST_VECTOR_OBJS) $(UTILITY_OBJ) $(GTEST_TARGET)
+	$(CXX) $(CXXFLAGS) $(TEST_VECTOR_OBJS) $(UTILITY_OBJ) -o $@ $(GTEST_LIBS) $(GTEST_LDFLAGS)
 
 $(TEST_VECTOR_DIR)/%.o: $(TEST_VECTOR_DIR)/%.cpp $(VECTOR_HEADER)
 	$(CXX) $(CXXFLAGS) $(GTEST_INCLUDE) -c $< -o $@
@@ -107,10 +106,10 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 
 clean:
-	$(RM) $(TESTS_OBJS) $(UNITTESTS) $(GTEST_OBJS) $(VECTOR_OBJ) $(TEST_VECTOR_OBJS) $(KMC89_OBJS)
+	$(RM) $(TESTS_OBJS) $(UNITTESTS) $(GTEST_OBJS) $(TEST_VECTOR_OBJS) $(KMC89_OBJS)
 
 distclean: clean
-	$(RM) $(GTEST_LIB) $(TARGET)
+	$(RM) $(GTEST_TARGET) $(TARGET)
 
 .PHONY: test clean
 .PRECIOUS: $(STAGE1_LIBS)
