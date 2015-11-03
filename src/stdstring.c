@@ -49,6 +49,7 @@ void string_append(StringRef self, StringRef after) {
   strcpy(data + oldlength, string_data(after));
 }
 
-char* string_at(StringRef self, int index) {
-  return string_data(self) + index;
+char string_at(StringRef self, size_t index) {
+  char *data = string_data(self);
+  return data[index];
 }
