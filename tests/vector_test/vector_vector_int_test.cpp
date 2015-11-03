@@ -15,3 +15,12 @@ class VectorVectorIntTest : public ::testing::Test {
   }
   VVINT v;
 };
+
+TEST_F(VectorVectorIntTest, ctor) {
+  EXPECT_EQ(NULL, VVINTF(data)(v));
+  EXPECT_EQ(NULL, VVINTF(begin)(v));
+  EXPECT_EQ(NULL, VVINTF(end)(v));
+  EXPECT_TRUE(VVINTF(empty)(v));
+  EXPECT_EQ(0U, VVINTF(size)(v));
+  EXPECT_EQ(0U, VVINTF(capacity)(v));
+}
