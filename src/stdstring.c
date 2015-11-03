@@ -14,10 +14,6 @@ char *string_data(StringRef self) {
   return self->data_;
 }
 
-size_t min_size_t(size_t a, size_t b) {
-  return (a < b ? a:b);
-}
-
 void string_resize(StringRef self, size_t length) {
   size_t capacity = length + 1;
   size_t end = min_size_t(self->length_, length);
