@@ -7,6 +7,6 @@ struct string_entity {
   size_t cap;
 };
 
-typedef struct string_entity* string;
+typedef struct string_entity* StringRef;
 
 #endif  /* KMC_C89_COMPILER_STDSTRING_H */
