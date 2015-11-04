@@ -56,3 +56,13 @@ char string_at(const StringRef self, const size_t index) {
   const char *data = string_data(self);
   return data[index];
 }
+
+StringRef make_string(const char *string) {
+  const size_t capacity = strlen(string) + 1;
+  StringRef value = safe_malloc(struct String);
+  value->data_ = init_char_array(capacity);
+  strcpy(value->data_, string);
+  value->length_ = strlen(string);
+  value->capacity_ = capacity;
+  return value;
+}

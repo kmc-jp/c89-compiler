@@ -16,4 +16,5 @@ void string_reserve(StringRef self, size_t length);
 void string_copy(StringRef self, StringRef src);
 void string_append(StringRef self, StringRef after);
 char string_at(StringRef self, size_t index);
+StringRef make_string(const char *string);
 #endif  /* KMC_C89_COMPILER_STDSTRING_H */
