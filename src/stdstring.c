@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "stdstring.h"
 #include "utility.h"
 
@@ -14,21 +15,26 @@ char *string_data(const StringRef self) {
   return self->data_;
 }
 
+static char *init_char_array(size_t size) {
+  char *data = safe_array_malloc(char, size);
+  memset(data, '\0', size);
+  return data;
+}
+
 void string_reserve(StringRef self, const size_t length) {
   const size_t capacity = length + 1;
-  const size_t end = min_size_t(string_length(self), length);
-  size_t i;
-  char *data;
   if (string_capacity(self) >= capacity) {
     return;
-  }
-  data = safe_array_malloc(char, capacity);
-  strncpy(data, string_data(self), end);
-  memset(data + end, '\0', capacity - end);
+  } else {
+    const size_t end = min_size_t(string_length(self), length);
+    char *data = init_char_array(capacity);
+    strncpy(data, string_data(self), end);
 
-  self->data_ = data;
-  self->length_ = end;
-  self->capacity_ = capacity;
+    safe_free(self->data_);
+    self->data_ = data;
+    self->length_ = end;
+    self->capacity_ = capacity;
+  }
 }
 
 void string_copy(StringRef self, const StringRef src) {
