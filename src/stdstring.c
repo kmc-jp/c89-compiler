@@ -12,13 +12,13 @@ size_t string_capacity(StringRef self) {
 }
 
 char *string_data(StringRef self) {
-  return self->data_;
+  return self->buf_;
 }
 
 static char *init_char_array(size_t size) {
-  char *data = safe_array_malloc(char, size);
-  memset(data, '\0', size);
-  return data;
+  char *buf = safe_array_malloc(char, size);
+  memset(buf, '\0', size);
+  return buf;
 }
 
 void string_reserve(StringRef self, size_t length) {
@@ -26,12 +26,12 @@ void string_reserve(StringRef self, size_t length) {
   if (string_capacity(self) >= capacity) {
     return;
   } else {
-    const size_t end = min_size_t(string_length(self), length);
-    char *data = init_char_array(capacity);
-    strncpy(data, string_data(self), end);
-    safe_free(self->data_);
-    self->data_ = data;
-    self->length_ = end;
+    const size_t newlength = min_size_t(string_length(self), length);
+    char *buf = init_char_array(capacity);
+    strncpy(buf, string_data(self), newlength);
+    safe_free(self->buf_);
+    self->buf_ = buf;
+    self->length_ = newlength;
     self->capacity_ = capacity;
   }
 }
@@ -42,25 +42,25 @@ void string_copy(StringRef self, StringRef src) {
   strncpy(string_data(self), string_data(src), length);
 }
 
-void string_append(StringRef self, StringRef after) {
-  const size_t oldlength = string_length(self);
-  const size_t length = string_length(self) + string_length(after);
-  char *data;
-  string_reserve(self, length);
-  data = string_data(self);
-  strncpy(data + oldlength, string_data(after), string_length(after));
+void string_append(StringRef self, StringRef other) {
+  const size_t length = string_length(self);
+  const size_t newlength = string_length(self) + string_length(other);
+  char *buf;
+  string_reserve(self, newlength);
+  buf = string_data(self);
+  strncpy(buf + length, string_data(other), string_length(other));
 }
 
 char string_at(StringRef self, size_t index) {
-  const char *data = string_data(self);
-  return data[index];
+  const char *buf = string_data(self);
+  return buf[index];
 }
 
-StringRef make_string(char *string) {
+StringRef string_ctor(char *string) {
   const size_t capacity = strlen(string) + 1;
   StringRef value = safe_malloc(struct String);
-  value->data_ = init_char_array(capacity);
-  strcpy(value->data_, string);
+  value->buf_ = init_char_array(capacity);
+  strcpy(value->buf_, string);
   value->length_ = strlen(string);
   value->capacity_ = capacity;
   return value;
