@@ -66,3 +66,7 @@ StringRef make_string(const char *string) {
   value->capacity_ = capacity;
   return value;
 }
+
+int string_compare(StringRef lhs, StringRef rhs) {
+  return strcmp(string_data(lhs), string_data(rhs));
+}
