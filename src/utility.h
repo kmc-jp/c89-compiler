@@ -24,4 +24,7 @@ void safe_free_impl(void* ptr);
 /* size <= capacity && capacity == pow(2, n) */
 size_t enough_capacity(size_t size);
 
+size_t min_size_t(size_t a, size_t b);
+size_t max_size_t(size_t a, size_t b);
+
 #endif  /* KMC_C89_COMPILER_UTILITY_H */
