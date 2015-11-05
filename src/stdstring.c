@@ -15,11 +15,6 @@ char *string_data(StringRef self) {
   return self->buf_;
 }
 
-static char *init_char_array(size_t size) {
-  char *buf = safe_array_malloc(char, size);
-  memset(buf, '\0', size);
-  return buf;
-}
 
 void string_reserve(StringRef self, size_t length) {
   const size_t capacity = length + 1;
@@ -27,8 +22,9 @@ void string_reserve(StringRef self, size_t length) {
     return;
   } else {
     const size_t newlength = min_size_t(string_length(self), length);
-    char *buf = init_char_array(capacity);
+    char *buf = safe_array_malloc(char, capacity);
     strncpy(buf, string_data(self), newlength);
+    memset(buf + newlength, '\0', length - newlength);
     safe_free(self->buf_);
     self->buf_ = buf;
     self->length_ = newlength;
@@ -59,7 +55,7 @@ char string_at(StringRef self, size_t index) {
 StringRef string_ctor(char *string) {
   const size_t capacity = strlen(string) + 1;
   StringRef value = safe_malloc(struct String);
-  value->buf_ = init_char_array(capacity);
+  value->buf_ = safe_array_malloc(char, capacity);
   strcpy(value->buf_, string);
   value->length_ = strlen(string);
   value->capacity_ = capacity;
