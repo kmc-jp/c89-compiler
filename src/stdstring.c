@@ -29,7 +29,6 @@ void string_reserve(StringRef self, size_t length) {
     const size_t end = min_size_t(string_length(self), length);
     char *data = init_char_array(capacity);
     strncpy(data, string_data(self), end);
-
     safe_free(self->data_);
     self->data_ = data;
     self->length_ = end;
