@@ -3,15 +3,15 @@
 #include "stdstring.h"
 #include "utility.h"
 
-size_t string_length(const StringRef self) {
+size_t string_length(StringRef self) {
   return self->length_;
 }
 
-size_t string_capacity(const StringRef self) {
+size_t string_capacity(StringRef self) {
   return self->capacity_;
 }
 
-char *string_data(const StringRef self) {
+char *string_data(StringRef self) {
   return self->data_;
 }
 
@@ -21,7 +21,7 @@ static char *init_char_array(size_t size) {
   return data;
 }
 
-void string_reserve(StringRef self, const size_t length) {
+void string_reserve(StringRef self, size_t length) {
   const size_t capacity = length + 1;
   if (string_capacity(self) >= capacity) {
     return;
@@ -37,13 +37,13 @@ void string_reserve(StringRef self, const size_t length) {
   }
 }
 
-void string_copy(StringRef self, const StringRef src) {
+void string_copy(StringRef self, StringRef src) {
   const size_t length = min_size_t(length, string_length(src));
   string_reserve(self, length);
   strncpy(string_data(self), string_data(src), length);
 }
 
-void string_append(StringRef self, const StringRef after) {
+void string_append(StringRef self, StringRef after) {
   const size_t oldlength = string_length(self);
   const size_t length = string_length(self) + string_length(after);
   char *data;
@@ -52,12 +52,12 @@ void string_append(StringRef self, const StringRef after) {
   strncpy(data + oldlength, string_data(after), string_length(after));
 }
 
-char string_at(const StringRef self, const size_t index) {
+char string_at(StringRef self, size_t index) {
   const char *data = string_data(self);
   return data[index];
 }
 
-StringRef make_string(const char *string) {
+StringRef make_string(char *string) {
   const size_t capacity = strlen(string) + 1;
   StringRef value = safe_malloc(struct String);
   value->data_ = init_char_array(capacity);
