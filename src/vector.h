@@ -5,14 +5,7 @@
 #include <stdlib.h>
 #include "utility.h"
 
-#define CONCATENATE(x, y) x ## y
-#define CONCAT(x, y) CONCATENATE(x, y)
-#define WITHBAR(x) CONCAT(x, _)
-#define TBRACKET(x) CONCAT(T, CONCAT(x, T))
-
 /* template macro */
-#define TEMPLATE(type, identifier)              \
-  CONCAT(identifier, TBRACKET(type))
 #define VECTOR(type)                            \
   TEMPLATE(type, Vector)
 #define VECTORREF(type)                         \
