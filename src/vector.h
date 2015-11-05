@@ -48,12 +48,6 @@
                                     TEMPLATE(Type, DtorMethod) dtor,    \
                                     TEMPLATE(Type, CopyMethod) copy);   \
                                                                         \
-  /* vector of Type */                                                  \
-  struct VECTOR(Type) {                                                 \
-    Type* start_;  /* first data */                                     \
-    Type* finish_;  /* last data */                                     \
-    Type* end_;  /* end of storage */                                   \
-  };                                                                    \
   /* reference to vector of Type */                                     \
   typedef struct VECTOR(Type)* VECTORREF(Type);                         \
                                                                         \
@@ -119,6 +113,13 @@
     VECTOR_METHOD(Type, dtor) = dtor;                                   \
     VECTOR_METHOD(Type, copy) = copy;                                   \
   }                                                                     \
+                                                                        \
+  /* vector of Type */                                                  \
+  struct VECTOR(Type) {                                                 \
+    Type* start_;  /* first data */                                     \
+    Type* finish_;  /* last data */                                     \
+    Type* end_;  /* end of storage */                                   \
+  };                                                                    \
                                                                         \
   static void VECTORFUNC(Type, free)(VECTORREF(Type) self) {            \
     safe_free(self->start_);                                            \
