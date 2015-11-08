@@ -14,8 +14,8 @@
   TEMPLATE(type, CONCAT(Vector, function))
 #define VECTOR_GLOBAL(type)                             \
   CONCAT(global_, TEMPLATE(type, VectorMethods))
-#define VECTOR_METHOD(type, function)           \
-  VECTOR_GLOBAL(type).WITHBAR(function)
+#define VECTOR_METHOD(type, function)                   \
+  TEMPLATE(type, CONCAT(VectorMethod_, function))
 #define DEFAULT_METHOD(type, function)          \
   TEMPLATE(type, CONCAT(default_, function))
 #define DEFAULT_VECTOR_METHOD(type, function)           \
@@ -98,13 +98,25 @@
 #define DEFINE_VECTOR(Type)                                             \
   struct TEMPLATE(Type, VectorMethods) VECTOR_GLOBAL(Type);             \
                                                                         \
+  static void VECTOR_METHOD(Type, ctor)(Type* value) {                  \
+    assert(VECTOR_GLOBAL(Type).ctor_);                                  \
+    VECTOR_GLOBAL(Type).ctor_(value);                                   \
+  }                                                                     \
+  static void VECTOR_METHOD(Type, dtor)(Type* value) {                  \
+    assert(VECTOR_GLOBAL(Type).dtor_);                                  \
+    VECTOR_GLOBAL(Type).dtor_(value);                                   \
+  }                                                                     \
+  static void VECTOR_METHOD(Type, copy)(Type* dst, const Type* src) {   \
+    assert(VECTOR_GLOBAL(Type).copy_);                                  \
+    VECTOR_GLOBAL(Type).copy_(dst, src);                                \
+  }                                                                     \
   void VECTORFUNC(Type, initialize)(                                    \
       TEMPLATE(Type, CtorMethod) ctor,                                  \
       TEMPLATE(Type, DtorMethod) dtor,                                  \
       TEMPLATE(Type, CopyMethod) copy) {                                \
-    VECTOR_METHOD(Type, ctor) = ctor;                                   \
-    VECTOR_METHOD(Type, dtor) = dtor;                                   \
-    VECTOR_METHOD(Type, copy) = copy;                                   \
+    VECTOR_GLOBAL(Type).ctor_ = ctor;                                   \
+    VECTOR_GLOBAL(Type).dtor_ = dtor;                                   \
+    VECTOR_GLOBAL(Type).copy_ = copy;                                   \
   }                                                                     \
                                                                         \
   /* vector of Type */                                                  \
