@@ -23,7 +23,7 @@ void* safe_malloc_impl(size_t size);
 
 void safe_free_impl(void* ptr);
 #define safe_free(ptr)                          \
-  do { safe_free_impl(ptr); ptr = NULL; } while(false)
+  do { safe_free_impl(ptr); (ptr) = NULL; } while (false)
 
 /* size <= capacity && capacity == pow(2, n) */
 size_t enough_capacity(size_t size);
