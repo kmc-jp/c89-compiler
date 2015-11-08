@@ -30,9 +30,9 @@
                                                                         \
   /* special member functions */                                        \
   struct TEMPLATE(Type, VectorMethods) {                                \
-    TEMPLATE(Type, CtorMethod) WITHBAR(ctor);                           \
-    TEMPLATE(Type, DtorMethod) WITHBAR(dtor);                           \
-    TEMPLATE(Type, CopyMethod) WITHBAR(copy);                           \
+    TEMPLATE(Type, CtorMethod) ctor_;                                   \
+    TEMPLATE(Type, DtorMethod) dtor_;                                   \
+    TEMPLATE(Type, CopyMethod) copy_;                                   \
   };                                                                    \
   extern struct TEMPLATE(Type, VectorMethods) VECTOR_GLOBAL(Type);      \
                                                                         \

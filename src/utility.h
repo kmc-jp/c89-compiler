@@ -6,7 +6,6 @@
 #define UNUSED(x) (void)(x)
 #define CONCATENATE(x, y) x ## y
 #define CONCAT(x, y) CONCATENATE(x, y)
-#define WITHBAR(x) CONCAT(x, _)
 #define TBRACKET(x) CONCAT(T, CONCAT(x, T))
 #define TEMPLATE(type, identifier) CONCAT(identifier, TBRACKET(type))
 
