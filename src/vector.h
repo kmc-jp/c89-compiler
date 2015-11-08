@@ -312,17 +312,21 @@
                                size_t pos, size_t count) {              \
     assert(self);                                                       \
     {                                                                   \
-      assert(pos + count <= VECTORFUNC(Type, size)(self));              \
-      {                                                                 \
-        Type* const begin = VECTORFUNC(Type, begin)(self);              \
-        Type* const end = VECTORFUNC(Type, end)(self);                  \
-        Type* const new_end =                                           \
-            VECTORFUNC(Type, set_end)(self, end - count);               \
-        Type* const head = begin + pos;                                 \
-        Type* const tail = head + count;                                \
-        VECTORFUNC(Type, move_down)(tail, end, count);                  \
-        VECTORFUNC(Type, range_dtor)(new_end, end);                     \
+      const size_t size = VECTORFUNC(Type, size)(self);                 \
+      assert(pos <= size);                                              \
+      if (size < pos + count) {                                         \
+        count = size - pos;                                             \
       }                                                                 \
+    }                                                                   \
+    {                                                                   \
+      Type* const begin = VECTORFUNC(Type, begin)(self);                \
+      Type* const end = VECTORFUNC(Type, end)(self);                    \
+      Type* const new_end =                                             \
+          VECTORFUNC(Type, set_end)(self, end - count);                 \
+      Type* const head = begin + pos;                                   \
+      Type* const tail = head + count;                                  \
+      VECTORFUNC(Type, move_down)(tail, end, count);                    \
+      VECTORFUNC(Type, range_dtor)(new_end, end);                       \
     }                                                                   \
   }                                                                     \
   void VECTORFUNC(Type, push_back)(VECTORREF(Type) self,                \
