@@ -224,11 +224,12 @@
       VECTORFUNC(Type, reserve)(self, count);                           \
     }                                                                   \
     {                                                                   \
+      const size_t size = VECTORFUNC(Type, size)(self);                 \
       Type* const begin = VECTORFUNC(Type, begin)(self);                \
       Type* const end = VECTORFUNC(Type, end)(self);                    \
       Type* const new_end =                                             \
           VECTORFUNC(Type, set_end)(self, begin + count);               \
-      if (count < VECTORFUNC(Type, size)(self)) {                       \
+      if (count < size) {                                               \
         VECTORFUNC(Type, range_copy)(begin, new_end, data);             \
         VECTORFUNC(Type, range_dtor)(new_end, end);                     \
       } else {                                                          \
