@@ -336,7 +336,7 @@
     {                                                                   \
       Type* const end = VECTORFUNC(Type, end)(self);                    \
       Type* const new_end = VECTORFUNC(Type, set_end)(self, end + 1);   \
-      VECTORFUNC(Type, range_ctor_copy)(end, new_end, value);           \
+      VECTORFUNC(Type, range_ctor_fill)(end, new_end, value);           \
     }                                                                   \
   }                                                                     \
   void VECTORFUNC(Type, pop_back)(VECTORREF(Type) self) {               \
