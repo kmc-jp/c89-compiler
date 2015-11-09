@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_ASSIGN_EXPRESSION_HPP
+#define KMC_C89_COMPILER_AST_ASSIGN_EXPRESSION_HPP
+
+class ASTAssignExpression : public ASTBase {
+};
+
+#endif
