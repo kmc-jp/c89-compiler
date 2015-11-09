@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_PARENTHESES_EXPRESSION_HPP
+#define KMC_C89_COMPILER_AST_PARENTHESES_EXPRESSION_HPP
+
+class ASTParenthesesExpression : public ASTBase {
+};
+
+#endif

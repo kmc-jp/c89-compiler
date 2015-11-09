@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_UNARY_EXPRESSION_HPP
+#define KMC_C89_COMPILER_AST_UNARY_EXPRESSION_HPP
+
+class ASTUnaryExpression : public ASTBase {
+};
+
+#endif
