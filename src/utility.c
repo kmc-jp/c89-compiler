@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const bool true = 1;
-const bool false = 0;
-
-void* safe_malloc(size_t size) {
+void* safe_malloc_impl(size_t size) {
   void* ptr = malloc(size);
   if (!ptr) {
     fprintf(stderr, "malloc error: failed to allocate memory\n");
@@ -13,7 +10,14 @@ void* safe_malloc(size_t size) {
   }
   return ptr;
 }
-void safe_free_impl(void** ptr) {
-  free(&ptr);
-  *ptr = NULL;
+void safe_free_impl(void* ptr) {
+  free(ptr);
+}
+
+size_t enough_capacity(size_t size) {
+  size_t capacity = 1;
+  while (capacity < size) {
+    capacity *= 2;
+  }
+  return capacity;
 }
