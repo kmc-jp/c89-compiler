@@ -2,10 +2,16 @@
 #include <assert.h>
 #include <string.h>
 
+typedef struct StringBlock* StringBlockRef;
+
 struct String {
-  char* data_;
+  StringBlockRef block_;
   size_t length_;
+};
+
+struct StringBlock {
   size_t capacity_;
+  char data_[1];
 };
 
 const size_t string_npos = (size_t)(-1);
