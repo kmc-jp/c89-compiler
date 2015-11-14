@@ -16,6 +16,12 @@ struct StringBlock {
 
 const size_t string_npos = (size_t)(-1);
 
+static char* string_block_data(StringRef self) {
+  return self->block_->data_;
+}
+static size_t string_block_capacity(StringRef self) {
+  return self->block_->capacity_;
+}
 static void string_set_end(StringRef self, char data) {
   self->data_[self->length_] = data;
 }
