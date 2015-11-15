@@ -51,7 +51,7 @@ static void string_alloc(StringRef self, size_t size) {
   self->capacity_ = size - 1;
 }
 static void string_extend(StringRef self, size_t size) {
-  if (self->capacity_ < size) {
+  if (string_block_capacity(self) < size) {
     string_free(self);
     string_alloc(self, size);
   }
@@ -147,7 +147,7 @@ void string_reserve(StringRef self, size_t size) {
 
 size_t string_capacity(StringRef self) {
   assert(self);
-  return self->capacity_;
+  return string_block_capacity(self);
 }
 
 void string_shrink_to_fit(StringRef self) {
