@@ -40,7 +40,7 @@ static void string_set_length(StringRef self, size_t length) {
   string_block_data(self)[length] = '\0';
 }
 static void string_free(StringRef self) {
-  safe_free(self->data_);
+  safe_free(self->block_);
 }
 static void string_init(StringRef self, const char* src, size_t length) {
   memcpy(string_block_data(self), src, length);
