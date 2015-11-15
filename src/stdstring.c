@@ -33,17 +33,17 @@ static size_t calculate_string_block_capacity(size_t size) {
 }
 
 static void string_set_end(StringRef self, char data) {
-  self->data_[self->length_] = data;
+  string_block_data(self)[self->length_] = data;
 }
 static void string_set_length(StringRef self, size_t length) {
   self->length_ = length;
-  self->data_[length] = '\0';
+  string_block_data(self)[length] = '\0';
 }
 static void string_free(StringRef self) {
   safe_free(self->data_);
 }
 static void string_init(StringRef self, const char* src, size_t length) {
-  memcpy(self->data_, src, length);
+  memcpy(string_block_data(self), src, length);
   string_set_length(self, length);
 }
 static void string_alloc(StringRef self, size_t size) {
@@ -112,7 +112,7 @@ char string_back(StringRef self) {
 
 char* string_data(StringRef self) {
   assert(self);
-  return self->data_;
+  return string_block_data(self);
 }
 
 char* string_begin(StringRef self) {
