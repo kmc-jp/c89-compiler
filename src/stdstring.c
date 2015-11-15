@@ -139,10 +139,10 @@ size_t string_length(StringRef self) {
 void string_reserve(StringRef self, size_t size) {
   assert(self);
   if (string_capacity(self) < size) {
-    char* original = string_data(self);
+    struct String original = *self;
     string_alloc(self, size);
-    string_init(self, original, string_length(self));
-    safe_free(original);
+    string_init(self, string_data(&original), string_length(self));
+    string_free(&original);
   }
 }
 
@@ -156,10 +156,10 @@ void string_shrink_to_fit(StringRef self) {
   {
     const size_t length = string_length(self);
     if (length < string_capacity(self)) {
-      char* original = string_data(self);
+      struct String original = *self;
       string_alloc(self, length);
-      string_init(self, old_data, length);
-      safe_free(original);
+      string_init(self, string_data(&original), length);
+      string_free(&original);
     }
   }
 }
