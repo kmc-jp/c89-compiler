@@ -15,6 +15,9 @@ struct StringBlock {
 };
 
 const size_t string_npos = (size_t)(-1);
+static const size_t SIZEOF_STRING_BLOCK = sizeof(struct StringBlock);
+static const size_t SIZEOF_STRING_BLOCK_CAPACITY =
+    offsetof(struct StringBlock, data_);
 
 static char* string_block_data(StringRef self) {
   return self->block_->data_;
