@@ -2,34 +2,57 @@
 #include <assert.h>
 #include <string.h>
 
+typedef struct StringBlock* StringBlockRef;
+
 struct String {
-  char* data_;
+  StringBlockRef block_;
   size_t length_;
+};
+
+struct StringBlock {
   size_t capacity_;
+  char data_[1];
 };
 
 const size_t string_npos = (size_t)(-1);
+static const size_t SIZEOF_STRING_BLOCK = sizeof(struct StringBlock);
+static const size_t SIZEOF_STRING_BLOCK_CAPACITY =
+    offsetof(struct StringBlock, data_);
 
+static size_t calculate_string_block_size(size_t size) {
+  return enough_capacity(SIZEOF_STRING_BLOCK + size);
+}
+static size_t calculate_string_block_capacity(size_t size) {
+  return calculate_string_block_size(size) - SIZEOF_STRING_BLOCK_CAPACITY - 1;
+}
+
+static char* string_block_data(StringRef self) {
+  return self->block_->data_;
+}
+static size_t string_block_capacity(StringRef self) {
+  return self->block_->capacity_;
+}
 static void string_set_end(StringRef self, char data) {
-  self->data_[self->length_] = data;
+  string_block_data(self)[self->length_] = data;
 }
 static void string_set_length(StringRef self, size_t length) {
   self->length_ = length;
-  self->data_[length] = '\0';
+  string_block_data(self)[length] = '\0';
 }
 static void string_free(StringRef self) {
-  safe_free(self->data_);
+  safe_free(self->block_);
 }
 static void string_init(StringRef self, const char* src, size_t length) {
-  memcpy(self->data_, src, length);
+  memcpy(string_block_data(self), src, length);
   string_set_length(self, length);
 }
 static void string_alloc(StringRef self, size_t size) {
-  self->data_ = safe_array_malloc(char, enough_capacity(size + 1));
-  self->capacity_ = size - 1;
+  const size_t block_size = calculate_string_block_size(size);
+  self->block_ = (StringBlockRef)safe_array_malloc(char, block_size);
+  self->block_->capacity_ = calculate_string_block_capacity(size);
 }
 static void string_extend(StringRef self, size_t size) {
-  if (self->capacity_ < size) {
+  if (string_block_capacity(self) < size) {
     string_free(self);
     string_alloc(self, size);
   }
@@ -90,7 +113,7 @@ char string_back(StringRef self) {
 
 char* string_data(StringRef self) {
   assert(self);
-  return self->data_;
+  return string_block_data(self);
 }
 
 char* string_begin(StringRef self) {
@@ -116,16 +139,16 @@ size_t string_length(StringRef self) {
 void string_reserve(StringRef self, size_t size) {
   assert(self);
   if (string_capacity(self) < size) {
-    char* original = string_data(self);
+    struct String original = *self;
     string_alloc(self, size);
-    string_init(self, original, string_length(self));
-    safe_free(original);
+    string_init(self, string_data(&original), string_length(self));
+    string_free(&original);
   }
 }
 
 size_t string_capacity(StringRef self) {
   assert(self);
-  return self->capacity_;
+  return string_block_capacity(self);
 }
 
 void string_shrink_to_fit(StringRef self) {
@@ -133,10 +156,10 @@ void string_shrink_to_fit(StringRef self) {
   {
     const size_t length = string_length(self);
     if (length < string_capacity(self)) {
-      char* original = string_data(self);
+      struct String original = *self;
       string_alloc(self, length);
-      string_init(self, original, length);
-      safe_free(original);
+      string_init(self, string_data(&original), length);
+      string_free(&original);
     }
   }
 }
