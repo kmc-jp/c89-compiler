@@ -25,6 +25,13 @@ static char* string_block_data(StringRef self) {
 static size_t string_block_capacity(StringRef self) {
   return self->block_->capacity_;
 }
+static size_t calculate_string_block_size(size_t size) {
+  return enough_capacity(SIZEOF_STRING_BLOCK + size);
+}
+static size_t calculate_string_block_capacity(size_t size) {
+  return calculate_string_block_size(size) - SIZEOF_STRING_BLOCK_CAPACITY - 1;
+}
+
 static void string_set_end(StringRef self, char data) {
   self->data_[self->length_] = data;
 }
