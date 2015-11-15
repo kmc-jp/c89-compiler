@@ -19,12 +19,6 @@ static const size_t SIZEOF_STRING_BLOCK = sizeof(struct StringBlock);
 static const size_t SIZEOF_STRING_BLOCK_CAPACITY =
     offsetof(struct StringBlock, data_);
 
-static char* string_block_data(StringRef self) {
-  return self->block_->data_;
-}
-static size_t string_block_capacity(StringRef self) {
-  return self->block_->capacity_;
-}
 static size_t calculate_string_block_size(size_t size) {
   return enough_capacity(SIZEOF_STRING_BLOCK + size);
 }
@@ -32,6 +26,12 @@ static size_t calculate_string_block_capacity(size_t size) {
   return calculate_string_block_size(size) - SIZEOF_STRING_BLOCK_CAPACITY - 1;
 }
 
+static char* string_block_data(StringRef self) {
+  return self->block_->data_;
+}
+static size_t string_block_capacity(StringRef self) {
+  return self->block_->capacity_;
+}
 static void string_set_end(StringRef self, char data) {
   string_block_data(self)[self->length_] = data;
 }
