@@ -47,8 +47,9 @@ static void string_init(StringRef self, const char* src, size_t length) {
   string_set_length(self, length);
 }
 static void string_alloc(StringRef self, size_t size) {
-  self->data_ = safe_array_malloc(char, enough_capacity(size + 1));
-  self->capacity_ = size - 1;
+  const size_t block_size = calculate_string_block_size(size);
+  self->block_ = (StringBlockRef)safe_array_malloc(char, block_size);
+  self->block_->capacity_ = calculate_string_block_capacity(size);
 }
 static void string_extend(StringRef self, size_t size) {
   if (string_block_capacity(self) < size) {
