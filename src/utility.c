@@ -23,13 +23,13 @@ size_t enough_capacity(size_t size) {
   return capacity;
 }
 
-void memory_copy(void* dst, void* src, size_t size, size_t count) {
+void memory_copy(void* dst, const void* src, size_t size, size_t count) {
   if (0 < count) {
     assert(dst && src);
     memcpy(dst, src, size * count);
   }
 }
-void memory_move(void* dst, void* src, size_t size, size_t count) {
+void memory_move(void* dst, const void* src, size_t size, size_t count) {
   if (0 < count) {
     assert(dst && src);
     memmove(dst, src, size * count);

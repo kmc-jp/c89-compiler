@@ -24,7 +24,7 @@ void safe_free_impl(void* ptr);
 /* size <= capacity && capacity == pow(2, n) */
 size_t enough_capacity(size_t size);
 
-void memory_copy(void* dst, void* src, size_t size, size_t count);
-void memory_move(void* dst, void* src, size_t size, size_t count);
+void memory_copy(void* dst, const void* src, size_t size, size_t count);
+void memory_move(void* dst, const void* src, size_t size, size_t count);
 
 #endif  /* KMC_C89_COMPILER_UTILITY_H */
