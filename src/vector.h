@@ -5,14 +5,7 @@
 #include <stdlib.h>
 #include "utility.h"
 
-#define CONCATENATE(x, y) x ## y
-#define CONCAT(x, y) CONCATENATE(x, y)
-#define WITHBAR(x) CONCAT(x, _)
-#define TBRACKET(x) CONCAT(T, CONCAT(x, T))
-
 /* template macro */
-#define TEMPLATE(type, identifier)              \
-  CONCAT(identifier, TBRACKET(type))
 #define VECTOR(type)                            \
   TEMPLATE(type, Vector)
 #define VECTORREF(type)                         \
@@ -21,8 +14,8 @@
   TEMPLATE(type, CONCAT(Vector, function))
 #define VECTOR_GLOBAL(type)                             \
   CONCAT(global_, TEMPLATE(type, VectorMethods))
-#define VECTOR_METHOD(type, function)           \
-  VECTOR_GLOBAL(type).WITHBAR(function)
+#define VECTOR_METHOD(type, function)                   \
+  TEMPLATE(type, CONCAT(VectorMethod_, function))
 #define DEFAULT_METHOD(type, function)          \
   TEMPLATE(type, CONCAT(default_, function))
 #define DEFAULT_VECTOR_METHOD(type, function)           \
@@ -37,9 +30,9 @@
                                                                         \
   /* special member functions */                                        \
   struct TEMPLATE(Type, VectorMethods) {                                \
-    TEMPLATE(Type, CtorMethod) WITHBAR(ctor);                           \
-    TEMPLATE(Type, DtorMethod) WITHBAR(dtor);                           \
-    TEMPLATE(Type, CopyMethod) WITHBAR(copy);                           \
+    TEMPLATE(Type, CtorMethod) ctor_;                                   \
+    TEMPLATE(Type, DtorMethod) dtor_;                                   \
+    TEMPLATE(Type, CopyMethod) copy_;                                   \
   };                                                                    \
   extern struct TEMPLATE(Type, VectorMethods) VECTOR_GLOBAL(Type);      \
                                                                         \
@@ -48,12 +41,6 @@
                                     TEMPLATE(Type, DtorMethod) dtor,    \
                                     TEMPLATE(Type, CopyMethod) copy);   \
                                                                         \
-  /* vector of Type */                                                  \
-  struct VECTOR(Type) {                                                 \
-    Type* start_;  /* first data */                                     \
-    Type* finish_;  /* last data */                                     \
-    Type* end_;  /* end of storage */                                   \
-  };                                                                    \
   /* reference to vector of Type */                                     \
   typedef struct VECTOR(Type)* VECTORREF(Type);                         \
                                                                         \
@@ -111,14 +98,33 @@
 #define DEFINE_VECTOR(Type)                                             \
   struct TEMPLATE(Type, VectorMethods) VECTOR_GLOBAL(Type);             \
                                                                         \
+  static void VECTOR_METHOD(Type, ctor)(Type* value) {                  \
+    assert(VECTOR_GLOBAL(Type).ctor_);                                  \
+    VECTOR_GLOBAL(Type).ctor_(value);                                   \
+  }                                                                     \
+  static void VECTOR_METHOD(Type, dtor)(Type* value) {                  \
+    assert(VECTOR_GLOBAL(Type).dtor_);                                  \
+    VECTOR_GLOBAL(Type).dtor_(value);                                   \
+  }                                                                     \
+  static void VECTOR_METHOD(Type, copy)(Type* dst, const Type* src) {   \
+    assert(VECTOR_GLOBAL(Type).copy_);                                  \
+    VECTOR_GLOBAL(Type).copy_(dst, src);                                \
+  }                                                                     \
   void VECTORFUNC(Type, initialize)(                                    \
       TEMPLATE(Type, CtorMethod) ctor,                                  \
       TEMPLATE(Type, DtorMethod) dtor,                                  \
       TEMPLATE(Type, CopyMethod) copy) {                                \
-    VECTOR_METHOD(Type, ctor) = ctor;                                   \
-    VECTOR_METHOD(Type, dtor) = dtor;                                   \
-    VECTOR_METHOD(Type, copy) = copy;                                   \
+    VECTOR_GLOBAL(Type).ctor_ = ctor;                                   \
+    VECTOR_GLOBAL(Type).dtor_ = dtor;                                   \
+    VECTOR_GLOBAL(Type).copy_ = copy;                                   \
   }                                                                     \
+                                                                        \
+  /* vector of Type */                                                  \
+  struct VECTOR(Type) {                                                 \
+    Type* start_;  /* first data */                                     \
+    Type* finish_;  /* last data */                                     \
+    Type* end_;  /* end of storage */                                   \
+  };                                                                    \
                                                                         \
   static void VECTORFUNC(Type, free)(VECTORREF(Type) self) {            \
     safe_free(self->start_);                                            \
@@ -218,11 +224,12 @@
       VECTORFUNC(Type, reserve)(self, count);                           \
     }                                                                   \
     {                                                                   \
+      const size_t size = VECTORFUNC(Type, size)(self);                 \
       Type* const begin = VECTORFUNC(Type, begin)(self);                \
       Type* const end = VECTORFUNC(Type, end)(self);                    \
       Type* const new_end =                                             \
           VECTORFUNC(Type, set_end)(self, begin + count);               \
-      if (count < VECTORFUNC(Type, size)(self)) {                       \
+      if (count < size) {                                               \
         VECTORFUNC(Type, range_copy)(begin, new_end, data);             \
         VECTORFUNC(Type, range_dtor)(new_end, end);                     \
       } else {                                                          \
@@ -305,17 +312,21 @@
                                size_t pos, size_t count) {              \
     assert(self);                                                       \
     {                                                                   \
-      assert(pos + count <= VECTORFUNC(Type, size)(self));              \
-      {                                                                 \
-        Type* const begin = VECTORFUNC(Type, begin)(self);              \
-        Type* const end = VECTORFUNC(Type, end)(self);                  \
-        Type* const new_end =                                           \
-            VECTORFUNC(Type, set_end)(self, end - count);               \
-        Type* const head = begin + pos;                                 \
-        Type* const tail = head + count;                                \
-        VECTORFUNC(Type, move_down)(tail, end, count);                  \
-        VECTORFUNC(Type, range_dtor)(new_end, end);                     \
+      const size_t size = VECTORFUNC(Type, size)(self);                 \
+      assert(pos <= size);                                              \
+      if (size < pos + count) {                                         \
+        count = size - pos;                                             \
       }                                                                 \
+    }                                                                   \
+    {                                                                   \
+      Type* const begin = VECTORFUNC(Type, begin)(self);                \
+      Type* const end = VECTORFUNC(Type, end)(self);                    \
+      Type* const new_end =                                             \
+          VECTORFUNC(Type, set_end)(self, end - count);                 \
+      Type* const head = begin + pos;                                   \
+      Type* const tail = head + count;                                  \
+      VECTORFUNC(Type, move_down)(tail, end, count);                    \
+      VECTORFUNC(Type, range_dtor)(new_end, end);                       \
     }                                                                   \
   }                                                                     \
   void VECTORFUNC(Type, push_back)(VECTORREF(Type) self,                \
@@ -325,7 +336,7 @@
     {                                                                   \
       Type* const end = VECTORFUNC(Type, end)(self);                    \
       Type* const new_end = VECTORFUNC(Type, set_end)(self, end + 1);   \
-      VECTORFUNC(Type, range_ctor_copy)(end, new_end, value);           \
+      VECTORFUNC(Type, range_ctor_fill)(end, new_end, value);           \
     }                                                                   \
   }                                                                     \
   void VECTORFUNC(Type, pop_back)(VECTORREF(Type) self) {               \

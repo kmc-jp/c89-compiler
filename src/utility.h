@@ -4,6 +4,10 @@
 #include <stddef.h>
 
 #define UNUSED(x) (void)(x)
+#define CONCATENATE(x, y) x ## y
+#define CONCAT(x, y) CONCATENATE(x, y)
+#define TBRACKET(x) CONCAT(T, CONCAT(x, T))
+#define TEMPLATE(type, identifier) CONCAT(identifier, TBRACKET(type))
 
 #ifndef __cplusplus
 typedef signed char bool;
@@ -19,7 +23,7 @@ void* safe_malloc_impl(size_t size);
 
 void safe_free_impl(void* ptr);
 #define safe_free(ptr)                          \
-  do { safe_free_impl(ptr); ptr = NULL; } while(false)
+  do { safe_free_impl(ptr); (ptr) = NULL; } while (false)
 
 /* size <= capacity && capacity == pow(2, n) */
 size_t enough_capacity(size_t size);
