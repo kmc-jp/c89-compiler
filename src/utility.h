@@ -31,10 +31,14 @@ void safe_free_impl(void* ptr);
 #define safe_free(ptr)                          \
   do { safe_free_impl(ptr); ptr = NULL; } while(false)
 
+BEGIN_EXTERN_C
+
 /* size <= capacity && capacity == pow(2, n) */
 size_t enough_capacity(size_t size);
 
 void memory_copy(void* dst, const void* src, size_t size, size_t count);
 void memory_move(void* dst, const void* src, size_t size, size_t count);
+
+END_EXTERN_C
 
 #endif  /* KMC_C89_COMPILER_UTILITY_H */
