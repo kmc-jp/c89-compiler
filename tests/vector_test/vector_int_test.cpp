@@ -1,10 +1,8 @@
-extern "C" {
-#include "use_vector.h"
-}
 #include "gtest/gtest.h"
+#include "new-vector.h"
 
-#define VINT VECTORREF(int)
-#define VINTF(function) VECTORFUNC(int, function)
+#define VINT VectorRef
+#define VINTF(function) CONCAT(vector_, function)
 
 class VectorIntTest : public ::testing::Test {
  protected:
