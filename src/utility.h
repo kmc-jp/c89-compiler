@@ -4,6 +4,8 @@
 #include <stddef.h>
 
 #define UNUSED(x) (void)(x)
+#define CONCATENATE(x, y) x ## y
+#define CONCAT(x, y) CONCATENATE(x, y)
 
 #ifndef __cplusplus
 typedef signed char bool;
