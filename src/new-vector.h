@@ -2,11 +2,7 @@
 #define KMC_C89_COMPILER_NEW_VECTOR_H
 
 #include "utility.h"
-
-#define VECTOR_MEMORY_COPY(dst, src, count)             \
-  memory_copy((dst), (src), sizeof(Type), (count))
-#define VECTOR_MEMORY_MOVE(dst, src, count)             \
-  memory_move((dst), (src), sizeof(Type), (count))
+#include "allocator.h"
 
 typedef int Type;
 
@@ -15,11 +11,13 @@ typedef struct Vector* VectorRef;
 
 BEGIN_EXTERN_C
 
+AllocatorRef vector_default_allocator(void);
+
 /* generate initialized vector */
-VectorRef make_vector(const Type* src, size_t count);
+VectorRef make_vector(AllocatorRef allocator, const Type* src, size_t count);
 
 /* constructor */
-VectorRef vector_ctor(void);
+VectorRef vector_ctor(AllocatorRef allocator);
 /* destructor */
 void vector_dtor(VectorRef* pself);
 /* operator= */
