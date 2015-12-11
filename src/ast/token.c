@@ -11,6 +11,10 @@ struct IntegerConstant {
   StringRef string;
 };
 
+struct FloatingConstant {
+  StringRef string;
+};
+
 IdentifierRef make_identifier(const char* src, size_t length) {
   IdentifierRef self = NULL;
   assert(src);
