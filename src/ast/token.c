@@ -30,3 +30,11 @@ IntegerConstantRef make_integer_constant(const char* src, size_t length) {
   self->string = ast_make_string(src, length);
   return self;
 }
+
+FloatingConstantRef make_floating_constant(const char* src, size_t length) {
+  FloatingConstantRef self = NULL;
+  assert(src);
+  self = ast_palloc(struct FloatingConstant, 1);
+  self->string = ast_make_string(src, length);
+  return self;
+}
