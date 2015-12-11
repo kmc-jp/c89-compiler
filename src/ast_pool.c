@@ -15,3 +15,7 @@ void finalize_ast_pool(void) {
 MemoryPoolRef ast_pool(void) {
   return g_ast_pool;
 }
+
+StringRef ast_make_string(const char* src, size_t length) {
+  return make_string(src, length);
+}
