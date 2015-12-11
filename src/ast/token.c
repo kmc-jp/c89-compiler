@@ -42,3 +42,11 @@ FloatingConstantRef make_floating_constant(const char* src, size_t length) {
   self->string = ast_make_string(src, length);
   return self;
 }
+
+CharacterConstantRef make_character_constant(const char* src, size_t length) {
+  CharacterConstantRef self = NULL;
+  assert(src);
+  self = ast_palloc(struct CharacterConstant, 1);
+  self->string = ast_make_string(src, length);
+  return self;
+}
