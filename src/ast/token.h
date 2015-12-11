@@ -6,6 +6,7 @@
 typedef struct Identifier* IdentifierRef;
 typedef struct IntegerConstant* IntegerConstantRef;
 typedef struct FloatingConstant* FloatingConstantRef;
+typedef struct CharacterConstant* CharacterConstantRef;
 
 IdentifierRef make_identifier(const char* src, size_t length);
 IntegerConstantRef make_integer_constant(const char* src, size_t length);
