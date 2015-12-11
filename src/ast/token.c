@@ -18,3 +18,11 @@ IdentifierRef make_identifier(const char* src, size_t length) {
   self->string = ast_make_string(src, length);
   return self;
 }
+
+IntegerConstantRef make_integer_constant(const char* src, size_t length) {
+  IntegerConstantRef self = NULL;
+  assert(src);
+  self = ast_palloc(struct IntegerConstant, 1);
+  self->string = ast_make_string(src, length);
+  return self;
+}
