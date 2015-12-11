@@ -54,3 +54,11 @@ CharacterConstantRef make_character_constant(const char* src, size_t length) {
   self->string = ast_make_string(src, length);
   return self;
 }
+
+StringLiteralRef make_string_literal(const char* src, size_t length) {
+  StringLiteralRef self = NULL;
+  assert(src);
+  self = ast_palloc(struct StringLiteral, 1);
+  self->string = ast_make_string(src, length);
+  return self;
+}
