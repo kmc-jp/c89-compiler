@@ -7,6 +7,10 @@ struct Identifier {
   StringRef string;
 };
 
+struct IntegerConstant {
+  StringRef string;
+};
+
 IdentifierRef make_identifier(const char* src, size_t length) {
   IdentifierRef self = NULL;
   assert(src);

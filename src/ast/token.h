@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 typedef struct Identifier* IdentifierRef;
+typedef struct IntegerConstant* IntegerConstantRef;
 
 IdentifierRef make_identifier(const char* src, size_t length);
 
