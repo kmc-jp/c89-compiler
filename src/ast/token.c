@@ -1,7 +1,6 @@
 #include "token.h"
 #include <assert.h>
-#include "../ast_pool.h"
-#include "../stdstring.h"
+#include "ast_pool.h"
 
 struct Identifier {
   StringRef string;

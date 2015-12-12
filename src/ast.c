@@ -1,6 +1,6 @@
 #include "ast.h"
 #include <assert.h>
-#include "ast_pool.h"
+#include "ast/ast_pool.h"
 #include "ast/token.h"
 
 struct Ast {
