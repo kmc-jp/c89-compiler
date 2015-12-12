@@ -43,6 +43,14 @@ StringLiteralRef get_string_literal(AstRef ast) {
 }
 
 
+ConstantRef get_constant(AstRef ast) {
+  assert(ast);
+  if (ast->tag == AST_CONSTANT) {
+    return ast->data.constant;
+  }
+  return NULL;
+}
+
 EnumerationConstantRef get_enumeration_constant(AstRef ast) {
   assert(ast);
   if (ast->tag == AST_ENUMERATION_CONSTANT) {
