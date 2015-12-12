@@ -3,6 +3,7 @@
 
 #include "ast.h"
 #include "ast/token.h"
+#include "ast/constant.h"
 
 struct Ast {
   enum AstTag tag;
@@ -12,6 +13,8 @@ struct Ast {
     FloatingConstantRef floating_constant;
     CharacterConstantRef character_constant;
     StringLiteralRef string_literal;
+
+    EnumerationConstantRef enumeration_constant;
 
     void* dummy;
   } data;
