@@ -14,6 +14,7 @@ struct Ast {
     CharacterConstantRef character_constant;
     StringLiteralRef string_literal;
 
+    ConstantRef constant;
     EnumerationConstantRef enumeration_constant;
 
     void* dummy;
