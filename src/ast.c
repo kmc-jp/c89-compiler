@@ -1,4 +1,5 @@
 #include "ast.h"
+#include <assert.h>
 #include "ast_pool.h"
 #include "ast/token.h"
 
@@ -20,6 +21,33 @@ static AstRef ast_ctor(void) {
   ast->data.dummy = NULL;
   return ast;
 }
+
+
+bool is_identifier(AstRef ast) {
+  assert(ast);
+  return ast->tag == AST_IDENTIFIER;
+}
+
+bool is_integer_constant(AstRef ast) {
+  assert(ast);
+  return ast->tag == AST_INTEGER_CONSTANT;
+}
+
+bool is_floating_constant(AstRef ast) {
+  assert(ast);
+  return ast->tag == AST_FLOATING_CONSTANT;
+}
+
+bool is_character_constant(AstRef ast) {
+  assert(ast);
+  return ast->tag == AST_CHARACTER_CONSTANT;
+}
+
+bool is_string_literal(AstRef ast) {
+  assert(ast);
+  return ast->tag == AST_STRING_LITERAL;
+}
+
 
 AstRef make_ast_identifier(const char* src, size_t length) {
   AstRef ast = ast_ctor();
