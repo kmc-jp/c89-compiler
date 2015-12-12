@@ -18,5 +18,6 @@ AstRef make_ast_identifier(const char* src, size_t length);
 AstRef make_ast_integer_constant(const char* src, size_t length);
 AstRef make_ast_floating_constant(const char* src, size_t length);
 AstRef make_ast_character_constant(const char* src, size_t length);
+AstRef make_ast_string_literal(const char* src, size_t length);
 
 #endif  /* KMC_C89_COMPILER_AST_H */
