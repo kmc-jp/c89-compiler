@@ -15,5 +15,6 @@ enum AstTag {
 typedef struct Ast* AstRef;
 
 AstRef make_ast_identifier(const char* src, size_t length);
+AstRef make_ast_integer_constant(const char* src, size_t length);
 
 #endif  /* KMC_C89_COMPILER_AST_H */
