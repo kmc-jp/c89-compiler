@@ -8,6 +8,7 @@ struct Ast {
     IdentifierRef identifier;
     IntegerConstantRef integer_constant;
     FloatingConstantRef floating_constant;
+    CharacterConstantRef character_constant;
     void* dummy;
   } data;
 };
@@ -37,5 +38,12 @@ AstRef make_ast_floating_constant(const char* src, size_t length) {
   AstRef ast = ast_ctor();
   ast->tag = AST_FLOATING_CONSTANT;
   ast->data.floating_constant = make_floating_constant(src, length);
+  return ast;
+}
+
+AstRef make_ast_character_constant(const char* src, size_t length) {
+  AstRef ast = ast_ctor();
+  ast->tag = AST_CHARACTER_CONSTANT;
+  ast->data.character_constant = make_character_constant(src, length);
   return ast;
 }
