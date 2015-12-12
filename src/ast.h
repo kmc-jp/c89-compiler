@@ -15,6 +15,8 @@ enum AstTag {
 
 typedef struct Ast* AstRef;
 
+AstRef ast_ctor(void);
+
 IdentifierRef get_identifier(AstRef ast);
 IntegerConstantRef get_integer_constant(AstRef ast);
 FloatingConstantRef get_floating_constant(AstRef ast);

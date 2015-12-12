@@ -1,22 +1,9 @@
 #include "ast.h"
 #include <assert.h>
+#include "ast_impl.h"
 #include "ast/ast_pool.h"
-#include "ast/token.h"
 
-struct Ast {
-  enum AstTag tag;
-  union AstData {
-    IdentifierRef identifier;
-    IntegerConstantRef integer_constant;
-    FloatingConstantRef floating_constant;
-    CharacterConstantRef character_constant;
-    StringLiteralRef string_literal;
-
-    void* dummy;
-  } data;
-};
-
-static AstRef ast_ctor(void) {
+AstRef ast_ctor(void) {
   AstRef ast = ast_palloc(struct Ast, 1);
   ast->tag = AST_TAG_ENUM_END;
   ast->data.dummy = NULL;
