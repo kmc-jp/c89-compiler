@@ -88,6 +88,17 @@ AstRef make_ast_string_literal(const char* src, size_t length) {
 }
 
 
+AstRef make_ast_constant(AstRef constant) {
+  AstRef self = NULL;
+  ConstantRef data = make_constant(constant);
+  if (data) {
+    self = ast_ctor();
+    self->tag = AST_CONSTANT;
+    self->data.constant = data;
+  }
+  return self;
+}
+
 AstRef make_ast_enumeration_constant(AstRef identifier) {
   AstRef self = NULL;
   EnumerationConstantRef data = make_enumeration_constant(identifier);
