@@ -43,6 +43,15 @@ StringLiteralRef get_string_literal(AstRef ast) {
 }
 
 
+EnumerationConstantRef get_enumeration_constant(AstRef ast) {
+  assert(ast);
+  if (ast->tag == AST_ENUMERATION_CONSTANT) {
+    return ast->data.enumeration_constant;
+  }
+  return NULL;
+}
+
+
 AstRef make_ast_identifier(const char* src, size_t length) {
   AstRef ast = ast_ctor();
   ast->tag = AST_IDENTIFIER;
