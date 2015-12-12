@@ -3,6 +3,7 @@
 
 #include "../ast.h"
 
+typedef struct Constant* ConstantRef;
 typedef struct EnumerationConstant* EnumerationConstantRef;
 
 EnumerationConstantRef make_enumeration_constant(AstRef identifier);

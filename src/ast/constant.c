@@ -3,6 +3,10 @@
 #include "ast_pool.h"
 #include "token.h"
 
+struct Constant {
+  AstRef constant;
+};
+
 struct EnumerationConstant {
   IdentifierRef identifier;
 };
