@@ -11,6 +11,7 @@ struct Ast {
     FloatingConstantRef floating_constant;
     CharacterConstantRef character_constant;
     StringLiteralRef string_literal;
+
     void* dummy;
   } data;
 };
@@ -23,29 +24,44 @@ static AstRef ast_ctor(void) {
 }
 
 
-bool is_identifier(AstRef ast) {
+IdentifierRef get_identifier(AstRef ast) {
   assert(ast);
-  return ast->tag == AST_IDENTIFIER;
+  if (ast->tag == AST_IDENTIFIER) {
+    return ast->data.identifier;
+  }
+  return NULL;
 }
 
-bool is_integer_constant(AstRef ast) {
+IntegerConstantRef get_integer_constant(AstRef ast) {
   assert(ast);
-  return ast->tag == AST_INTEGER_CONSTANT;
+  if (ast->tag == AST_INTEGER_CONSTANT) {
+    return ast->data.integer_constant;
+  }
+  return NULL;
 }
 
-bool is_floating_constant(AstRef ast) {
+FloatingConstantRef get_floating_constant(AstRef ast) {
   assert(ast);
-  return ast->tag == AST_FLOATING_CONSTANT;
+  if (ast->tag == AST_FLOATING_CONSTANT) {
+    return ast->data.floating_constant;
+  }
+  return NULL;
 }
 
-bool is_character_constant(AstRef ast) {
+CharacterConstantRef get_character_constant(AstRef ast) {
   assert(ast);
-  return ast->tag == AST_CHARACTER_CONSTANT;
+  if (ast->tag == AST_CHARACTER_CONSTANT) {
+    return ast->data.character_constant;
+  }
+  return NULL;
 }
 
-bool is_string_literal(AstRef ast) {
+StringLiteralRef get_string_literal(AstRef ast) {
   assert(ast);
-  return ast->tag == AST_STRING_LITERAL;
+  if (ast->tag == AST_STRING_LITERAL) {
+    return ast->data.string_literal;
+  }
+  return NULL;
 }
 
 

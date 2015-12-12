@@ -2,6 +2,7 @@
 #define KMC_C89_COMPILER_AST_H
 
 #include "utility.h"
+#include "ast/token.h"
 
 enum AstTag {
   AST_IDENTIFIER,
@@ -14,11 +15,11 @@ enum AstTag {
 
 typedef struct Ast* AstRef;
 
-bool is_identifier(AstRef ast);
-bool is_integer_constant(AstRef ast);
-bool is_floating_constant(AstRef ast);
-bool is_character_constant(AstRef ast);
-bool is_string_literal(AstRef ast);
+IdentifierRef get_identifier(AstRef ast);
+IntegerConstantRef get_integer_constant(AstRef ast);
+FloatingConstantRef get_floating_constant(AstRef ast);
+CharacterConstantRef get_character_constant(AstRef ast);
+StringLiteralRef get_string_literal(AstRef ast);
 
 AstRef make_ast_identifier(const char* src, size_t length);
 AstRef make_ast_integer_constant(const char* src, size_t length);
