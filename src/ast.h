@@ -1,6 +1,8 @@
 #ifndef KMC_C89_COMPILER_AST_H
 #define KMC_C89_COMPILER_AST_H
 
+#include <stddef.h>
+
 enum AstTag {
   AST_IDENTIFIER,
   AST_INTEGER_CONSTANT,
@@ -11,5 +13,7 @@ enum AstTag {
 };
 
 typedef struct Ast* AstRef;
+
+AstRef make_ast_identifier(const char* src, size_t length);
 
 #endif  /* KMC_C89_COMPILER_AST_H */
