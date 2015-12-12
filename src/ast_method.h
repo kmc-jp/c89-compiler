@@ -17,4 +17,6 @@ AstRef make_ast_floating_constant(const char* src, size_t length);
 AstRef make_ast_character_constant(const char* src, size_t length);
 AstRef make_ast_string_literal(const char* src, size_t length);
 
+AstRef make_ast_enumeration_constant(AstRef identifier);
+
 #endif  /* KMC_C89_COMPILER_AST_METHOD_H */

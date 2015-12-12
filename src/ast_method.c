@@ -77,3 +77,15 @@ AstRef make_ast_string_literal(const char* src, size_t length) {
   ast->data.string_literal = make_string_literal(src, length);
   return ast;
 }
+
+
+AstRef make_ast_enumeration_constant(AstRef identifier) {
+  AstRef self = NULL;
+  EnumerationConstantRef data = make_enumeration_constant(identifier);
+  if (data) {
+    self = ast_ctor();
+    self->tag = AST_ENUMERATION_CONSTANT;
+    self->data.enumeration_constant = data;
+  }
+  return self;
+}
