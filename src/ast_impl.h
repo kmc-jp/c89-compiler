@@ -2,7 +2,6 @@
 #define KMC_C89_COMPILER_AST_IMPL_H
 
 #include "ast.h"
-#include "ast/token.h"
 #include "ast/constant.h"
 
 struct Ast {
@@ -13,7 +12,6 @@ struct Ast {
     FloatingConstantRef floating_constant;
     CharacterConstantRef character_constant;
     StringLiteralRef string_literal;
-
     ConstantRef constant;
     EnumerationConstantRef enumeration_constant;
 
