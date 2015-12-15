@@ -12,4 +12,6 @@ enum AstTag {
 
 typedef struct Ast* AstRef;
 
+AstRef ast_ctor(void);
+
 #endif  /* KMC_C89_COMPILER_AST_H */
