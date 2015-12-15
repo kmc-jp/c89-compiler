@@ -7,9 +7,14 @@ enum AstTag {
   AST_FLOATING_CONSTANT,
   AST_CHARACTER_CONSTANT,
   AST_STRING_LITERAL,
+  AST_CONSTANT,
+  AST_ENUMERATION_CONSTANT,
+
   AST_TAG_ENUM_END
 };
 
 typedef struct Ast* AstRef;
+
+AstRef ast_ctor(void);
 
 #endif  /* KMC_C89_COMPILER_AST_H */
