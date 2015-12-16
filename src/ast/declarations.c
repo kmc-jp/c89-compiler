@@ -4,7 +4,13 @@
 struct AstDeclaration {
 };
 
-struct AstDeclarationSpecifiers {
+struct AstDeclarationSpecifierList {
+  AstRef declaration_specifier;
+  AstRef declaration_specifier_list;
+};
+
+struct AstDeclarationSpecifier {
+  AstRef declaration_specifier;
 };
 
 struct AstInitDeclaratorList {
