@@ -33,9 +33,12 @@ struct AstStructOrUnion {
 };
 
 struct AstStructDeclarationList {
+  AstRef struct_declaration_list;
 };
 
 struct AstStructDeclaration {
+  AstRef specifier_qualifier_list;
+  AstRef struct_declarator_list;
 };
 
 struct AstSpecifierQualifierList {
@@ -142,6 +145,32 @@ AstRef ast_make_struct_or_union(AstRef struct_or_union) {
     self = ast_palloc(struct Ast);
     self->tag = AST_STRUCT_OR_UNION;
     self->data.struct_or_union = data;
+  }
+  return self;
+}
+
+AstRef ast_make_struct_declaration_list(AstRef struct_declaration_list) {
+  AstRef self = NULL;
+  if (ast_is_vector(struct_declaration_list)) {
+    AstStructDeclarationListRef data = ast_palloc(struct AstStructDeclarationList);
+    data->struct_declaration_list = struct_declaration_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_STRUCT_DECLARATION_LIST;
+    self->data.struct_declaration_list = data;
+  }
+  return self;
+}
+
+AstRef ast_make_struct_declaration(AstRef specifier_qualifier_list,
+    AstRef struct_declarator_list) {
+  AstRef self = NULL;
+  if (ast_is_specifier_qualifier_list(specifier_qualifier_list)) {
+    AstStructDeclarationRef data = ast_palloc(struct AstStructDeclaration);
+    data->specifier_qualifier_list = specifier_qualifier_list;
+    data->struct_declarator_list = struct_declarator_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_STRUCT_DECLARATION;
+    self->data.struct_declaration = data;
   }
   return self;
 }
