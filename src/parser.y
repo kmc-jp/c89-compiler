@@ -338,9 +338,17 @@ declarator
 
 direct-declarator
 : identifier
-| '{' declarator '}'
-| direct-declarator '[' constant-expression.opt ']'
-| direct-declarator '(' parameter-type-list ')'
+| '(' declarator ')'
+| array-type-declarator
+| function-type-declarator
+;
+
+array-type-declarator
+: direct-declarator '[' constant-expression.opt ']'
+;
+
+function-type-declarator
+: direct-declarator '(' parameter-type-list ')'
 | direct-declarator '(' identifier-list.opt ')'
 ;
 

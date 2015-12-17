@@ -95,6 +95,13 @@ struct AstDeclarator {
 };
 
 struct AstDirectDeclarator {
+  AstRef direct_declarator;
+};
+
+struct AstArrayTypeDeclarator {
+};
+
+struct AstFunctionTypeDeclarator {
 };
 
 struct AstPointer {

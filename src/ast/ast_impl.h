@@ -57,6 +57,8 @@ struct Ast {
     AstTypeQualifierRef type_qualifier;
     AstDeclaratorRef declarator;
     AstDirectDeclaratorRef direct_declarator;
+    AstArrayTypeDeclaratorRef array_type_declarator;
+    AstFunctionTypeDeclaratorRef function_type_declarator;
     AstPointerRef pointer;
     AstTypeQualifierListRef type_qualifier_list;
     AstParameterTypeListRef parameter_type_list;

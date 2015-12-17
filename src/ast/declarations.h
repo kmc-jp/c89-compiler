@@ -24,6 +24,8 @@ AstRef ast_make_enumerator();
 AstRef ast_make_type_qualifier();
 AstRef ast_make_declarator();
 AstRef ast_make_direct_declarator();
+AstRef ast_make_array_type_declarator();
+AstRef ast_make_function_type_declarator();
 AstRef ast_make_pointer();
 AstRef ast_make_type_qualifier_list();
 AstRef ast_make_parameter_type_list();

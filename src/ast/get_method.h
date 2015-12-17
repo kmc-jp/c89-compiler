@@ -52,6 +52,8 @@ AstEnumeratorRef ast_get_enumerator(AstRef ast);
 AstTypeQualifierRef ast_get_type_qualifier(AstRef ast);
 AstDeclaratorRef ast_get_declarator(AstRef ast);
 AstDirectDeclaratorRef ast_get_direct_declarator(AstRef ast);
+AstArrayTypeDeclaratorRef ast_get_array_type_declarator(AstRef ast);
+AstFunctionTypeDeclaratorRef ast_get_function_type_declarator(AstRef ast);
 AstPointerRef ast_get_pointer(AstRef ast);
 AstTypeQualifierListRef ast_get_type_qualifier_list(AstRef ast);
 AstParameterTypeListRef ast_get_parameter_type_list(AstRef ast);
