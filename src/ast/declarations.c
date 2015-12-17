@@ -110,7 +110,8 @@ struct AstInitializerList {
 AstRef ast_make_declaration(AstRef declaration_specifier_list, AstRef init_declarator_list) {
   AstRef self = NULL;
   if ((ast_is_declaration_specifier_list(declaration_specifier_list)) &&
-      (init_declarator_list == NULL || ast_is_init_declarator_list(init_declarator_list))) {
+      (init_declarator_list == NULL ||
+       ast_is_init_declarator_list(init_declarator_list))) {
     AstDeclarationRef data = ast_palloc(struct AstDeclaration);
     data->declaration_specifier_list = declaration_specifier_list;
     data->init_declarator_list = init_declarator_list;
@@ -166,7 +167,8 @@ AstRef ast_make_init_declarator_list(AstRef init_declarator_list) {
 AstRef ast_make_init_declarator(AstRef declarator, AstRef initializer) {
   AstRef self = NULL;
   if (ast_is_declarator(declarator) &&
-      (initializer == NULL || ast_is_initializer(initializer))) {
+      (initializer == NULL ||
+       ast_is_initializer(initializer))) {
     AstInitDeclaratorRef data = ast_palloc(struct AstInitDeclarator);
     data->declarator = declarator;
     data->initializer = initializer;
