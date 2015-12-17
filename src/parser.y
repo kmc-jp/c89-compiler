@@ -359,11 +359,11 @@ declarator
 direct-declarator
 : identifier
 | '(' declarator ')'
-| array-type-declarator
+| array-declarator
 | function-type-declarator
 ;
 
-array-type-declarator
+array-declarator
 : direct-declarator '[' constant-expression.opt ']'
 ;
 

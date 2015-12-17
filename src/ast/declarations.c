@@ -120,7 +120,7 @@ struct AstDirectDeclarator {
   AstRef direct_declarator;
 };
 
-struct AstArrayTypeDeclarator {
+struct AstArrayDeclarator {
   AstRef direct_declarator;
   AstRef constant_expression;
 };
@@ -531,7 +531,7 @@ AstRef ast_make_direct_declarator(AstRef direct_declarator) {
   AstRef self = NULL;
   if (ast_is_identifier(direct_declarator) ||
       ast_is_declarator(direct_declarator) ||
-      ast_is_array_type_declarator(direct_declarator) ||
+      ast_is_array_declarator(direct_declarator) ||
       ast_is_function_type_declarator(direct_declarator)) {
     AstDirectDeclaratorRef data = ast_palloc(struct AstDirectDeclarator);
     data->direct_declarator = direct_declarator;
@@ -542,18 +542,18 @@ AstRef ast_make_direct_declarator(AstRef direct_declarator) {
   return self;
 }
 
-AstRef ast_make_array_type_declarator(AstRef direct_declarator,
+AstRef ast_make_array_declarator(AstRef direct_declarator,
     AstRef constant_expression) {
   AstRef self = NULL;
   if (ast_is_direct_declarator(direct_declarator) &&
       (constant_expression == NULL ||
        ast_is_constant_expression(constant_expression))) {
-    AstArrayTypeDeclaratorRef data = ast_palloc(struct AstArrayTypeDeclarator);
+    AstArrayDeclaratorRef data = ast_palloc(struct AstArrayDeclarator);
     data->direct_declarator = direct_declarator;
     data->constant_expression = constant_expression;
     self = ast_palloc(struct Ast);
-    self->tag = AST_ARRAY_TYPE_DECLARATOR;
-    self->data.array_type_declarator = data;
+    self->tag = AST_ARRAY_DECLARATOR;
+    self->data.array_declarator = data;
   }
   return self;
 }
