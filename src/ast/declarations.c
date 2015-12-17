@@ -55,6 +55,8 @@ struct AstStructDeclaratorList {
 };
 
 struct AstStructDeclarator {
+  AstRef declarator;
+  AstRef constant_expression;
 };
 
 struct AstEnumSpecifier {
@@ -219,6 +221,22 @@ AstRef ast_make_struct_declarator_list(AstRef struct_declarator_list) {
     self = ast_palloc(struct Ast);
     self->tag = AST_STRUCT_DECLARATOR_LIST;
     self->data.struct_declarator_list = data;
+  }
+  return self;
+}
+
+AstRef ast_make_struct_declarator(AstRef declarator,
+    AstRef constant_expression) {
+  AstRef self = NULL;
+  if (((declarator == NULL || ast_is_declarator(declarator)) &&
+       ast_is_constant_expression(constant_expression)) ||
+      (ast_is_declarator(declarator) && constant_expression == NULL)) {
+    AstStructDeclaratorRef data = ast_palloc(struct AstStructDeclarator);
+    data->declarator = declarator;
+    data->constant_expression = constant_expression;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_STRUCT_DECLARATOR;
+    self->data.struct_declarator = data;
   }
   return self;
 }
