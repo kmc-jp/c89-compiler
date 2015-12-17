@@ -1,6 +1,7 @@
 #include "declarations.h"
 #include "ast_impl.h"
 #include "is_method.h"
+#include "get_method.h"
 #include "pool.h"
 
 struct AstDeclaration {
@@ -208,11 +209,15 @@ AstRef ast_make_declaration_specifier(AstRef declaration_specifier) {
   return self;
 }
 
-AstRef ast_make_init_declarator_list(AstRef init_declarator_list) {
+AstRef ast_make_init_declarator_list(AstRef init_declarator_list, AstRef init_declarator) {
   AstRef self = NULL;
-  if (ast_is_vector(init_declarator_list)) {
+  if (ast_is_init_declarator_list(init_declarator_list) &&
+      ast_is_init_declarator(init_declarator)) {
     AstInitDeclaratorListRef data = ast_palloc(struct AstInitDeclaratorList);
-    data->init_declarator_list = init_declarator_list;
+    data->init_declarator_list = ast_make_vector();
+    AST_VECTOR_FUNC(copy)(ast_get_vector(data->init_declarator_list),
+        ast_get_vector(init_declarator_list));
+    ast_push_vector(data->init_declarator_list, init_declarator);
     self = ast_palloc(struct Ast);
     self->tag = AST_INIT_DECLARATOR_LIST;
     self->data.init_declarator_list = data;
@@ -320,11 +325,16 @@ AstRef ast_make_struct_or_union(AstRef struct_or_union) {
   return self;
 }
 
-AstRef ast_make_struct_declaration_list(AstRef struct_declaration_list) {
+AstRef ast_make_struct_declaration_list(AstRef struct_declaration_list,
+    AstRef struct_declaration) {
   AstRef self = NULL;
-  if (ast_is_vector(struct_declaration_list)) {
+  if (ast_is_struct_declaration_list(struct_declaration_list) &&
+      ast_is_struct_declaration(struct_declaration)) {
     AstStructDeclarationListRef data = ast_palloc(struct AstStructDeclarationList);
-    data->struct_declaration_list = struct_declaration_list;
+    data->struct_declaration_list = ast_make_vector();
+    AST_VECTOR_FUNC(copy)(ast_get_vector(data->struct_declaration_list),
+        ast_get_vector(struct_declaration_list));
+    ast_push_vector(data->struct_declaration_list, struct_declaration);
     self = ast_palloc(struct Ast);
     self->tag = AST_STRUCT_DECLARATION_LIST;
     self->data.struct_declaration_list = data;
@@ -376,11 +386,16 @@ AstRef ast_make_specifier_qualifier(AstRef specifier_qualifier) {
   return self;
 }
 
-AstRef ast_make_struct_declarator_list(AstRef struct_declarator_list) {
+AstRef ast_make_struct_declarator_list(AstRef struct_declarator_list,
+    AstRef struct_declarator) {
   AstRef self = NULL;
-  if (ast_is_vector(struct_declarator_list)) {
+  if (ast_is_struct_declarator_list(struct_declarator_list) &&
+      ast_is_struct_declarator(struct_declarator)) {
     AstStructDeclaratorListRef data = ast_palloc(struct AstStructDeclaratorList);
-    data->struct_declarator_list = struct_declarator_list;
+    data->struct_declarator_list = ast_make_vector();
+    AST_VECTOR_FUNC(copy)(ast_get_vector(data->struct_declarator_list),
+        ast_get_vector(struct_declarator_list));
+    ast_push_vector(data->struct_declarator_list, struct_declarator);
     self = ast_palloc(struct Ast);
     self->tag = AST_STRUCT_DECLARATOR_LIST;
     self->data.struct_declarator_list = data;
