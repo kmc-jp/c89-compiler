@@ -73,8 +73,16 @@ struct AstBitFieldDeclarator {
 };
 
 struct AstEnumSpecifier {
+  AstRef enum_specifier;
+};
+
+struct AstEnumDefinition {
   AstRef identifier;
   AstRef enumerator_list;
+};
+
+struct AstEnumDeclaration {
+  AstRef identifier;
 };
 
 struct AstEnumeratorList {
@@ -299,17 +307,41 @@ AstRef ast_make_bit_field_declarator(AstRef declarator,
   return self;
 }
 
-AstRef ast_make_enum_specifier(AstRef identifier, AstRef enumerator_list) {
+AstRef ast_make_enum_specifier(AstRef enum_specifier) {
   AstRef self = NULL;
-  if (((identifier == NULL || ast_is_identifier(identifier)) &&
-       ast_is_enumerator_list(enumerator_list)) ||
-      (ast_is_identifier(identifier) && enumerator_list == NULL)) {
+  if (ast_is_enum_definition(enum_specifier) ||
+      ast_is_enum_declaration(enum_specifier)) {
     AstEnumSpecifierRef data = ast_palloc(struct AstEnumSpecifier);
-    data->identifier = identifier;
-    data->enumerator_list = enumerator_list;
+    data->enum_specifier = enum_specifier;
     self = ast_palloc(struct Ast);
     self->tag = AST_ENUM_SPECIFIER;
     self->data.enum_specifier = data;
+  }
+  return self;
+}
+
+AstRef ast_make_enum_definition(AstRef identifier, AstRef enumerator_list) {
+  AstRef self = NULL;
+  if ((identifier == NULL || ast_is_identifier(identifier)) &&
+       ast_is_enumerator_list(enumerator_list)) {
+    AstEnumDefinitionRef data = ast_palloc(struct AstEnumDefinition);
+    data->identifier = identifier;
+    data->enumerator_list = enumerator_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_ENUM_DEFINITION;
+    self->data.enum_definition = data;
+  }
+  return self;
+}
+
+AstRef ast_make_enum_declaration(AstRef identifier) {
+  AstRef self = NULL;
+  if (ast_is_identifier(identifier)) {
+    AstEnumDeclarationRef data = ast_palloc(struct AstEnumDeclaration);
+    data->identifier = identifier;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_ENUM_DECLARATION;
+    self->data.enum_declaration = data;
   }
   return self;
 }
