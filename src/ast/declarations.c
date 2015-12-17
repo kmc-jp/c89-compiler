@@ -90,6 +90,8 @@ struct AstTypeQualifier {
 };
 
 struct AstDeclarator {
+  AstRef pointer;
+  AstRef direct_declarator;
 };
 
 struct AstDirectDeclarator {
@@ -392,6 +394,20 @@ AstRef ast_make_type_qualifier(AstRef type_qualifier) {
     self = ast_palloc(struct Ast);
     self->tag = AST_TYPE_QUALIFIER;
     self->data.type_qualifier = data;
+  }
+  return self;
+}
+
+AstRef ast_make_declarator(AstRef pointer, AstRef direct_declarator) {
+  AstRef self = NULL;
+  if ((pointer == NULL || ast_is_pointer(pointer)) &&
+      ast_is_direct_declarator(direct_declarator)) {
+    AstDeclaratorRef data = ast_palloc(struct AstDeclarator);
+    data->pointer = pointer;
+    data->direct_declarator = direct_declarator;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_DECLARATOR;
+    self->data.declarator = data;
   }
   return self;
 }
