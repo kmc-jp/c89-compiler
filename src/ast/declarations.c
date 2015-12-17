@@ -125,7 +125,14 @@ struct AstArrayDeclarator {
   AstRef constant_expression;
 };
 
-struct AstFunctionTypeDeclarator {
+struct AstFunctionDeclarator {
+  AstRef direct_declarator;
+  AstRef parameter_type_list;
+};
+
+struct AstOldStyleFunctionDeclarator {
+  AstRef direct_declarator;
+  AstRef identifier_list;
 };
 
 struct AstPointer {
@@ -532,7 +539,8 @@ AstRef ast_make_direct_declarator(AstRef direct_declarator) {
   if (ast_is_identifier(direct_declarator) ||
       ast_is_declarator(direct_declarator) ||
       ast_is_array_declarator(direct_declarator) ||
-      ast_is_function_type_declarator(direct_declarator)) {
+      ast_is_function_declarator(direct_declarator) ||
+      ast_is_old_style_function_declarator(direct_declarator)) {
     AstDirectDeclaratorRef data = ast_palloc(struct AstDirectDeclarator);
     data->direct_declarator = direct_declarator;
     self = ast_palloc(struct Ast);

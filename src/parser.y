@@ -361,6 +361,7 @@ direct-declarator
 | '(' declarator ')'
 | array-declarator
 | function-type-declarator
+| old-style-function-type-declarator
 ;
 
 array-declarator
@@ -369,7 +370,10 @@ array-declarator
 
 function-type-declarator
 : direct-declarator '(' parameter-type-list ')'
-| direct-declarator '(' identifier-list.opt ')'
+;
+
+old-style-function-type-declarator
+: direct-declarator '(' identifier-list.opt ')'
 ;
 
 pointer.opt
