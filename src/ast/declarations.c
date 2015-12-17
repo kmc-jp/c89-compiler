@@ -6,12 +6,12 @@
 
 struct AstDeclaration {
   AstRef declaration_specifier_list;
-  AstRef init_declarator_list;
+  AstRef init_declarator_list; /* NULLABLE */
 };
 
 struct AstDeclarationSpecifierList {
   AstRef declaration_specifier;
-  AstRef declaration_specifier_list;
+  AstRef declaration_specifier_list; /* NULLABLE */
 };
 
 struct AstDeclarationSpecifier {
@@ -24,7 +24,7 @@ struct AstInitDeclaratorList {
 
 struct AstInitDeclarator {
   AstRef declarator;
-  AstRef initializer;
+  AstRef initializer; /* NULLABLE */
 };
 
 struct AstStorageClassSpecifier {
@@ -41,7 +41,7 @@ struct AstStructOrUnionSpecifier {
 
 struct AstStructOrUnionDefinition {
   AstRef struct_or_union;
-  AstRef identifier;
+  AstRef identifier; /* NULLABLE */
   AstRef struct_declaration_list;
 };
 
@@ -65,7 +65,7 @@ struct AstStructDeclaration {
 
 struct AstSpecifierQualifierList {
   AstRef specifier_qualifier;
-  AstRef specifier_qualifier_list;
+  AstRef specifier_qualifier_list; /* NULLABLE */
 };
 
 struct AstSpecifierQualifier {
@@ -81,7 +81,7 @@ struct AstStructDeclarator {
 };
 
 struct AstBitFieldDeclarator {
-  AstRef declarator;
+  AstRef declarator; /* NULLABLE */
   AstRef constant_expression;
 };
 
@@ -90,7 +90,7 @@ struct AstEnumSpecifier {
 };
 
 struct AstEnumDefinition {
-  AstRef identifier;
+  AstRef identifier; /* NULLABLE */
   AstRef enumerator_list;
 };
 
@@ -104,7 +104,7 @@ struct AstEnumeratorList {
 
 struct AstEnumerator {
   AstRef enumeration_constant;
-  AstRef constant_expression;
+  AstRef constant_expression; /* NULLABLE */
 };
 
 struct AstTypeQualifier {
@@ -112,7 +112,7 @@ struct AstTypeQualifier {
 };
 
 struct AstDeclarator {
-  AstRef pointer;
+  AstRef pointer; /* NULLABLE */
   AstRef direct_declarator;
 };
 
@@ -122,7 +122,7 @@ struct AstDirectDeclarator {
 
 struct AstArrayDeclarator {
   AstRef direct_declarator;
-  AstRef constant_expression;
+  AstRef constant_expression; /* NULLABLE */
 };
 
 struct AstFunctionDeclarator {
@@ -132,7 +132,7 @@ struct AstFunctionDeclarator {
 
 struct AstOldStyleFunctionDeclarator {
   AstRef direct_declarator;
-  AstRef identifier_list;
+  AstRef identifier_list; /* NULLABLE */
 };
 
 struct AstPointer {
