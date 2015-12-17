@@ -320,8 +320,16 @@ bit-field-declarator
 ;
 
 enum-specifier
+: enum-definition
+| enum-declaration
+;
+
+enum-definition
 : "enum" identifier.opt '{' enumerator-list '}'
-| "enum" identifier
+;
+
+enum-declaration
+: "enum" identifier
 ;
 
 enumerator-list
