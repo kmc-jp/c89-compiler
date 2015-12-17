@@ -23,6 +23,9 @@ struct AstTypeSpecifier {
 };
 
 struct AstStructOrUnionSpecifier {
+  AstRef struct_or_union;
+  AstRef identifier;
+  AstRef struct_declaration_list;
 };
 
 struct AstStructOrUnion {
@@ -105,6 +108,27 @@ AstRef ast_make_type_specifier(AstRef type_specifier) {
     self = ast_palloc(struct Ast);
     self->tag = AST_TYPE_SPECIFIER;
     self->data.type_specifier = data;
+  }
+  return self;
+}
+
+AstRef ast_make_struct_or_union_specifier(AstRef struct_or_union,
+    AstRef identifier, AstRef struct_declaration_list) {
+  AstRef self = NULL;
+  int is_null_or_identifier = identifier == NULL ||
+    ast_is_identifier(identifier);
+  int is_null_or_struct_declaration_list = struct_declaration_list == NULL ||
+    ast_is_struct_declaration_list(struct_declaration_list);
+  if (ast_is_struct_or_union(struct_or_union) &&
+      is_null_or_identifier && is_null_or_struct_declaration_list &&
+      (identifier != NULL || struct_declaration_list != NULL)) {
+    AstStructOrUnionSpecifierRef data = ast_palloc(struct AstStructOrUnionSpecifier);
+    data->struct_or_union = struct_or_union;
+    data->identifier = identifier;
+    data->struct_declaration_list = struct_declaration_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_STRUCT_OR_UNION_SPECIFIER;
+    self->data.struct_or_union_specifier = data;
   }
   return self;
 }
