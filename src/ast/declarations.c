@@ -585,7 +585,8 @@ AstRef ast_make_old_style_function_declarator(AstRef direct_declarator,
     AstRef identifier_list) {
   AstRef self = NULL;
   if (ast_is_direct_declarator(direct_declarator) &&
-      ast_is_identifier_list(identifier_list)) {
+      (identifier_list == NULL ||
+       ast_is_identifier_list(identifier_list))) {
     AstOldStyleFunctionDeclaratorRef data = ast_palloc(struct AstOldStyleFunctionDeclarator);
     data->direct_declarator = direct_declarator;
     data->identifier_list = identifier_list;
