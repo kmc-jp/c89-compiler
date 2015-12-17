@@ -166,7 +166,8 @@ struct AstInitializerList {
 AstRef ast_make_declaration(AstRef declaration_specifier_list, AstRef init_declarator_list) {
   AstRef self = NULL;
   if ((ast_is_declaration_specifier_list(declaration_specifier_list)) &&
-      (init_declarator_list == NULL || ast_is_init_declarator_list(init_declarator_list))) {
+      (init_declarator_list == NULL ||
+       ast_is_init_declarator_list(init_declarator_list))) {
     AstDeclarationRef data = ast_palloc(struct AstDeclaration);
     data->declaration_specifier_list = declaration_specifier_list;
     data->init_declarator_list = init_declarator_list;
@@ -222,7 +223,8 @@ AstRef ast_make_init_declarator_list(AstRef init_declarator_list) {
 AstRef ast_make_init_declarator(AstRef declarator, AstRef initializer) {
   AstRef self = NULL;
   if (ast_is_declarator(declarator) &&
-      (initializer == NULL || ast_is_initializer(initializer))) {
+      (initializer == NULL ||
+       ast_is_initializer(initializer))) {
     AstInitDeclaratorRef data = ast_palloc(struct AstInitDeclarator);
     data->declarator = declarator;
     data->initializer = initializer;
@@ -402,7 +404,8 @@ AstRef ast_make_struct_declarator(AstRef struct_declarator) {
 AstRef ast_make_bit_field_declarator(AstRef declarator,
     AstRef constant_expression) {
   AstRef self = NULL;
-  if ((declarator == NULL || ast_is_declarator(declarator)) &&
+  if ((declarator == NULL ||
+        ast_is_declarator(declarator)) &&
        ast_is_constant_expression(constant_expression)) {
     AstBitFieldDeclaratorRef data = ast_palloc(struct AstBitFieldDeclarator);
     data->declarator = declarator;
@@ -429,7 +432,8 @@ AstRef ast_make_enum_specifier(AstRef enum_specifier) {
 
 AstRef ast_make_enum_definition(AstRef identifier, AstRef enumerator_list) {
   AstRef self = NULL;
-  if ((identifier == NULL || ast_is_identifier(identifier)) &&
+  if ((identifier == NULL ||
+        ast_is_identifier(identifier)) &&
        ast_is_enumerator_list(enumerator_list)) {
     AstEnumDefinitionRef data = ast_palloc(struct AstEnumDefinition);
     data->identifier = identifier;
@@ -495,7 +499,8 @@ AstRef ast_make_type_qualifier(AstRef type_qualifier) {
 
 AstRef ast_make_declarator(AstRef pointer, AstRef direct_declarator) {
   AstRef self = NULL;
-  if ((pointer == NULL || ast_is_pointer(pointer)) &&
+  if ((pointer == NULL ||
+        ast_is_pointer(pointer)) &&
       ast_is_direct_declarator(direct_declarator)) {
     AstDeclaratorRef data = ast_palloc(struct AstDeclarator);
     data->pointer = pointer;
