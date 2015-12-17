@@ -1,7 +1,11 @@
 #include "declarations.h"
 #include "ast_impl.h"
+#include "is_method.h"
+#include "pool.h"
 
 struct AstDeclaration {
+  AstRef declaration_specifier_list;
+  AstRef init_declarator_list;
 };
 
 struct AstDeclarationSpecifierList {
@@ -99,3 +103,17 @@ struct AstInitializer {
 
 struct AstInitializerList {
 };
+
+AstRef ast_make_declaration(AstRef declaration_specifier_list, AstRef init_declarator_list) {
+  AstRef self = NULL;
+  if ((ast_is_declaration_specifier_list(declaration_specifier_list)) &&
+      (init_declarator_list == NULL || ast_is_init_declarator_list(init_declarator_list))) {
+    AstDeclarationRef data = ast_palloc(struct AstDeclaration);
+    data->declaration_specifier_list = declaration_specifier_list;
+    data->init_declarator_list = init_declarator_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_DECLARATION;
+    self->data.declaration = data;
+  }
+  return self;
+}
