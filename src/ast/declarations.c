@@ -65,9 +65,12 @@ struct AstEnumSpecifier {
 };
 
 struct AstEnumeratorList {
+  AstRef enumerator_list;
 };
 
 struct AstEnumerator {
+  AstRef enumeration_constant;
+  AstRef constant_expression;
 };
 
 struct AstTypeQualifier {
@@ -254,6 +257,34 @@ AstRef ast_make_enum_specifier(AstRef identifier, AstRef enumerator_list) {
     self = ast_palloc(struct Ast);
     self->tag = AST_ENUM_SPECIFIER;
     self->data.enum_specifier = data;
+  }
+  return self;
+}
+
+AstRef ast_make_enumerator_list(AstRef enumerator_list) {
+  AstRef self = NULL;
+  if (ast_is_vector(enumerator_list)) {
+    AstEnumeratorListRef data = ast_palloc(struct AstEnumeratorList);
+    data->enumerator_list = enumerator_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_ENUMERATOR_LIST;
+    self->data.enumerator_list = data;
+  }
+  return self;
+}
+
+AstRef ast_make_enumerator(AstRef enumeration_constant,
+    AstRef constant_expression) {
+  AstRef self = NULL;
+  if (ast_is_identifier(enumeration_constant) &&
+      (constant_expression == NULL ||
+       ast_is_constant_expression(constant_expression))) {
+    AstEnumeratorRef data = ast_palloc(struct AstEnumerator);
+    data->enumeration_constant = enumeration_constant;
+    data->constant_expression = constant_expression;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_ENUMERATOR;
+    self->data.enumerator = data;
   }
   return self;
 }
