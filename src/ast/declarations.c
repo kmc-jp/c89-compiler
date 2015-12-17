@@ -42,6 +42,11 @@ struct AstStructDeclaration {
 };
 
 struct AstSpecifierQualifierList {
+  AstRef specifier_qualifier;
+  AstRef specifier_qualifier_list;
+};
+
+struct AstSpecifierQualifier {
 };
 
 struct AstStructDeclaratorList {
