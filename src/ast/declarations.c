@@ -76,6 +76,10 @@ struct AstStructDeclaratorList {
 };
 
 struct AstStructDeclarator {
+  AstRef struct_declarator;
+};
+
+struct AstBitFieldDeclarator {
   AstRef declarator;
   AstRef constant_expression;
 };
@@ -373,18 +377,30 @@ AstRef ast_make_struct_declarator_list(AstRef struct_declarator_list) {
   return self;
 }
 
-AstRef ast_make_struct_declarator(AstRef declarator,
-    AstRef constant_expression) {
+AstRef ast_make_struct_declarator(AstRef struct_declarator) {
   AstRef self = NULL;
-  if (((declarator == NULL || ast_is_declarator(declarator)) &&
-       ast_is_constant_expression(constant_expression)) ||
-      (ast_is_declarator(declarator) && constant_expression == NULL)) {
+  if (ast_is_declarator(struct_declarator) ||
+      ast_is_bit_field_declarator(struct_declarator)) {
     AstStructDeclaratorRef data = ast_palloc(struct AstStructDeclarator);
-    data->declarator = declarator;
-    data->constant_expression = constant_expression;
+    data->struct_declarator = struct_declarator;
     self = ast_palloc(struct Ast);
     self->tag = AST_STRUCT_DECLARATOR;
     self->data.struct_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_bit_field_declarator(AstRef declarator,
+    AstRef constant_expression) {
+  AstRef self = NULL;
+  if ((declarator == NULL || ast_is_declarator(declarator)) &&
+       ast_is_constant_expression(constant_expression)) {
+    AstBitFieldDeclaratorRef data = ast_palloc(struct AstBitFieldDeclarator);
+    data->declarator = declarator;
+    data->constant_expression = constant_expression;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_BIT_FIELD_DECLARATOR;
+    self->data.bit_field_declarator = data;
   }
   return self;
 }
