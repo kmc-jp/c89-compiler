@@ -1,6 +1,7 @@
 #include "declarations.h"
 #include "ast_impl.h"
 #include "is_method.h"
+#include "get_method.h"
 #include "pool.h"
 
 struct AstDeclaration {
@@ -152,11 +153,15 @@ AstRef ast_make_declaration_specifier(AstRef declaration_specifier) {
   return self;
 }
 
-AstRef ast_make_init_declarator_list(AstRef init_declarator_list) {
+AstRef ast_make_init_declarator_list(AstRef init_declarator_list, AstRef init_declarator) {
   AstRef self = NULL;
-  if (ast_is_vector(init_declarator_list)) {
+  if (ast_is_init_declarator_list(init_declarator_list) &&
+      ast_is_init_declarator(init_declarator)) {
     AstInitDeclaratorListRef data = ast_palloc(struct AstInitDeclaratorList);
-    data->init_declarator_list = init_declarator_list;
+    data->init_declarator_list = ast_make_vector();
+    AST_VECTOR_FUNC(copy)(ast_get_vector(data->init_declarator_list),
+        ast_get_vector(init_declarator_list));
+    ast_push_vector(data->init_declarator_list, init_declarator);
     self = ast_palloc(struct Ast);
     self->tag = AST_INIT_DECLARATOR_LIST;
     self->data.init_declarator_list = data;
