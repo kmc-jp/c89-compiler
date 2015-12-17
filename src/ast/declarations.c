@@ -18,9 +18,12 @@ struct AstDeclarationSpecifier {
 };
 
 struct AstInitDeclaratorList {
+  AstRef init_declarator_list;
 };
 
 struct AstInitDeclarator {
+  AstRef declarator;
+  AstRef initializer;
 };
 
 struct AstStorageClassSpecifier {
@@ -144,6 +147,32 @@ AstRef ast_make_declaration_specifier(AstRef declaration_specifier) {
     self = ast_palloc(struct Ast);
     self->tag = AST_DECLARATION_SPECIFIER;
     self->data.declaration_specifier = data;
+  }
+  return self;
+}
+
+AstRef ast_make_init_declarator_list(AstRef init_declarator_list) {
+  AstRef self = NULL;
+  if (ast_is_vector(init_declarator_list)) {
+    AstInitDeclaratorListRef data = ast_palloc(struct AstInitDeclaratorList);
+    data->init_declarator_list = init_declarator_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_INIT_DECLARATOR_LIST;
+    self->data.init_declarator_list = data;
+  }
+  return self;
+}
+
+AstRef ast_make_init_declarator(AstRef declarator, AstRef initializer) {
+  AstRef self = NULL;
+  if (ast_is_declarator(declarator) &&
+      (initializer == NULL || ast_is_initializer(initializer))) {
+    AstInitDeclaratorRef data = ast_palloc(struct AstInitDeclarator);
+    data->declarator = declarator;
+    data->initializer = initializer;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_INIT_DECLARATOR;
+    self->data.init_declarator = data;
   }
   return self;
 }
