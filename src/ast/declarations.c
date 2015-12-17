@@ -6,12 +6,12 @@
 
 struct AstDeclaration {
   AstRef declaration_specifier_list;
-  AstRef init_declarator_list;
+  AstRef init_declarator_list; /* NULLABLE */
 };
 
 struct AstDeclarationSpecifierList {
   AstRef declaration_specifier;
-  AstRef declaration_specifier_list;
+  AstRef declaration_specifier_list; /* NULLABLE */
 };
 
 struct AstDeclarationSpecifier {
@@ -24,7 +24,7 @@ struct AstInitDeclaratorList {
 
 struct AstInitDeclarator {
   AstRef declarator;
-  AstRef initializer;
+  AstRef initializer; /* NULLABLE */
 };
 
 struct AstStorageClassSpecifier {
