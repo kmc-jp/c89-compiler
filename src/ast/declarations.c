@@ -2,6 +2,7 @@
 #include "ast_impl.h"
 #include "is_method.h"
 #include "pool.h"
+#include "../utility.h"
 
 struct AstDeclaration {
 };
@@ -133,10 +134,10 @@ AstRef ast_make_type_specifier(AstRef type_specifier) {
 AstRef ast_make_struct_or_union_specifier(AstRef struct_or_union,
     AstRef identifier, AstRef struct_declaration_list) {
   AstRef self = NULL;
-  int is_null_or_identifier = identifier == NULL ||
-    ast_is_identifier(identifier);
-  int is_null_or_struct_declaration_list = struct_declaration_list == NULL ||
-    ast_is_struct_declaration_list(struct_declaration_list);
+  bool is_null_or_identifier = (identifier == NULL ||
+    ast_is_identifier(identifier));
+  bool is_null_or_struct_declaration_list = (struct_declaration_list == NULL ||
+    ast_is_struct_declaration_list(struct_declaration_list));
   if (ast_is_struct_or_union(struct_or_union) &&
       is_null_or_identifier && is_null_or_struct_declaration_list &&
       (identifier != NULL || struct_declaration_list != NULL)) {
