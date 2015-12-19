@@ -63,6 +63,7 @@ AstOldStyleFunctionDeclaratorRef ast_get_old_style_function_declarator(AstRef as
 AstPointerRef ast_get_pointer(AstRef ast);
 AstTypeQualifierListRef ast_get_type_qualifier_list(AstRef ast);
 AstParameterTypeListRef ast_get_parameter_type_list(AstRef ast);
+AstParameterListWithVariableLengthArgumentRef ast_get_parameter_list_with_variable_length_argument(AstRef ast);
 AstParameterListRef ast_get_parameter_list(AstRef ast);
 AstParameterDeclarationRef ast_get_parameter_declaration(AstRef ast);
 AstIdentifierListRef ast_get_identifier_list(AstRef ast);

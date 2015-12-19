@@ -398,7 +398,11 @@ type-qualifier-list
 
 parameter-type-list
 : parameter-list
-| parameter-list ',' "..."
+| parameter-list-with-variable-length-argument
+;
+
+parameter-list-with-variable-length-argument
+: parameter-list ',' "..."
 ;
 
 parameter-list

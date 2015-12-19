@@ -146,6 +146,11 @@ struct AstTypeQualifierList {
 };
 
 struct AstParameterTypeList {
+  AstRef parameter_list;
+};
+
+struct AstParameterListWithVariableLengthArgument {
+  AstRef parameter_list;
 };
 
 struct AstParameterList {

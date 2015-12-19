@@ -62,6 +62,7 @@ enum AstTag {
   AST_POINTER,
   AST_TYPE_QUALIFIER_LIST,
   AST_PARAMETER_TYPE_LIST,
+  AST_PARAMETER_LIST_WITH_VARIABLE_LENGTH_ARGUMENT,
   AST_PARAMETER_LIST,
   AST_PARAMETER_DECLARATION,
   AST_IDENTIFIER_LIST,
@@ -151,6 +152,7 @@ typedef struct AstOldStyleFunctionDeclarator* AstOldStyleFunctionDeclaratorRef;
 typedef struct AstPointer* AstPointerRef;
 typedef struct AstTypeQualifierList* AstTypeQualifierListRef;
 typedef struct AstParameterTypeList* AstParameterTypeListRef;
+typedef struct AstParameterListWithVariableLengthArgument* AstParameterListWithVariableLengthArgumentRef;
 typedef struct AstParameterList* AstParameterListRef;
 typedef struct AstParameterDeclaration* AstParameterDeclarationRef;
 typedef struct AstIdentifierList* AstIdentifierListRef;
