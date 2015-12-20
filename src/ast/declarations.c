@@ -146,7 +146,7 @@ struct AstTypeQualifierList {
 };
 
 struct AstParameterTypeList {
-  AstRef parameter_list;
+  AstRef parameter_type_list;
 };
 
 struct AstParameterListWithVariableLengthArgument {
@@ -634,6 +634,19 @@ AstRef ast_make_type_qualifier_list(AstRef type_qualifier_list,
     self = ast_palloc(struct Ast);
     self->tag = AST_TYPE_QUALIFIER_LIST;
     self->data.type_qualifier_list = data;
+  }
+  return self;
+}
+
+AstRef ast_make_parameter_type_list(AstRef parameter_type_list) {
+  AstRef self = NULL;
+  if (ast_is_parameter_list_with_variable_length_argument(parameter_type_list) ||
+      ast_is_parameter_list(parameter_type_list)) {
+    AstParameterTypeListRef data = ast_palloc(struct AstParameterTypeList);
+    data->parameter_type_list = parameter_type_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_PARAMETER_TYPE_LIST;
+    self->data.parameter_type_list = data;
   }
   return self;
 }
