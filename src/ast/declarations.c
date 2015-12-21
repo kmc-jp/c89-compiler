@@ -190,6 +190,8 @@ struct AstDirectAbstractDeclarator {
 };
 
 struct AstArrayAbstractDeclarator {
+  AstRef direct_abstract_declarator; /* NULLABLE */
+  AstRef constant_expression; /* NULLABLE */
 };
 
 struct AstFunctionTypeAbstractDeclarator {
@@ -817,6 +819,23 @@ AstRef ast_make_direct_abstract_declarator(AstRef direct_abstract_declarator) {
     self = ast_palloc(struct Ast);
     self->tag = AST_DIRECT_ABSTRACT_DECLARATOR;
     self->data.direct_abstract_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_array_abstract_declarator(AstRef direct_abstract_declarator,
+    AstRef constant_expression) {
+  AstRef self = NULL;
+  if ((direct_abstract_declarator == NULL ||
+       ast_is_direct_abstract_declarator(direct_abstract_declarator)) &&
+      (constant_expression == NULL ||
+       ast_is_constant_expression(constant_expression))) {
+    AstArrayAbstractDeclaratorRef data = ast_palloc(struct AstArrayAbstractDeclarator);
+    data->direct_abstract_declarator = direct_abstract_declarator;
+    data->constant_expression = constant_expression;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_ARRAY_ABSTRACT_DECLARATOR;
+    self->data.array_abstract_declarator = data;
   }
   return self;
 }
