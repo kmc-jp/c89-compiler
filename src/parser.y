@@ -573,15 +573,18 @@ not-pure-pointer-abstract-declarator
 : pointer.opt direct-abstract-declarator
 ;
 
-direct-abstract-declarator.opt
-: /* empty */
-| direct-abstract-declarator
-;
-
 direct-abstract-declarator
 : '(' abstract-declarator ')'
-| direct-abstract-declarator.opt '[' constant-expression.opt ']'
-| direct-abstract-declarator.opt '(' parameter-type-list.opt ')'
+| array-abstract-declarator
+| function-type-abstract-declarator
+;
+
+array-abstract-declarator
+: direct-abstract-declarator '[' constant-expression.opt ']'
+;
+
+function-type-abstract-declarator
+: direct-abstract-declarator '(' parameter-type-list ')'
 ;
 
 typedef-name
