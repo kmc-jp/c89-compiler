@@ -208,6 +208,7 @@ struct AstInitializer {
 };
 
 struct AstInitializerList {
+  AstVectorRef initializer_vector;
 };
 
 AstRef ast_make_declaration(AstRef declaration_specifier_list, AstRef init_declarator_list) {
@@ -882,6 +883,24 @@ AstRef ast_make_initializer(AstRef initializer) {
     self = ast_palloc(struct Ast);
     self->tag = AST_INITIALIZER;
     self->data.initializer = data;
+  }
+  return self;
+}
+
+AstRef ast_make_initializer_list(AstRef initializer_list, AstRef initializer) {
+  AstRef self = NULL;
+  if (initializer_list == NULL) {
+    AstInitializerListRef data = ast_palloc(struct AstInitializerList);
+    data->initializer_vector = ast_make_vector();
+    initializer_list = ast_palloc(struct Ast);
+    initializer_list->tag = AST_INITIALIZER_LIST;
+    initializer_list->data.initializer_list = data;
+  }
+  if (ast_is_initializer_list(initializer_list) &&
+      ast_is_initializer(initializer)) {
+    AstInitializerListRef data = ast_get_initializer_list(initializer_list);
+    ast_push_vector(data->initializer_vector, initializer);
+    self = initializer_list;
   }
   return self;
 }
