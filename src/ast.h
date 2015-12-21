@@ -11,15 +11,45 @@ enum AstTag {
   AST_STRING_LITERAL,
   AST_PRIMARY_EXPRESSION,
   AST_POSTFIX_EXPRESSION,
+  AST_INDEX_ACCESS_EXPRESSION,
+  AST_FUNCTION_CALL_EXPRESSION,
+  AST_DOT_ACCESS_EXPRESSION,
+  AST_ARROW_ACCESS_EXPRESSION,
+  AST_POSTFIX_INCREMENT_EXPRESSION,
+  AST_POSTFIX_DECREMENT_EXPRESSION,
   AST_ARGUMENT_EXPRESSION_LIST,
   AST_UNARY_EXPRESSION,
-  AST_UNARY_OPERATOR,
+  AST_PREFIX_INCREMENT_EXPRESSION,
+  AST_PREFIX_DECREMENT_EXPRESSION,
+  AST_UNARY_OPERATOR_EXPRESSION,
+  AST_SIZEOF_EXPRESSION,
+  AST_SIZEOF_TYPE_EXPRESSION,
+  AST_ADDRESS_EXPRESSION,
+  AST_DEREFERENCE_EXPRESSION,
+  AST_UNARY_PLUS_EXPRESSION,
+  AST_UNARY_MINUS_EXPRESSION,
+  AST_COMPLEMENT_EXPRESSION,
+  AST_LOGICAL_NEGATE_EXPRESSION,
+  AST_CAST_OR_UNARY_EXPRESSION,
   AST_CAST_EXPRESSION,
   AST_MULTIPLICATIVE_EXPRESSION,
+  AST_MULTIPLY_EXPRESSION,
+  AST_DIVIDE_EXPRESSION,
+  AST_MODULO_EXPRESSION,
   AST_ADDITIVE_EXPRESSION,
+  AST_ADD_EXPRESSION,
+  AST_SUBTRACT_EXPRESSION,
   AST_SHIFT_EXPRESSION,
+  AST_LEFT_SHIFT_EXPRESSION,
+  AST_RIGHT_SHIFT_EXPRESSION,
   AST_RELATIONAL_EXPRESSION,
+  AST_LESS_THAN_EXPRESSION,
+  AST_GREATER_THAN_EXPRESSION,
+  AST_LESS_THAN_OR_EQUAL_TO_EXPRESSION,
+  AST_GREATER_THAN_OR_EQUAL_TO_EXPRESSION,
   AST_EQUALITY_EXPRESSION,
+  AST_EQUAL_TO_EXPRESSION,
+  AST_NOT_EQUAL_TO_EXPRESSION,
   AST_AND_EXPRESSION,
   AST_EXCLUSIVE_OR_EXPRESSION,
   AST_INCLUSIVE_OR_EXPRESSION,
@@ -101,15 +131,45 @@ typedef struct AstCharacterConstant* AstCharacterConstantRef;
 typedef struct AstStringLiteral* AstStringLiteralRef;
 typedef struct AstPrimaryExpression* AstPrimaryExpressionRef;
 typedef struct AstPostfixExpression* AstPostfixExpressionRef;
+typedef struct AstIndexAccessExpression* AstIndexAccessExpressionRef;
+typedef struct AstFunctionCallExpression* AstFunctionCallExpressionRef;
+typedef struct AstDotAccessExpression* AstDotAccessExpressionRef;
+typedef struct AstArrowAccessExpression* AstArrowAccessExpressionRef;
+typedef struct AstPostfixIncrementExpression* AstPostfixIncrementExpressionRef;
+typedef struct AstPostfixDecrementExpression* AstPostfixDecrementExpressionRef;
 typedef struct AstArgumentExpressionList* AstArgumentExpressionListRef;
 typedef struct AstUnaryExpression* AstUnaryExpressionRef;
-typedef struct AstUnaryOperator* AstUnaryOperatorRef;
+typedef struct AstPrefixIncrementExpression* AstPrefixIncrementExpressionRef;
+typedef struct AstPrefixDecrementExpression* AstPrefixDecrementExpressionRef;
+typedef struct AstUnaryOperatorExpression* AstUnaryOperatorExpressionRef;
+typedef struct AstSizeofExpression* AstSizeofExpressionRef;
+typedef struct AstSizeofTypeExpression* AstSizeofTypeExpressionRef;
+typedef struct AstAddressExpression* AstAddressExpressionRef;
+typedef struct AstDereferenceExpression* AstDereferenceExpressionRef;
+typedef struct AstUnaryPlusExpression* AstUnaryPlusExpressionRef;
+typedef struct AstUnaryMinusExpression* AstUnaryMinusExpressionRef;
+typedef struct AstComplementExpression* AstComplementExpressionRef;
+typedef struct AstLogicalNegateExpression* AstLogicalNegateExpressionRef;
+typedef struct AstCastOrUnaryExpression* AstCastOrUnaryExpressionRef;
 typedef struct AstCastExpression* AstCastExpressionRef;
 typedef struct AstMultiplicativeExpression* AstMultiplicativeExpressionRef;
+typedef struct AstMultiplyExpression* AstMultiplyExpressionRef;
+typedef struct AstDivideExpression* AstDivideExpressionRef;
+typedef struct AstModuloExpression* AstModuloExpressionRef;
 typedef struct AstAdditiveExpression* AstAdditiveExpressionRef;
+typedef struct AstAddExpression* AstAddExpressionRef;
+typedef struct AstSubtractExpression* AstSubtractExpressionRef;
 typedef struct AstShiftExpression* AstShiftExpressionRef;
+typedef struct AstLeftShiftExpression* AstLeftShiftExpressionRef;
+typedef struct AstRightShiftExpression* AstRightShiftExpressionRef;
 typedef struct AstRelationalExpression* AstRelationalExpressionRef;
+typedef struct AstLessThanExpression* AstLessThanExpressionRef;
+typedef struct AstGreaterThanExpression* AstGreaterThanExpressionRef;
+typedef struct AstLessThanOrEqualToExpression* AstLessThanOrEqualToExpressionRef;
+typedef struct AstGreaterThanOrEqualToExpression* AstGreaterThanOrEqualToExpressionRef;
 typedef struct AstEqualityExpression* AstEqualityExpressionRef;
+typedef struct AstEqualToExpression* AstEqualToExpressionRef;
+typedef struct AstNotEqualToExpression* AstNotEqualToExpressionRef;
 typedef struct AstAndExpression* AstAndExpressionRef;
 typedef struct AstExclusiveOrExpression* AstExclusiveOrExpressionRef;
 typedef struct AstInclusiveOrExpression* AstInclusiveOrExpressionRef;
