@@ -172,6 +172,8 @@ struct AstIdentifierList {
 };
 
 struct AstTypeName {
+  AstRef specifier_qualifier_list;
+  AstRef abstract_declarator; /* NULLABLE */
 };
 
 struct AstAbstractDeclarator {
@@ -744,6 +746,21 @@ AstRef ast_make_identifier_list(AstRef identifier_list, AstRef identifier) {
     AstIdentifierListRef data = ast_get_identifier_list(identifier_list);
     ast_push_vector(data->identifier_vector, identifier);
     self = identifier_list;
+  }
+  return self;
+}
+
+AstRef ast_make_type_name(AstRef specifier_qualifier_list,
+    AstRef abstract_declarator) {
+  AstRef self = NULL;
+  if (ast_is_specifier_qualifier_list(specifier_qualifier_list) &&
+      ast_is_abstract_declarator(abstract_declarator)) {
+    AstTypeNameRef data = ast_palloc(struct AstTypeName);
+    data->specifier_qualifier_list = specifier_qualifier_list;
+    data->abstract_declarator = abstract_declarator;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_TYPE_NAME;
+    self->data.type_name = data;
   }
   return self;
 }
