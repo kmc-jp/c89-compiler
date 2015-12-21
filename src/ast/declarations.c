@@ -656,3 +656,17 @@ AstRef ast_make_parameter_type_list(AstRef parameter_type_list) {
   }
   return self;
 }
+
+AstRef ast_make_parameter_list_with_variable_length_argument(
+    AstRef parameter_list) {
+  AstRef self = NULL;
+  if (ast_is_parameter_list(parameter_list)) {
+    AstParameterListWithVariableLengthArgumentRef data =
+      ast_palloc(struct AstParameterListWithVariableLengthArgument);
+    data->parameter_list = parameter_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_PARAMETER_LIST_WITH_VARIABLE_LENGTH_ARGUMENT;
+    self->data.parameter_list_with_variable_length_argument = data;
+  }
+  return self;
+}
