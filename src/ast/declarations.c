@@ -43,7 +43,7 @@ struct AstStructOrUnion {
 };
 
 struct AstStructDeclarationList {
-  AstRef struct_declaration_list;
+  AstVectorRef struct_declaration_vector;
 };
 
 struct AstStructDeclaration {
@@ -61,7 +61,7 @@ struct AstSpecifierQualifier {
 };
 
 struct AstStructDeclaratorList {
-  AstRef struct_declarator_list;
+  AstVectorRef struct_declarator_vector;
 };
 
 struct AstStructDeclarator {
@@ -216,16 +216,18 @@ AstRef ast_make_struct_or_union(AstRef struct_or_union) {
 AstRef ast_make_struct_declaration_list(AstRef struct_declaration_list,
     AstRef struct_declaration) {
   AstRef self = NULL;
+  if (struct_declaration_list == NULL) {
+    AstStructDeclarationListRef data = ast_palloc(struct AstStructDeclarationList);
+    data->struct_declaration_vector = ast_make_vector();
+    struct_declaration_list = ast_palloc(struct Ast);
+    struct_declaration_list->tag = AST_STRUCT_DECLARATION_LIST;
+    struct_declaration_list->data.struct_declaration_list = data;
+  }
   if (ast_is_struct_declaration_list(struct_declaration_list) &&
       ast_is_struct_declaration(struct_declaration)) {
-    AstStructDeclarationListRef data = ast_palloc(struct AstStructDeclarationList);
-    data->struct_declaration_list = ast_make_vector();
-    AST_VECTOR_FUNC(copy)(ast_get_vector(data->struct_declaration_list),
-        ast_get_vector(struct_declaration_list));
-    ast_push_vector(data->struct_declaration_list, struct_declaration);
-    self = ast_palloc(struct Ast);
-    self->tag = AST_STRUCT_DECLARATION_LIST;
-    self->data.struct_declaration_list = data;
+    AstStructDeclarationListRef data = ast_get_struct_declaration_list(struct_declaration_list);
+    ast_push_vector(data->struct_declaration_vector, struct_declaration);
+    self = struct_declaration_list;
   }
   return self;
 }
@@ -277,16 +279,18 @@ AstRef ast_make_specifier_qualifier(AstRef specifier_qualifier) {
 AstRef ast_make_struct_declarator_list(AstRef struct_declarator_list,
     AstRef struct_declarator) {
   AstRef self = NULL;
+  if (struct_declarator_list == NULL) {
+    AstStructDeclaratorListRef data = ast_palloc(struct AstStructDeclaratorList);
+    data->struct_declarator_vector = ast_make_vector();
+    struct_declarator_list = ast_palloc(struct Ast);
+    struct_declarator_list->tag = AST_STRUCT_DECLARATOR_LIST;
+    struct_declarator_list->data.struct_declarator_list = data;
+  }
   if (ast_is_struct_declarator_list(struct_declarator_list) &&
       ast_is_struct_declarator(struct_declarator)) {
-    AstStructDeclaratorListRef data = ast_palloc(struct AstStructDeclaratorList);
-    data->struct_declarator_list = ast_make_vector();
-    AST_VECTOR_FUNC(copy)(ast_get_vector(data->struct_declarator_list),
-        ast_get_vector(struct_declarator_list));
-    ast_push_vector(data->struct_declarator_list, struct_declarator);
-    self = ast_palloc(struct Ast);
-    self->tag = AST_STRUCT_DECLARATOR_LIST;
-    self->data.struct_declarator_list = data;
+    AstStructDeclaratorListRef data = ast_get_struct_declarator_list(struct_declarator_list);
+    ast_push_vector(data->struct_declarator_vector, struct_declarator);
+    self = struct_declarator_list;
   }
   return self;
 }
