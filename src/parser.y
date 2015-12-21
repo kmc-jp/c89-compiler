@@ -524,10 +524,10 @@ parameter-type-list.opt
 
 parameter-type-list
 : parameter-list
-| parameter-list-with-variable-length-argument
+| variadic-parameter-list
 ;
 
-parameter-list-with-variable-length-argument
+variadic-parameter-list
 : parameter-list ',' "..."
 ;
 

@@ -149,7 +149,7 @@ struct AstParameterTypeList {
   AstRef parameter_type_list;
 };
 
-struct AstParameterListWithVariableLengthArgument {
+struct AstVariadicParameterList{
   AstRef parameter_list;
 };
 
@@ -647,7 +647,7 @@ AstRef ast_make_type_qualifier_list(AstRef type_qualifier_list,
 
 AstRef ast_make_parameter_type_list(AstRef parameter_type_list) {
   AstRef self = NULL;
-  if (ast_is_parameter_list_with_variable_length_argument(parameter_type_list) ||
+  if (ast_is_variadic_parameter_list(parameter_type_list) ||
       ast_is_parameter_list(parameter_type_list)) {
     AstParameterTypeListRef data = ast_palloc(struct AstParameterTypeList);
     data->parameter_type_list = parameter_type_list;
@@ -658,16 +658,16 @@ AstRef ast_make_parameter_type_list(AstRef parameter_type_list) {
   return self;
 }
 
-AstRef ast_make_parameter_list_with_variable_length_argument(
+AstRef ast_make_variadic_parameter_list(
     AstRef parameter_list) {
   AstRef self = NULL;
   if (ast_is_parameter_list(parameter_list)) {
-    AstParameterListWithVariableLengthArgumentRef data =
-      ast_palloc(struct AstParameterListWithVariableLengthArgument);
+    AstVariadicParameterListRef data =
+      ast_palloc(struct AstVariadicParameterList);
     data->parameter_list = parameter_list;
     self = ast_palloc(struct Ast);
-    self->tag = AST_PARAMETER_LIST_WITH_VARIABLE_LENGTH_ARGUMENT;
-    self->data.parameter_list_with_variable_length_argument = data;
+    self->tag = AST_VARIADIC_PARAMETER_LIST;
+    self->data.variadic_parameter_list = data;
   }
   return self;
 }
