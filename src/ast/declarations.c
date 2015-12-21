@@ -149,7 +149,7 @@ struct AstParameterTypeList {
   AstRef parameter_type_list;
 };
 
-struct AstVariadicParameterList{
+struct AstVariadicParameterList {
   AstRef parameter_list;
 };
 
