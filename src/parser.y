@@ -521,11 +521,6 @@ type-qualifier-list
 | type-qualifier-list type-qualifier
 ;
 
-parameter-type-list.opt
-: /* empty */
-| parameter-type-list
-;
-
 parameter-type-list
 : parameter-list
 | variadic-parameter-list
