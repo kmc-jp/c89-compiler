@@ -160,6 +160,9 @@ struct AstParameterList {
 struct AstParameterDeclaration {
 };
 
+struct AstParameterAbstractDeclaration {
+};
+
 struct AstIdentifierList {
 };
 
@@ -683,7 +686,8 @@ AstRef ast_make_parameter_list(AstRef parameter_list,
     parameter_list->data.parameter_list = data;
   }
   if (ast_is_parameter_list(parameter_list) &&
-      ast_is_parameter_declaration(parameter_declaration)) {
+      (ast_is_parameter_declaration(parameter_declaration) ||
+       ast_is_parameter_abstract_declaration(parameter_declaration))) {
     AstParameterListRef data = ast_get_parameter_list(parameter_list);
     ast_push_vector(data->parameter_declaration_vector, parameter_declaration);
     self = parameter_list;

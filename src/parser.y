@@ -534,11 +534,15 @@ variadic-parameter-list
 parameter-list
 : parameter-declaration
 | parameter-list ',' parameter-declaration
+| parameter-list ',' parameter-abstract-declaration
 ;
 
 parameter-declaration
 : declaration-specifier-list declarator
-| declaration-specifier-list abstract-declarator.opt
+;
+
+parameter-abstract-declaration
+: declaration-specifier-list abstract-declarator.opt
 ;
 
 identifier-list.opt
