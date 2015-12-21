@@ -200,6 +200,7 @@ struct AstFunctionTypeAbstractDeclarator {
 };
 
 struct AstTypedefName {
+  AstRef identifier;
 };
 
 struct AstInitializer {
@@ -855,6 +856,18 @@ AstRef ast_make_function_type_abstract_declarator(AstRef direct_abstract_declara
     self = ast_palloc(struct Ast);
     self->tag = AST_FUNCTION_TYPE_ABSTRACT_DECLARATOR;
     self->data.function_type_abstract_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_typedef_name(AstRef identifier) {
+  AstRef self = NULL;
+  if (ast_is_identifier(identifier)) {
+    AstTypedefNameRef data = ast_palloc(struct AstTypedefName);
+    data->identifier = identifier;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_TYPEDEF_NAME;
+    self->data.typedef_name = data;
   }
   return self;
 }
