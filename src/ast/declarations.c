@@ -23,8 +23,12 @@ struct AstInitDeclaratorList {
 };
 
 struct AstInitDeclarator {
+  AstRef init_declarator;
+};
+
+struct AstDeclaratorWithInitializer {
   AstRef declarator;
-  AstRef initializer; /* NULLABLE */
+  AstRef initializer;
 };
 
 struct AstStorageClassSpecifier {
@@ -274,17 +278,29 @@ AstRef ast_make_init_declarator_list(AstRef init_declarator_list, AstRef init_de
   return self;
 }
 
-AstRef ast_make_init_declarator(AstRef declarator, AstRef initializer) {
+AstRef ast_make_init_declarator(AstRef init_declarator) {
   AstRef self = NULL;
-  if (ast_is_declarator(declarator) &&
-      (initializer == NULL ||
-       ast_is_initializer(initializer))) {
+  if (ast_is_declarator(init_declarator) ||
+      ast_is_declarator_with_initializer(init_declarator)) {
     AstInitDeclaratorRef data = ast_palloc(struct AstInitDeclarator);
-    data->declarator = declarator;
-    data->initializer = initializer;
+    data->init_declarator = init_declarator;
     self = ast_palloc(struct Ast);
     self->tag = AST_INIT_DECLARATOR;
     self->data.init_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_declarator_with_initializer(AstRef declarator, AstRef initializer) {
+  AstRef self = NULL;
+  if (ast_is_declarator(declarator) &&
+      ast_is_initializer(initializer)) {
+    AstDeclaratorWithInitializerRef data = ast_palloc(struct AstDeclaratorWithInitializer);
+    data->declarator = declarator;
+    data->initializer = initializer;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_DECLARATOR_WITH_INITIALIZER;
+    self->data.declarator_with_initializer = data;
   }
   return self;
 }
