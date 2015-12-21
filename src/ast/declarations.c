@@ -204,6 +204,7 @@ struct AstTypedefName {
 };
 
 struct AstInitializer {
+  AstRef initializer;
 };
 
 struct AstInitializerList {
@@ -868,6 +869,19 @@ AstRef ast_make_typedef_name(AstRef identifier) {
     self = ast_palloc(struct Ast);
     self->tag = AST_TYPEDEF_NAME;
     self->data.typedef_name = data;
+  }
+  return self;
+}
+
+AstRef ast_make_initializer(AstRef initializer) {
+  AstRef self = NULL;
+  if (ast_is_assignment_expression(initializer) ||
+      ast_is_initializer_list(initializer)) {
+    AstInitializerRef data = ast_palloc(struct AstInitializer);
+    data->initializer = initializer;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_INITIALIZER;
+    self->data.initializer = data;
   }
   return self;
 }
