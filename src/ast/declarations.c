@@ -163,6 +163,8 @@ struct AstParameterDeclaration {
 };
 
 struct AstParameterAbstractDeclaration {
+  AstRef declaration_specifier_list;
+  AstRef abstract_declarator;
 };
 
 struct AstIdentifierList {
@@ -708,6 +710,21 @@ AstRef ast_make_parameter_declaration(AstRef declaration_specifier_list,
     self = ast_palloc(struct Ast);
     self->tag = AST_PARAMETER_DECLARATION;
     self->data.parameter_declaration = data;
+  }
+  return self;
+}
+
+AstRef ast_make_parameter_abstract_declaration(AstRef declaration_specifier_list,
+    AstRef abstract_declarator) {
+  AstRef self = NULL;
+  if (ast_is_declaration_specifier_list(declaration_specifier_list) &&
+      ast_is_abstract_declarator(abstract_declarator)) {
+    AstParameterAbstractDeclarationRef data = ast_palloc(struct AstParameterAbstractDeclaration);
+    data->declaration_specifier_list = declaration_specifier_list;
+    data->abstract_declarator = abstract_declarator;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_PARAMETER_ABSTRACT_DECLARATION;
+    self->data.parameter_abstract_declaration = data;
   }
   return self;
 }
