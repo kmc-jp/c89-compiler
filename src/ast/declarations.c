@@ -186,6 +186,7 @@ struct AstNotPurePointerAbstractDeclarator {
 };
 
 struct AstDirectAbstractDeclarator {
+  AstRef direct_abstract_declarator;
 };
 
 struct AstArrayAbstractDeclarator {
@@ -802,6 +803,20 @@ AstRef ast_make_not_pure_pointer_abstract_declarator(AstRef pointer,
     self = ast_palloc(struct Ast);
     self->tag = AST_NOT_PURE_POINTER_ABSTRACT_DECLARATOR;
     self->data.not_pure_pointer_abstract_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_direct_abstract_declarator(AstRef direct_abstract_declarator) {
+  AstRef self = NULL;
+  if (ast_is_abstract_declarator(direct_abstract_declarator) ||
+      ast_is_array_abstract_declarator(direct_abstract_declarator) ||
+      ast_is_function_type_abstract_declarator(direct_abstract_declarator)) {
+    AstDirectAbstractDeclaratorRef data = ast_palloc(struct AstDirectAbstractDeclarator);
+    data->direct_abstract_declarator = direct_abstract_declarator;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_DIRECT_ABSTRACT_DECLARATOR;
+    self->data.direct_abstract_declarator = data;
   }
   return self;
 }
