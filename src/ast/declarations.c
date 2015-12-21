@@ -195,6 +195,8 @@ struct AstArrayAbstractDeclarator {
 };
 
 struct AstFunctionTypeAbstractDeclarator {
+  AstRef direct_abstract_declarator; /* NULLABLE */
+  AstRef parameter_type_list; /* NULLABLE */
 };
 
 struct AstTypedefName {
@@ -836,6 +838,23 @@ AstRef ast_make_array_abstract_declarator(AstRef direct_abstract_declarator,
     self = ast_palloc(struct Ast);
     self->tag = AST_ARRAY_ABSTRACT_DECLARATOR;
     self->data.array_abstract_declarator = data;
+  }
+  return self;
+}
+
+AstRef ast_make_function_type_abstract_declarator(AstRef direct_abstract_declarator,
+    AstRef parameter_type_list) {
+  AstRef self = NULL;
+  if ((direct_abstract_declarator == NULL ||
+       ast_is_direct_abstract_declarator(direct_abstract_declarator)) &&
+      (parameter_type_list == NULL ||
+       ast_is_parameter_type_list(parameter_type_list))) {
+    AstFunctionTypeAbstractDeclaratorRef data = ast_palloc(struct AstFunctionTypeAbstractDeclarator);
+    data->direct_abstract_declarator = direct_abstract_declarator;
+    data->parameter_type_list = parameter_type_list;
+    self = ast_palloc(struct Ast);
+    self->tag = AST_FUNCTION_TYPE_ABSTRACT_DECLARATOR;
+    self->data.function_type_abstract_declarator = data;
   }
   return self;
 }
