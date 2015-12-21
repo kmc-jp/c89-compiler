@@ -106,6 +106,7 @@ DEFINE_AST_GET_METHOD(parameter_abstract_declaration, ParameterAbstractDeclarati
 DEFINE_AST_GET_METHOD(identifier_list, IdentifierList)
 DEFINE_AST_GET_METHOD(type_name, TypeName)
 DEFINE_AST_GET_METHOD(abstract_declarator, AbstractDeclarator)
+DEFINE_AST_GET_METHOD(not_pure_pointer_abstract_declarator, NotPurePointerAbstractDeclarator)
 DEFINE_AST_GET_METHOD(direct_abstract_declarator, DirectAbstractDeclarator)
 DEFINE_AST_GET_METHOD(typedef_name, TypedefName)
 DEFINE_AST_GET_METHOD(initializer, Initializer)

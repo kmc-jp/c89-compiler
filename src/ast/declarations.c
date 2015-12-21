@@ -177,6 +177,12 @@ struct AstTypeName {
 };
 
 struct AstAbstractDeclarator {
+  AstRef abstract_declarator;
+};
+
+struct AstNotPurePointerAbstractDeclarator {
+  AstRef pointer;
+  AstRef direct_abstract_declarator;
 };
 
 struct AstDirectAbstractDeclarator {
