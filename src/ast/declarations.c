@@ -164,7 +164,7 @@ struct AstParameterDeclaration {
 
 struct AstParameterAbstractDeclaration {
   AstRef declaration_specifier_list;
-  AstRef abstract_declarator;
+  AstRef abstract_declarator; /* NULLABLE */
 };
 
 struct AstIdentifierList {
