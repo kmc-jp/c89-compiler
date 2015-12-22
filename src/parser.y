@@ -393,18 +393,22 @@ constant-expression
 ;
 
 declaration
-: declaration-specifiers init-declarator-list.opt ';'
+: declaration-specifier-list init-declarator-list.opt ';'
 ;
 
-declaration-specifiers.opt
+declaration-specifier-list.opt
 : /* empty */
-| declaration-specifiers
+| declaration-specifier-list
 ;
 
-declaration-specifiers
-: storage-class-specifier declaration-specifiers.opt
-| type-specifier declaration-specifiers.opt
-| type-qualifier declaration-specifiers.opt
+declaration-specifier-list
+: declaration-specifier declaration-specifier-list.opt
+;
+
+declaration-specifier
+: storage-class-specifier
+| type-specifier
+| type-qualifier
 ;
 
 init-declarator-list.opt
@@ -419,7 +423,11 @@ init-declarator-list
 
 init-declarator
 : declarator
-| declarator '=' initializer
+| declarator-with-initializer
+;
+
+declarator-with-initializer
+: declarator '=' initializer
 ;
 
 storage-class-specifier
@@ -557,8 +565,8 @@ parameter-list
 ;
 
 parameter-declaration
-: declaration-specifiers declarator
-| declaration-specifiers abstract-declarator.opt
+: declaration-specifier-list declarator
+| declaration-specifier-list abstract-declarator.opt
 ;
 
 identifier-list.opt
@@ -684,7 +692,7 @@ external-declaration
 ;
 
 function-definition
-: declaration-specifiers.opt declarator declaration-list.opt compound-statement
+: declaration-specifier-list.opt declarator declaration-list.opt compound-statement
 ;
 
 %%

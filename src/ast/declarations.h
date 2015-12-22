@@ -4,9 +4,11 @@
 #include "../ast.h"
 
 AstRef ast_make_declaration();
-AstRef ast_make_declaration_specifiers();
+AstRef ast_make_declaration_specifier_list();
+AstRef ast_make_declaration_specifier();
 AstRef ast_make_init_declarator_list();
 AstRef ast_make_init_declarator();
+AstRef ast_make_declarator_with_initializer();
 AstRef ast_make_storage_class_specifier();
 AstRef ast_make_type_specifier();
 AstRef ast_make_struct_or_union_specifier();
