@@ -1,6 +1,13 @@
 %code {
 #include <stdio.h>
 #include "ast_method.h"
+
+#define AST_ERROR(lhs, rhs) \
+  do { \
+    yyerror(lhs " : " rhs); \
+    YYERROR; \
+  } while (false)
+
 void yyerror(const char *);
 }
 
