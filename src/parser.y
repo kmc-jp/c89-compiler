@@ -1,5 +1,6 @@
 %code {
 #include <stdio.h>
+#include "ast_method.h"
 void yyerror(const char *);
 }
 
@@ -23,8 +24,12 @@ int yylex(void);
 %%
 
 identifier.opt
-: /* empty */
-| identifier
+: /* empty */ {
+  $$ = NULL;
+}
+| identifier {
+  $$ = $[identifier];
+}
 ;
 
 identifier
