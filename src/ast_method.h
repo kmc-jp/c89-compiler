@@ -11,6 +11,12 @@
 #include "ast/ast_string.h"
 #include "ast/ast_vector.h"
 
+#define AST_ERROR(lhs, rhs) \
+  do { \
+    yyerror(lhs " : " rhs); \
+    YYERROR; \
+  } while (false)
+
 void ast_initialize_pool(size_t size);
 void ast_finalize_pool(void);
 
