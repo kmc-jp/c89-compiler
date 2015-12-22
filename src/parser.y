@@ -36,8 +36,7 @@ identifier
 : IDENTIFIER {
   $$ = ast_make_identifier($[IDENTIFIER]);
   if (!$$) {
-    yyerror("identifier : IDENTIFIER");
-    YYERROR;
+    AST_ERROR("identifier", "IDENTIFIER");
   }
 }
 ;
@@ -46,29 +45,25 @@ constant
 : floating-constant {
   $$ = ast_make_constant($[floating-constant]);
   if (!$$) {
-    yyerror("constant : floating-constant");
-    YYERROR;
+    AST_ERROR("constant", "floating-constant");
   }
 }
 | integer-constant {
   $$ = ast_make_constant($[integer-constant]);
   if (!$$) {
-    yyerror("constant : integer-constant");
-    YYERROR;
+    AST_ERROR("constant", "integer-constant");
   }
 }
 | enumeration-constant {
   $$ = ast_make_constant($[enumeration-constant]);
   if (!$$) {
-    yyerror("constant : enumeration-constant");
-    YYERROR;
+    AST_ERROR("constant", "enumeration-constant");
   }
 }
 | character-constant {
   $$ = ast_make_constant($[character-constant]);
   if (!$$) {
-    yyerror("constant : character-constant");
-    YYERROR;
+    AST_ERROR("constant", "character-constant");
   }
 }
 ;
