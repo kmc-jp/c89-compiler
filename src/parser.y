@@ -393,18 +393,22 @@ constant-expression
 ;
 
 declaration
-: declaration-specifiers init-declarator-list.opt ';'
+: declaration-specifier-list init-declarator-list.opt ';'
 ;
 
-declaration-specifiers.opt
+declaration-specifier-list.opt
 : /* empty */
-| declaration-specifiers
+| declaration-specifier-list
 ;
 
-declaration-specifiers
-: storage-class-specifier declaration-specifiers.opt
-| type-specifier declaration-specifiers.opt
-| type-qualifier declaration-specifiers.opt
+declaration-specifier-list
+: declaration-specifier declaration-specifier-list.opt
+;
+
+declaration-specifier
+: storage-class-specifier
+| type-specifier
+| type-qualifier
 ;
 
 init-declarator-list.opt
@@ -419,7 +423,11 @@ init-declarator-list
 
 init-declarator
 : declarator
-| declarator '=' initializer
+| declarator-with-initializer
+;
+
+declarator-with-initializer
+: declarator '=' initializer
 ;
 
 storage-class-specifier
@@ -446,8 +454,16 @@ type-specifier
 ;
 
 struct-or-union-specifier
+: struct-or-union-definition
+| struct-or-union-declaration
+;
+
+struct-or-union-definition
 : struct-or-union identifier.opt '{' struct-declaration-list '}'
-| struct-or-union identifier
+;
+
+struct-or-union-declaration
+: struct-or-union identifier
 ;
 
 struct-or-union
@@ -470,8 +486,12 @@ specifier-qualifier-list.opt
 ;
 
 specifier-qualifier-list
-: type-specifier specifier-qualifier-list.opt
-| type-qualifier specifier-qualifier-list.opt
+: specifier-qualifier specifier-qualifier-list.opt
+;
+
+specifier-qualifier
+: type-specifier
+| type-qualifier
 ;
 
 struct-declarator-list
@@ -481,12 +501,24 @@ struct-declarator-list
 
 struct-declarator
 : declarator
-| declarator.opt ':' constant-expression
+| bit-field-declarator
+;
+
+bit-field-declarator
+: declarator.opt ':' constant-expression
 ;
 
 enum-specifier
+: enum-definition
+| enum-declaration
+;
+
+enum-definition
 : "enum" identifier.opt '{' enumerator-list '}'
-| "enum" identifier
+;
+
+enum-declaration
+: "enum" identifier
 ;
 
 enumerator-list
@@ -515,10 +547,22 @@ declarator
 
 direct-declarator
 : identifier
-| '{' declarator '}'
-| direct-declarator '[' constant-expression.opt ']'
-| direct-declarator '(' parameter-type-list ')'
-| direct-declarator '(' identifier-list.opt ')'
+| '(' declarator ')'
+| array-declarator
+| function-type-declarator
+| old-style-function-type-declarator
+;
+
+array-declarator
+: direct-declarator '[' constant-expression.opt ']'
+;
+
+function-type-declarator
+: direct-declarator '(' parameter-type-list ')'
+;
+
+old-style-function-type-declarator
+: direct-declarator '(' identifier-list.opt ')'
 ;
 
 pointer.opt
@@ -541,24 +585,27 @@ type-qualifier-list
 | type-qualifier-list type-qualifier
 ;
 
-parameter-type-list.opt
-: /* empty */
-| parameter-type-list
-;
-
 parameter-type-list
 : parameter-list
-| parameter-list ',' "..."
+| variadic-parameter-list
+;
+
+variadic-parameter-list
+: parameter-list ',' "..."
 ;
 
 parameter-list
 : parameter-declaration
 | parameter-list ',' parameter-declaration
+| parameter-list ',' parameter-abstract-declaration
 ;
 
 parameter-declaration
-: declaration-specifiers declarator
-| declaration-specifiers abstract-declarator.opt
+: declaration-specifier-list declarator
+;
+
+parameter-abstract-declaration
+: declaration-specifier-list abstract-declarator.opt
 ;
 
 identifier-list.opt
@@ -582,18 +629,25 @@ abstract-declarator.opt
 
 abstract-declarator
 : pointer
-| pointer.opt direct-abstract-declarator
+| not-pure-pointer-abstract-declarator
 ;
 
-direct-abstract-declarator.opt
-: /* empty */
-| direct-abstract-declarator
+not-pure-pointer-abstract-declarator
+: pointer.opt direct-abstract-declarator
 ;
 
 direct-abstract-declarator
 : '(' abstract-declarator ')'
-| direct-abstract-declarator.opt '[' constant-expression.opt ']'
-| direct-abstract-declarator.opt '(' parameter-type-list.opt ')'
+| array-abstract-declarator
+| function-type-abstract-declarator
+;
+
+array-abstract-declarator
+: direct-abstract-declarator '[' constant-expression.opt ']'
+;
+
+function-type-abstract-declarator
+: direct-abstract-declarator '(' parameter-type-list ')'
 ;
 
 typedef-name
@@ -684,7 +738,7 @@ external-declaration
 ;
 
 function-definition
-: declaration-specifiers.opt declarator declaration-list.opt compound-statement
+: declaration-specifier-list.opt declarator declaration-list.opt compound-statement
 ;
 
 %%
