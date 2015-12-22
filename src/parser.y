@@ -33,7 +33,9 @@ identifier.opt
 ;
 
 identifier
-: IDENTIFIER
+: IDENTIFIER {
+  $$ = ast_make_identifier($[IDENTIFIER]);
+}
 ;
 
 constant
