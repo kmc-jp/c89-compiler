@@ -39,10 +39,18 @@ identifier
 ;
 
 constant
-: floating-constant
-| integer-constant
-| enumeration-constant
-| character-constant
+: floating-constant {
+  $$ = ast_make_constant($[floating-constant]);
+}
+| integer-constant {
+  $$ = ast_make_constant($[integer-constant]);
+}
+| enumeration-constant {
+  $$ = ast_make_constant($[enumeration-constant]);
+}
+| character-constant {
+  $$ = ast_make_constant($[character-constant]);
+}
 ;
 
 floating-constant
