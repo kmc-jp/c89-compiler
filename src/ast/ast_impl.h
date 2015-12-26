@@ -133,6 +133,9 @@ struct Ast {
     AstInitializerListRef initializer_list;
     AstStatementRef statement;
     AstLabeledStatementRef labeled_statement;
+    AstIdentifierLabeledStatementRef identifier_labeled_statement;
+    AstCaseLabeledStatementRef case_labeled_statement;
+    AstDefaultLabeledStatementRef default_labeled_statement;
     AstCompoundStatementRef compound_statement;
     AstDeclarationListRef declaration_list;
     AstStatementListRef statement_list;
@@ -140,6 +143,11 @@ struct Ast {
     AstSelectionStatementRef selection_statement;
     AstIterationStatementRef iteration_statement;
     AstJumpStatementRef jump_statement;
+    AstGotoJumpStatementRef goto_jump_statement;
+    AstContinueJumpStatementRef continue_jump_statement;
+    AstReturnJumpStatementRef return_jump_statement;
+    AstVoidReturnJumpStatementRef void_return_jump_statement;
+    AstBreakJumpStatementRef break_jump_statement;
     AstTranslationUnitRef translation_unit;
     AstExternalDeclarationRef external_declaration;
     AstFunctionDefinitionRef function_definition;

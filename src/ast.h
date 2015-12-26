@@ -127,6 +127,9 @@ enum AstTag {
   AST_INITIALIZER_LIST,
   AST_STATEMENT,
   AST_LABELED_STATEMENT,
+  AST_IDENTIFIER_LABELED_STATEMENT,
+  AST_CASE_LABELED_STATEMENT,
+  AST_DEFAULT_LABELED_STATEMENT,
   AST_COMPOUND_STATEMENT,
   AST_DECLARATION_LIST,
   AST_STATEMENT_LIST,
@@ -134,6 +137,11 @@ enum AstTag {
   AST_SELECTION_STATEMENT,
   AST_ITERATION_STATEMENT,
   AST_JUMP_STATEMENT,
+  AST_GOTO_JUMP_STATEMENT,
+  AST_CONTINUE_JUMP_STATEMENT,
+  AST_BREAK_JUMP_STATEMENT,
+  AST_RETURN_JUMP_STATEMENT,
+  AST_VOID_RETURN_JUMP_STATEMENT,
   AST_TRANSLATION_UNIT,
   AST_EXTERNAL_DECLARATION,
   AST_FUNCTION_DEFINITION,
@@ -271,6 +279,9 @@ typedef struct AstInitializer* AstInitializerRef;
 typedef struct AstInitializerList* AstInitializerListRef;
 typedef struct AstStatement* AstStatementRef;
 typedef struct AstLabeledStatement* AstLabeledStatementRef;
+typedef struct AstIdentifierLabeledStatement* AstIdentifierLabeledStatementRef;
+typedef struct AstCaseLabeledStatement* AstCaseLabeledStatementRef;
+typedef struct AstDefaultLabeledStatement* AstDefaultLabeledStatementRef;
 typedef struct AstCompoundStatement* AstCompoundStatementRef;
 typedef struct AstDeclarationList* AstDeclarationListRef;
 typedef struct AstStatementList* AstStatementListRef;
@@ -278,6 +289,11 @@ typedef struct AstExpressionStatement* AstExpressionStatementRef;
 typedef struct AstSelectionStatement* AstSelectionStatementRef;
 typedef struct AstIterationStatement* AstIterationStatementRef;
 typedef struct AstJumpStatement* AstJumpStatementRef;
+typedef struct AstGotoJumpStatement* AstGotoJumpStatementRef;
+typedef struct AstContinueJumpStatement* AstContinueJumpStatementRef;
+typedef struct AstBreakJumpStatement* AstBreakJumpStatementRef;
+typedef struct AstReturnJumpStatement* AstReturnJumpStatementRef;
+typedef struct AstVoidReturnJumpStatement* AstVoidReturnJumpStatementRef;
 typedef struct AstTranslationUnit* AstTranslationUnitRef;
 typedef struct AstExternalDeclaration* AstExternalDeclarationRef;
 typedef struct AstFunctionDefinition* AstFunctionDefinitionRef;
