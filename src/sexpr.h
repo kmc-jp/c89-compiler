@@ -1,10 +1,11 @@
 #ifndef KMC_C90_COMPILER_SEXPR_H
 #define KMC_C90_COMPILER_SEXPR_H
 
+#include "ast.h"
 #include "utility.h"
 
 enum SexprTag {
-  SEXPR_CONS, SEXPR_INTEGER, SEXPR_SYMBOL
+  SEXPR_CONS, SEXPR_INTEGER, SEXPR_SYMBOL, SEXPR_AST
 };
 
 struct Sexpr;
@@ -16,6 +17,7 @@ struct ConsData {
 
 typedef long long IntegerData;
 typedef StringRef SymbolData;
+typedef AstTag AstData;
 
 struct Sexpr {
   enum SexprTag tag;
@@ -23,6 +25,7 @@ struct Sexpr {
     struct ConsData cons;  /* SEXPR_CONS */
     IntegerData integer;   /* SEXPR_INTEGER */
     SymbolData symbol;     /* SEXPR_SYMBOL */
+    AstData ast;           /* SEXPR_AST */
   } data;
 };
 
