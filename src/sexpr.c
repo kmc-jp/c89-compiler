@@ -30,3 +30,15 @@ struct Sexpr* cdr(struct Sexpr* sexpr) {
   assert(!is_atom(sexpr));
   return sexpr->data.cdr;
 }
+
+struct Sexpr* make_integer(IntegerData integer) {
+  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+  result->tag = SEXPR_INTEGER;
+  result->data.integer = integer;
+  return result;
+}
+
+IntegerData get_integer(struct Sexpr* sexpr) {
+  assert(is_integer(sexpr));
+  return sexpr->data.integer;
+}
