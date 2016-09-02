@@ -55,6 +55,13 @@ IntegerData get_integer(SexprRef sexpr) {
   return sexpr->data.integer;
 }
 
+SexprRef make_string(StringData string) {
+  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
+  result->tag = SEXPR_STRING;
+  result->data.string = string;
+  return result;
+}
+
 SexprRef make_symbol(SymbolData symbol) {
   SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_SYMBOL;
