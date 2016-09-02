@@ -5,6 +5,7 @@
 #include "utility.h"
 
 struct Sexpr;
+typedef struct Sexpr* SexprRef;
 typedef long long IntegerData;
 typedef StringRef SymbolData;
 typedef AstTag AstData;
@@ -14,8 +15,8 @@ enum SexprTag {
 };
 
 struct ConsData {
-  struct Sexpr* car;
-  struct Sexpr* cdr;
+  SexprRef car;
+  SexprRef cdr;
 };
 
 struct Sexpr {
@@ -28,19 +29,19 @@ struct Sexpr {
   } data;
 };
 
-bool is_nil(struct Sexpr* sexpr);
-bool is_atom(struct Sexpr* sexpr);
-bool is_integer(struct Sexpr* sexpr);
-bool is_symbol(struct Sexpr* sexpr);
-bool is_ast(struct Sexpr* sexpr);
-struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr);
-struct Sexpr* car(struct Sexpr* sexpr);
-struct Sexpr* cdr(struct Sexpr* sexpr);
-struct Sexpr* make_integer(IntegerData integer);
-IntegerData get_integer(struct Sexpr* sexpr);
-struct Sexpr* make_symbol(SymbolData symbol);
-SymbolData get_symbol(struct Sexpr* sexpr);
-struct Sexpr* make_ast(AstData ast);
-AstData get_ast(struct Sexpr* sexpr);
+bool is_nil(SexprRef sexpr);
+bool is_atom(SexprRef sexpr);
+bool is_integer(SexprRef sexpr);
+bool is_symbol(SexprRef sexpr);
+bool is_ast(SexprRef sexpr);
+SexprRef cons(SexprRef car, SexprRef cdr);
+SexprRef car(SexprRef sexpr);
+SexprRef cdr(SexprRef sexpr);
+SexprRef make_integer(IntegerData integer);
+IntegerData get_integer(SexprRef sexpr);
+SexprRef make_symbol(SymbolData symbol);
+SymbolData get_symbol(SexprRef sexpr);
+SexprRef make_ast(AstData ast);
+AstData get_ast(SexprRef sexpr);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */

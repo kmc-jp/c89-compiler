@@ -1,76 +1,76 @@
 #include "sexpr.h"
 #include "sexpr_pool.h"
 
-bool is_nil(struct Sexpr* sexpr) {
+bool is_nil(SexprRef sexpr) {
   return sexpr == NULL;
 }
 
-bool is_atom(struct Sexpr* sexpr) {
+bool is_atom(SexprRef sexpr) {
   return is_nil(sexpr) || sexpr->tag != SEXPR_CONS;
 }
 
-bool is_integer(struct Sexpr* sexpr) {
+bool is_integer(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_INTEGER;
 }
 
-bool is_symbol(struct Sexpr* sexpr) {
+bool is_symbol(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_SYMBOL;
 }
 
-bool is_ast(struct Sexpr* sexpr) {
+bool is_ast(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_AST;
 }
 
-struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
-  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+SexprRef cons(SexprRef car, SexprRef cdr) {
+  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_CONS;
   result->data.cons.car = car;
   result->data.cons.cdr = cdr;
   return result;
 }
 
-struct Sexpr* car(struct Sexpr* sexpr) {
+SexprRef car(SexprRef sexpr) {
   assert(!is_atom(sexpr));
   return sexpr->data.car;
 }
 
-struct Sexpr* cdr(struct Sexpr* sexpr) {
+SexprRef cdr(SexprRef sexpr) {
   assert(!is_atom(sexpr));
   return sexpr->data.cdr;
 }
 
-struct Sexpr* make_integer(IntegerData integer) {
-  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+SexprRef make_integer(IntegerData integer) {
+  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_INTEGER;
   result->data.integer = integer;
   return result;
 }
 
-IntegerData get_integer(struct Sexpr* sexpr) {
+IntegerData get_integer(SexprRef sexpr) {
   assert(is_integer(sexpr));
   return sexpr->data.integer;
 }
 
-struct Sexpr* make_symbol(SymbolData symbol) {
-  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+SexprRef make_symbol(SymbolData symbol) {
+  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_SYMBOL;
   result->data.symbol = symbol;
   return result;
 }
 
-StringRef get_symbol(struct Sexpr* sexpr) {
+StringRef get_symbol(SexprRef sexpr) {
   assert(is_symbol(sexpr));
   return sexpr->data.symbol;
 }
 
-struct Sexpr* make_ast(AstData ast) {
-  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+SexprRef make_ast(AstData ast) {
+  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_AST;
   result->data.ast = ast;
   return result;
 }
 
-AstData get_ast(struct Sexpr* sexpr) {
+AstData get_ast(SexprRef sexpr) {
   assert(is_ast(sexpr));
   return sexpr->data.ast;
 }
