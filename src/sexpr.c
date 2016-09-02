@@ -46,3 +46,10 @@ IntegerData get_integer(struct Sexpr* sexpr) {
   assert(is_integer(sexpr));
   return sexpr->data.integer;
 }
+
+struct Sexpr* make_symbol(SymbolData symbol) {
+  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+  result->tag = SEXPR_SYMBOL;
+  result->data.symbol = symbol;
+  return result;
+}

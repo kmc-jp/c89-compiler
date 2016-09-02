@@ -35,5 +35,6 @@ struct Sexpr* car(struct Sexpr* sexpr);
 struct Sexpr* cdr(struct Sexpr* sexpr);
 struct Sexpr* make_integer(IntegerData integer);
 IntegerData get_integer(struct Sexpr* sexpr);
+struct Sexpr* make_symbol(SymbolData symbol);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */
