@@ -53,3 +53,8 @@ struct Sexpr* make_symbol(SymbolData symbol) {
   result->data.symbol = symbol;
   return result;
 }
+
+StringRef get_symbol(struct Sexpr* sexpr) {
+  assert(is_symbol(sexpr));
+  return sexpr->data.symbol;
+}
