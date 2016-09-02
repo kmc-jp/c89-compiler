@@ -27,5 +27,7 @@ struct Sexpr {
 bool is_nil(struct Sexpr* sexpr);
 bool is_cons(struct Sexpr* sexpr);
 struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr);
+struct Sexpr* car(struct Sexpr* sexpr);
+struct Sexpr* cdr(struct Sexpr* sexpr);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */

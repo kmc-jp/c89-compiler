@@ -20,3 +20,13 @@ struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
   result->data.cons.cdr = cdr;
   return result;
 }
+
+struct Sexpr* car(struct Sexpr* sexpr) {
+  assert(is_cons(sexpr));
+  return sexpr->data.car;
+}
+
+struct Sexpr* cdr(struct Sexpr* sexpr) {
+  assert(is_cons(sexpr));
+  return sexpr->data.cdr;
+}
