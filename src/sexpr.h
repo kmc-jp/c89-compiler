@@ -41,5 +41,6 @@ struct Sexpr* make_integer(IntegerData integer);
 IntegerData get_integer(struct Sexpr* sexpr);
 struct Sexpr* make_symbol(SymbolData symbol);
 SymbolData get_symbol(struct Sexpr* sexpr);
+struct Sexpr* make_ast(AstData ast);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */

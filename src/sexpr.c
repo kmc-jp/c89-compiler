@@ -62,3 +62,10 @@ StringRef get_symbol(struct Sexpr* sexpr) {
   assert(is_symbol(sexpr));
   return sexpr->data.symbol;
 }
+
+struct Sexpr* make_ast(AstData ast) {
+  struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
+  result->tag = SEXPR_AST;
+  result->data.ast = ast;
+  return result;
+}
