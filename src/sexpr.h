@@ -19,8 +19,8 @@ typedef long long IntegerData;
 struct Sexpr {
   enum SexprTag tag;
   union Data {
-    struct ConsData cons;
-    IntegerData integer;
+    struct ConsData cons;  /* SEXPR_CONS */
+    IntegerData integer;   /* SEXPR_INTEGER */
   } data;
 };
 
