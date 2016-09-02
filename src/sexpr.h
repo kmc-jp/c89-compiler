@@ -7,11 +7,12 @@
 struct Sexpr;
 typedef struct Sexpr* SexprRef;
 typedef long long IntegerData;
+typedef StringRef StringData;
 typedef StringRef SymbolData;
 typedef AstTag AstData;
 
 enum SexprTag {
-  SEXPR_CONS, SEXPR_INTEGER, SEXPR_SYMBOL, SEXPR_AST
+  SEXPR_CONS, SEXPR_INTEGER, SEXPR_STRING, SEXPR_SYMBOL, SEXPR_AST
 };
 
 struct ConsData {
@@ -24,6 +25,7 @@ struct Sexpr {
   union Data {
     struct ConsData cons;  /* SEXPR_CONS */
     IntegerData integer;   /* SEXPR_INTEGER */
+    StringData string;     /* SEXPR_STRING */
     SymbolData symbol;     /* SEXPR_SYMBOL */
     AstData ast;           /* SEXPR_AST */
   } data;
