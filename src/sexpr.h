@@ -29,6 +29,7 @@ struct Sexpr {
 bool is_nil(struct Sexpr* sexpr);
 bool is_atom(struct Sexpr* sexpr);
 bool is_integer(struct Sexpr* sexpr);
+bool is_symbol(struct Sexpr* sexpr);
 struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr);
 struct Sexpr* car(struct Sexpr* sexpr);
 struct Sexpr* cdr(struct Sexpr* sexpr);
