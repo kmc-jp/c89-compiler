@@ -4,7 +4,7 @@
 #include "utility.h"
 
 enum SexprTag {
-  SEXPR_CONS, SEXPR_INTEGER
+  SEXPR_CONS, SEXPR_INTEGER, SEXPR_SYMBOL
 };
 
 struct Sexpr;
@@ -15,12 +15,14 @@ struct ConsData {
 };
 
 typedef long long IntegerData;
+typedef StringRef SymbolData;
 
 struct Sexpr {
   enum SexprTag tag;
   union Data {
     struct ConsData cons;  /* SEXPR_CONS */
     IntegerData integer;   /* SEXPR_INTEGER */
+    SymbolData symbol;     /* SEXPR_SYMBOL */
   } data;
 };
 
