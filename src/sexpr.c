@@ -5,12 +5,8 @@ bool is_nil(struct Sexpr* sexpr) {
   return sexpr == NULL;
 }
 
-bool is_cons(struct Sexpr* sexpr) {
-  if (is_nil(sexpr)) {
-    return false;
-  } else {
-    return sexpr->tag == SEXPR_CONS;
-  }
+bool is_atom(struct Sexpr* sexpr) {
+  return is_nil(sexpr) || sexpr->tag != SEXPR_CONS;
 }
 
 struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
@@ -22,11 +18,11 @@ struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
 }
 
 struct Sexpr* car(struct Sexpr* sexpr) {
-  assert(is_cons(sexpr));
+  assert(!is_atom(sexpr));
   return sexpr->data.car;
 }
 
 struct Sexpr* cdr(struct Sexpr* sexpr) {
-  assert(is_cons(sexpr));
+  assert(!is_atom(sexpr));
   return sexpr->data.cdr;
 }
