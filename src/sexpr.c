@@ -69,3 +69,8 @@ struct Sexpr* make_ast(AstData ast) {
   result->data.ast = ast;
   return result;
 }
+
+AstData get_ast(struct Sexpr* sexpr) {
+  assert(is_ast(sexpr));
+  return sexpr->data.ast;
+}
