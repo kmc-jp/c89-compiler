@@ -34,6 +34,7 @@ struct Sexpr {
 bool is_nil(SexprRef sexpr);
 bool is_atom(SexprRef sexpr);
 bool is_integer(SexprRef sexpr);
+bool is_string(SexprRef sexpr);
 bool is_symbol(SexprRef sexpr);
 bool is_ast(SexprRef sexpr);
 SexprRef cons(SexprRef car, SexprRef cdr);

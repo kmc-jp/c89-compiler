@@ -13,6 +13,10 @@ bool is_integer(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_INTEGER;
 }
 
+bool is_string(SexprRef sexpr) {
+  return !is_nil(sexpr) && sexpr->tag == SEXPR_STRING;
+}
+
 bool is_symbol(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_SYMBOL;
 }
