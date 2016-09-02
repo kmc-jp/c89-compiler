@@ -62,6 +62,11 @@ SexprRef make_string(StringData string) {
   return result;
 }
 
+StringData get_string(SexprRef sexpr) {
+  assert(is_string(sexpr));
+  return sexpr->data.string;
+}
+
 SexprRef make_symbol(SymbolData symbol) {
   SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_SYMBOL;

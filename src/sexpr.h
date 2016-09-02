@@ -43,6 +43,7 @@ SexprRef cdr(SexprRef sexpr);
 SexprRef make_integer(IntegerData integer);
 IntegerData get_integer(SexprRef sexpr);
 SexprRef make_string(StringData string);
+StringData get_string(SexprRef sexpr);
 SexprRef make_symbol(SymbolData symbol);
 SymbolData get_symbol(SexprRef sexpr);
 SexprRef make_ast(AstData ast);
