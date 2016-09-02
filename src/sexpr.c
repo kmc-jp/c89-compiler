@@ -9,6 +9,10 @@ bool is_atom(struct Sexpr* sexpr) {
   return is_nil(sexpr) || sexpr->tag != SEXPR_CONS;
 }
 
+bool is_integer(struct Sexpr* sexpr) {
+  return !is_nil(sexpr) && sexpr->tag == SEXPR_INTEGER;
+}
+
 struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
   struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_CONS;
