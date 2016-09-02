@@ -4,20 +4,19 @@
 #include "ast.h"
 #include "utility.h"
 
+struct Sexpr;
+typedef long long IntegerData;
+typedef StringRef SymbolData;
+typedef AstTag AstData;
+
 enum SexprTag {
   SEXPR_CONS, SEXPR_INTEGER, SEXPR_SYMBOL, SEXPR_AST
 };
-
-struct Sexpr;
 
 struct ConsData {
   struct Sexpr* car;
   struct Sexpr* cdr;
 };
-
-typedef long long IntegerData;
-typedef StringRef SymbolData;
-typedef AstTag AstData;
 
 struct Sexpr {
   enum SexprTag tag;
