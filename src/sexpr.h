@@ -22,4 +22,6 @@ struct Sexpr {
   } data;
 };
 
+struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr);
+
 #endif  /* KMC_C90_COMPILER_SEXPR_H */
