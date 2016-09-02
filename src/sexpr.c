@@ -17,6 +17,10 @@ bool is_symbol(struct Sexpr* sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_SYMBOL;
 }
 
+bool is_ast(struct Sexpr* sexpr) {
+  return !is_nil(sexpr) && sexpr->tag == SEXPR_AST;
+}
+
 struct Sexpr* cons(struct Sexpr* car, struct Sexpr* cdr) {
   struct Sexpr* result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_CONS;
