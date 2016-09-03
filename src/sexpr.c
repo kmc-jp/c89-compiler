@@ -33,12 +33,12 @@ SexprRef cons(SexprRef car, SexprRef cdr) {
 
 SexprRef car(SexprRef sexpr) {
   assert(!sexpr_is_atom(sexpr));
-  return sexpr->data.car;
+  return sexpr->data.cons.car;
 }
 
 SexprRef cdr(SexprRef sexpr) {
   assert(!sexpr_is_atom(sexpr));
-  return sexpr->data.cdr;
+  return sexpr->data.cons.cdr;
 }
 
 SexprRef sexpr_new_symbol(const char* src, size_t length) {
