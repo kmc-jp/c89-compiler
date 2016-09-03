@@ -1,6 +1,10 @@
 #include "sexpr.h"
 #include "sexpr_pool.h"
 
+static SexprRef new_sexpr(void) {
+  return palloc(struct Sexpr, sexpr_pool(), 1);
+}
+
 bool is_nil(SexprRef sexpr) {
   return sexpr == NULL;
 }
@@ -18,7 +22,7 @@ bool is_ast(SexprRef sexpr) {
 }
 
 SexprRef cons(SexprRef car, SexprRef cdr) {
-  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
+  SexprRef result = new_sexpr();
   result->tag = SEXPR_CONS;
   result->data.cons.car = car;
   result->data.cons.cdr = cdr;
@@ -42,7 +46,7 @@ SexprRef new_symbol(const char* src, size_t length) {
 }
 
 SexprRef make_symbol(SymbolData symbol) {
-  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
+  SexprRef result = new_sexpr();
   result->tag = SEXPR_SYMBOL;
   result->data.symbol = symbol;
   return result;
@@ -54,7 +58,7 @@ StringRef get_symbol(SexprRef sexpr) {
 }
 
 SexprRef make_ast(AstData ast) {
-  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
+  SexprRef result = new_sexpr();
   result->tag = SEXPR_AST;
   result->data.ast = ast;
   return result;
