@@ -70,3 +70,30 @@ AstData sexpr_get_ast(SexprRef sexpr) {
   assert(sexpr_is_ast(sexpr));
   return sexpr->data.ast;
 }
+
+static void repeat_print(FILE* stream, const char* str, int repeat) {
+  int i = 0;
+  for (; i < repeat; ++i) {
+    fprintf(stream, "%s", str);
+  }
+}
+static void sexpr_print_impl(FILE* stream, SexprRef sexpr, int depth) {
+  if (sexpr_is_atom(sexpr)) {
+    if (sexpr_is_symbol(sexpr)) {
+      SymbolData symbol = sexpr_get_symbol(sexpr);
+      fprintf(stream, "%s", string_data(symbol));
+    }
+  } else {
+    repeat_print(stream, " ", depth);
+    fprintf(stream, "(");
+    sexpr_print_impl(stream, car(sexpr), depth + 1);
+    fprintf(stream, "\n");
+    sexpr_print_impl(stream, cdr(sexpr), depth + 1);
+    fprintf(stream, ")");
+  }
+}
+
+void sexpr_print(FILE* stream, SexprRef sexpr) {
+  sexpr_print_impl(stream, sexpr, 0);
+  fprintf(stream, "\n");
+}

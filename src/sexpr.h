@@ -1,6 +1,7 @@
 #ifndef KMC_C90_COMPILER_SEXPR_H
 #define KMC_C90_COMPILER_SEXPR_H
 
+#include <stdio.h>
 #include "ast.h"
 #include "memory_pool.h"
 #include "stdstring.h"
@@ -41,5 +42,7 @@ SexprRef sexpr_make_symbol(SymbolData symbol);
 SymbolData sexpr_get_symbol(SexprRef sexpr);
 SexprRef sexpr_make_ast(AstData ast);
 AstData sexpr_get_ast(SexprRef sexpr);
+
+void sexpr_print(FILE* stream, SexprRef sexpr);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */
