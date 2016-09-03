@@ -44,6 +44,7 @@ SexprRef make_integer(IntegerData integer);
 IntegerData get_integer(SexprRef sexpr);
 SexprRef make_string(StringData string);
 StringData get_string(SexprRef sexpr);
+SexprRef new_symbol(const char* src, size_t length);
 SexprRef make_symbol(SymbolData symbol);
 SymbolData get_symbol(SexprRef sexpr);
 SexprRef make_ast(AstData ast);

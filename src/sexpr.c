@@ -67,6 +67,12 @@ StringData get_string(SexprRef sexpr) {
   return sexpr->data.string;
 }
 
+SexprRef new_symbol(const char* src, size_t length) {
+  AllocatorRef allocator = string_pool_allocator(sexpr_pool());
+  StringRef symbol = make_string(src, length, allocator);
+  return make_symbol(symbol);
+}
+
 SexprRef make_symbol(SymbolData symbol) {
   SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
   result->tag = SEXPR_SYMBOL;
