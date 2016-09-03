@@ -27,17 +27,17 @@ struct Sexpr {
   } data;
 };
 
-bool is_nil(SexprRef sexpr);
-bool is_atom(SexprRef sexpr);
-bool is_symbol(SexprRef sexpr);
-bool is_ast(SexprRef sexpr);
+bool sexpr_is_nil(SexprRef sexpr);
+bool sexpr_is_atom(SexprRef sexpr);
+bool sexpr_is_symbol(SexprRef sexpr);
+bool sexpr_is_ast(SexprRef sexpr);
 SexprRef cons(SexprRef car, SexprRef cdr);
 SexprRef car(SexprRef sexpr);
 SexprRef cdr(SexprRef sexpr);
-SexprRef new_symbol(const char* src, size_t length);
-SexprRef make_symbol(SymbolData symbol);
-SymbolData get_symbol(SexprRef sexpr);
-SexprRef make_ast(AstData ast);
-AstData get_ast(SexprRef sexpr);
+SexprRef sexpr_new_symbol(const char* src, size_t length);
+SexprRef sexpr_make_symbol(SymbolData symbol);
+SymbolData sexpr_get_symbol(SexprRef sexpr);
+SexprRef sexpr_make_ast(AstData ast);
+AstData sexpr_get_ast(SexprRef sexpr);
 
 #endif  /* KMC_C90_COMPILER_SEXPR_H */
