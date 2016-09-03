@@ -2,6 +2,7 @@
 #define KMC_C90_COMPILER_STDSTRING_H
 
 #include "allocator.h"
+#include "memory_pool.h"
 #include "utility.h"
 
 typedef struct String* StringRef;
@@ -11,6 +12,7 @@ typedef struct String* StringRef;
 extern const size_t string_npos;
 
 AllocatorRef string_default_allocator(void);
+AllocatorRef string_pool_allocator(MemoryPoolRef pool);
 
 /* string generator */
 /* behavior is undefined if src is NULL */

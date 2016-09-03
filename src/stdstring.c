@@ -40,6 +40,16 @@ static void pool_deallocate(void* ptr, void* manager) {
   UNUSED(manager);
 }
 
+AllocatorRef string_pool_allocator(MemoryPoolRef pool) {
+  static const struct Allocator allocator = {
+    pool,
+    pool_allocate_container,
+    pool_allocate_element,
+    pool_deallocate
+  };
+  return &allocator;
+}
+
 /* private functions for implementations follow */
 static StringRef string_container_alloc(AllocatorRef allocator) {
   const StringRef self = allocate_container(allocator);
