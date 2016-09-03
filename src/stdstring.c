@@ -27,29 +27,6 @@ AllocatorRef string_default_allocator(void) {
   return &allocator;
 }
 
-static void* pool_allocate_container(void* manager) {
-  MemoryPoolRef pool = manager;
-  return palloc(struct String, pool, 1);
-}
-static void* pool_allocate_element(size_t count, void* manager) {
-  MemoryPoolRef pool = manager;
-  return palloc(char, pool, count);
-}
-static void pool_deallocate(void* ptr, void* manager) {
-  UNUSED(ptr);
-  UNUSED(manager);
-}
-
-AllocatorRef string_pool_allocator(MemoryPoolRef pool) {
-  static const struct Allocator allocator = {
-    pool,
-    pool_allocate_container,
-    pool_allocate_element,
-    pool_deallocate
-  };
-  return &allocator;
-}
-
 /* private functions for implementations follow */
 static StringRef string_container_alloc(AllocatorRef allocator) {
   const StringRef self = allocate_container(allocator);
