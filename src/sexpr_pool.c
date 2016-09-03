@@ -1,9 +1,22 @@
 #include "sexpr_pool.h"
 #include <assert.h>
-#include "memory_pool.h"
+#include "stdstring_impl.h"
 
 static const size_t SEXPR_POOL_CHUNK_SIZE = 1024;
 static MemoryPoolRef g_sexpr_pool = NULL;
+
+static void* sexpr_symbol_allocate_container(void* manager) {
+  MemoryPoolRef pool = manager;
+  return palloc(struct String, pool, 1);
+}
+static void* sexpr_symbol_allocate_element(size_t count, void* manager) {
+  MemoryPoolRef pool = manager;
+  return palloc(char, pool, count);
+}
+static void sexpr_symbol_deallocate(void* ptr, void* manager) {
+  UNUSED(ptr);
+  UNUSED(manager);
+}
 
 MemoryPoolRef sexpr_pool(void) {
   assert(g_sexpr_pool);
