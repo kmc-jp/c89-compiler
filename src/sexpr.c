@@ -9,10 +9,6 @@ bool is_atom(SexprRef sexpr) {
   return is_nil(sexpr) || sexpr->tag != SEXPR_CONS;
 }
 
-bool is_string(SexprRef sexpr) {
-  return !is_nil(sexpr) && sexpr->tag == SEXPR_STRING;
-}
-
 bool is_symbol(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_SYMBOL;
 }
@@ -37,18 +33,6 @@ SexprRef car(SexprRef sexpr) {
 SexprRef cdr(SexprRef sexpr) {
   assert(!is_atom(sexpr));
   return sexpr->data.cdr;
-}
-
-SexprRef make_string(StringData string) {
-  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
-  result->tag = SEXPR_STRING;
-  result->data.string = string;
-  return result;
-}
-
-StringData get_string(SexprRef sexpr) {
-  assert(is_string(sexpr));
-  return sexpr->data.string;
 }
 
 SexprRef new_symbol(const char* src, size_t length) {

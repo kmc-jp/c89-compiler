@@ -6,12 +6,11 @@
 
 struct Sexpr;
 typedef struct Sexpr* SexprRef;
-typedef StringRef StringData;
 typedef StringRef SymbolData;
 typedef AstTag AstData;
 
 enum SexprTag {
-  SEXPR_CONS, SEXPR_STRING, SEXPR_SYMBOL, SEXPR_AST
+  SEXPR_CONS, SEXPR_SYMBOL, SEXPR_AST
 };
 
 struct ConsData {
@@ -23,7 +22,6 @@ struct Sexpr {
   enum SexprTag tag;
   union Data {
     struct ConsData cons;  /* SEXPR_CONS */
-    StringData string;     /* SEXPR_STRING */
     SymbolData symbol;     /* SEXPR_SYMBOL */
     AstData ast;           /* SEXPR_AST */
   } data;
@@ -31,14 +29,11 @@ struct Sexpr {
 
 bool is_nil(SexprRef sexpr);
 bool is_atom(SexprRef sexpr);
-bool is_string(SexprRef sexpr);
 bool is_symbol(SexprRef sexpr);
 bool is_ast(SexprRef sexpr);
 SexprRef cons(SexprRef car, SexprRef cdr);
 SexprRef car(SexprRef sexpr);
 SexprRef cdr(SexprRef sexpr);
-SexprRef make_string(StringData string);
-StringData get_string(SexprRef sexpr);
 SexprRef new_symbol(const char* src, size_t length);
 SexprRef make_symbol(SymbolData symbol);
 SymbolData get_symbol(SexprRef sexpr);
