@@ -38,8 +38,9 @@ WHITESPACE [ \t\n]
 }
 
 <STRING>"\"" {
-  const size_t leng = string_length(lexer_string_literal);
-  yylval = ast_make_token(string_data(lexer_string_literal), leng);
+  const char* const data = string_data(lexer_string_literal);
+  const size_t length = string_length(lexer_string_literal);
+  yylval = sexpr_new_symbol(data, length);
   string_dtor(&lexer_string_literal);
   BEGIN(INITIAL);
   return STRING_LITERAL;
@@ -53,19 +54,19 @@ WHITESPACE [ \t\n]
 }
 
 ("'"{C_CHAR}*"'"|"L'"{C_CHAR}*"'") {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return CHARACTER_CONSTANT;
 }
 
 WHITESPACE ;
 
 [0-9]*"."[0-9]*([Ee][+-]?{DIGIT10})?[FfLl]? {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return FLOATING_CONSTANT;
 }
 
 ({DIGIT8}|{DIGIT10}|{DIGIT16})({INTEGER_SUFFIX})? {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return INTEGER_CONSTANT;
 }
 
@@ -146,7 +147,7 @@ WHITESPACE ;
 "while"    return WHILE;
 
 {IDENTIFIER} {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return IDENTIFIER;
 }
 
