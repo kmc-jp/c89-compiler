@@ -9,10 +9,6 @@ bool is_atom(SexprRef sexpr) {
   return is_nil(sexpr) || sexpr->tag != SEXPR_CONS;
 }
 
-bool is_integer(SexprRef sexpr) {
-  return !is_nil(sexpr) && sexpr->tag == SEXPR_INTEGER;
-}
-
 bool is_string(SexprRef sexpr) {
   return !is_nil(sexpr) && sexpr->tag == SEXPR_STRING;
 }
@@ -41,18 +37,6 @@ SexprRef car(SexprRef sexpr) {
 SexprRef cdr(SexprRef sexpr) {
   assert(!is_atom(sexpr));
   return sexpr->data.cdr;
-}
-
-SexprRef make_integer(IntegerData integer) {
-  SexprRef result = palloc(struct Sexpr, sexpr_pool(), 1);
-  result->tag = SEXPR_INTEGER;
-  result->data.integer = integer;
-  return result;
-}
-
-IntegerData get_integer(SexprRef sexpr) {
-  assert(is_integer(sexpr));
-  return sexpr->data.integer;
 }
 
 SexprRef make_string(StringData string) {
