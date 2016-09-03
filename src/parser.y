@@ -1,6 +1,5 @@
 %code {
 #include <stdio.h>
-#include "ast_method.h"
 #include "utility.h"
 
 #define AST_ERROR(lhs, rhs) \
@@ -19,8 +18,8 @@ void set_yyin_string(const char *code);
 }
 
 %code requires {
-#include "ast.h"
-#define YYSTYPE AstRef
+#include "sexpr.h"
+#define YYSTYPE SexprRef
 }
 
 %token IDENTIFIER
