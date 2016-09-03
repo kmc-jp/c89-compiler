@@ -1,5 +1,6 @@
 #include "sexpr_pool.h"
 #include <assert.h>
+#include "allocator_impl.h"
 #include "stdstring_impl.h"
 
 static const size_t SEXPR_POOL_CHUNK_SIZE = 1024;
@@ -18,6 +19,13 @@ static void sexpr_symbol_deallocate(void* ptr, void* manager) {
   UNUSED(manager);
 }
 
+static struct Allocator g_sexpr_symbol_allocator = {
+  NULL,
+  sexpr_symbol_allocate_container,
+  sexpr_symbol_allocate_element,
+  sexpr_symbol_deallocate
+};
+
 MemoryPoolRef sexpr_pool(void) {
   assert(g_sexpr_pool);
   return g_sexpr_pool;
@@ -26,8 +34,14 @@ MemoryPoolRef sexpr_pool(void) {
 void sexpr_initialize_pool(void) {
   assert(!g_sexpr_pool);
   g_sexpr_pool = memory_pool_ctor(SEXPR_POOL_CHUNK_SIZE);
+  g_sexpr_symbol_allocator.manager_ = g_sexpr_pool;
 }
 
 void sexpr_finalize_pool(void) {
+  g_sexpr_symbol_allocator.manager_ = NULL;
   memory_pool_dtor(&g_sexpr_pool);
+}
+
+AllocatorRef sexpr_symbol_allocator(void) {
+  return &g_sexpr_symbol_allocator;
 }

@@ -42,7 +42,7 @@ SexprRef cdr(SexprRef sexpr) {
 }
 
 SexprRef sexpr_new_symbol(const char* src, size_t length) {
-  AllocatorRef allocator = string_pool_allocator(sexpr_pool());
+  AllocatorRef allocator = sexpr_symbol_allocator();
   StringRef symbol = make_string(src, length, allocator);
   return sexpr_make_symbol(symbol);
 }
