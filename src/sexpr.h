@@ -9,7 +9,7 @@
 struct Sexpr;
 typedef struct Sexpr* SexprRef;
 typedef StringRef SymbolData;
-typedef AstTag AstData;
+typedef enum AstTag AstData;
 
 enum SexprTag {
   SEXPR_CONS, SEXPR_SYMBOL, SEXPR_AST
