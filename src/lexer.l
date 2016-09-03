@@ -1,20 +1,15 @@
 /* %option yywrap */
 %{
-#define YY_USER_INIT initialize_lexer()
-#include <stdlib.h>
-#include "ast_method.h"
-#include "stdstring.h"
 #include "parser.tab.h"
+#include <stdlib.h>
+#include "sexpr.h"
+#include "stdstring.h"
 
 int yywrap(void) {
   return 1;
 }
 
 StringRef lexer_string_literal;
-
-void initialize_lexer(void) {
-  ast_initialize_pool();
-}
 %}
 SIMPLE_ESCAPE_SEQUENCE "\\"[\'\"?\\abfnrtv]
 OCT_ESCAPE_SEQUENCE "\\"[0-7]{1,3}
