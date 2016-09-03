@@ -2,6 +2,8 @@
 #define KMC_C90_COMPILER_SEXPR_H
 
 #include "ast.h"
+#include "memory_pool.h"
+#include "stdstring.h"
 #include "utility.h"
 
 struct Sexpr;

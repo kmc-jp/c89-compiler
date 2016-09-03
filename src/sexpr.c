@@ -1,4 +1,6 @@
 #include "sexpr.h"
+#include <assert.h>
+#include "allocator.h"
 #include "sexpr_pool.h"
 
 static SexprRef new_sexpr(void) {
