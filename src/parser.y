@@ -174,6 +174,19 @@ declaration-specifiers
 | type-qualifier declaration-specifiers
 ;
 
+pointer
+: '*' type-qualifier-list.opt
+;
+
+pointer-list.opt
+: %empty
+| pointer-list
+;
+
+pointer-list
+: pointer pointer-list.opt
+;
+
 declarator
 : pointer-list.opt direct-declarator
 ;
