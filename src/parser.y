@@ -165,6 +165,11 @@ type-qualifier-list
 : type-qualifier type-qualifier-list.opt
 ;
 
+declaration-specifiers
+: type-specifier type-qualifier-list.opt
+| type-qualifier declaration-specifiers
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
