@@ -123,8 +123,8 @@ translation-unit
 :
 
 external-declaration
-: function-definition
-| declaration
+: linkage-specifier.opt function-definition
+| linkage-specifier.opt declaration
 ;
 
 function-definition
