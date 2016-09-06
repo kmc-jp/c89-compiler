@@ -202,6 +202,12 @@ abstract-declarator
 : pointer-list
 | pointer-list.opt direct-abstract-declarator
 
+direct-abstract-declarator
+: '(' abstract-declarator ')'
+| array-abstract-declarator
+| function-abstract-declarator
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
