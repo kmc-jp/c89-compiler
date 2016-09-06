@@ -87,6 +87,10 @@ void set_yyin_string(const char *code);
 
 %%
 
+identifier
+: IDENTIFIER
+;
+
 signed.opt
 : %empty
 | SIGNED
