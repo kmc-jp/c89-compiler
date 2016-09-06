@@ -87,6 +87,32 @@ void set_yyin_string(const char *code);
 
 %%
 
+signed.opt
+: %empty
+| SIGNED
+;
+
+int.opt
+: %empty
+| INT
+;
+
+fundamental-specifier
+: VOID
+| CHAR
+| SIGNED CHAR
+| UNSIGNED CHAR
+| signed.opt SHORT int.opt
+| UNSIGNED SHORT int.opt
+| signed.opt int.opt
+| UNSIGNED int.opt
+| signed.opt LONG int.opt
+| UNSIGNED LONG int.opt
+| FLOAT
+| DOUBLE
+| LONG DOUBLE
+;
+
 storage-class-specifier
 : TYPEDEF
 | linkage-specifier
