@@ -174,6 +174,10 @@ declaration-specifiers
 | type-qualifier declaration-specifiers
 ;
 
+declarator
+: pointer-list.opt direct-declarator
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
