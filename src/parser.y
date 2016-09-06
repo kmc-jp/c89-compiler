@@ -200,9 +200,15 @@ direct-declarator
 /* | function-declarator */
 ;
 
+/* abstract-declarator.opt */
+/* : %empty */
+/* | abstract-declarator */
+/* ; */
+
 /* abstract-declarator */
 /* : pointer-list */
 /* | pointer-list.opt direct-abstract-declarator */
+/* ; */
 
 /* direct-abstract-declarator */
 /* : '(' abstract-declarator ')' */
@@ -217,6 +223,11 @@ parameter-list-tail
 
 parameter-list
 : parameter-declaration parameter-list-tail
+;
+
+parameter-declaration
+: declaration-specifiers declarator
+/* | declaration-specifiers abstract-declarator.opt */
 ;
 
 translation-unit.opt
