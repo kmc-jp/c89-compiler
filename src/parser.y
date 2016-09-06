@@ -184,8 +184,12 @@ external-declaration
 | linkage-specifier.opt declaration
 ;
 
+function-definition-declarator
+: identifier '(' parameter-type-list ')'
+;
+
 function-definition
-: declaration-specifiers.opt declarator declaration-list.opt compound-statement
+: declaration-specifiers function-definition-declarator compound-statement
 
 %%
 
