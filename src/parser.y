@@ -113,6 +113,25 @@ duration-specifier
 | REGISTER
 ;
 
+type-qualifier.opt
+: %empty
+| type-qualifier
+;
+
+type-qualifier
+: CONST
+| VOLATILE
+;
+
+type-qualifier-list.opt
+: %empty
+| type-qualifier-list
+;
+
+type-qualifier-list
+: type-qualifier type-qualifier-list.opt
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
