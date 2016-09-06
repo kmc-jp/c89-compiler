@@ -198,6 +198,10 @@ direct-declarator
 | function-declarator
 ;
 
+abstract-declarator
+: pointer-list
+| pointer-list.opt direct-abstract-declarator
+
 translation-unit.opt
 : %empty
 | translation-unit
