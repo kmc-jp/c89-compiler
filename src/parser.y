@@ -101,6 +101,9 @@ external-declaration
 | declaration
 ;
 
+function-definition
+: declaration-specifiers.opt declarator declaration-list.opt compound-statement
+
 %%
 
 void yyerror(const char* s) {
