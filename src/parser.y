@@ -103,25 +103,25 @@ int.opt
 
 fundamental-specifier
 : VOID
-| CHAR
-| SIGNED CHAR
-| UNSIGNED CHAR
-| signed.opt SHORT int.opt
-| UNSIGNED SHORT int.opt
+/* | CHAR */
+/* | SIGNED CHAR */
+/* | UNSIGNED CHAR */
+/* | signed.opt SHORT int.opt */
+/* | UNSIGNED SHORT int.opt */
 | signed.opt int.opt
-| UNSIGNED int.opt
-| signed.opt LONG int.opt
-| UNSIGNED LONG int.opt
-| FLOAT
-| DOUBLE
-| LONG DOUBLE
+/* | UNSIGNED int.opt */
+/* | signed.opt LONG int.opt */
+/* | UNSIGNED LONG int.opt */
+/* | FLOAT */
+/* | DOUBLE */
+/* | LONG DOUBLE */
 ;
 
-storage-class-specifier
-: TYPEDEF
-| linkage-specifier
-| duration-specifier
-;
+/* storage-class-specifier */
+/* : TYPEDEF */
+/* | linkage-specifier */
+/* | duration-specifier */
+/* ; */
 
 linkage-specifier.opt
 : %empty
@@ -133,80 +133,82 @@ linkage-specifier
 | STATIC
 ;
 
-duration-specifier.opt
-: %empty
-| duration-specifier
-;
+/* duration-specifier.opt */
+/* : %empty */
+/* | duration-specifier */
+/* ; */
 
-duration-specifier
-: AUTO
-| REGISTER
-;
+/* duration-specifier */
+/* : AUTO */
+/* | REGISTER */
+/* ; */
 
 type-specifier
 : fundamental-specifier
-| struct-or-union-specifier
-| enum-specifier
-| typedef-name
+/* | struct-or-union-specifier */
+/* | enum-specifier */
+/* | typedef-name */
 ;
 
-type-qualifier.opt
-: %empty
-| type-qualifier
-;
+/* type-qualifier.opt */
+/* : %empty */
+/* | type-qualifier */
+/* ; */
 
-type-qualifier
-: CONST
-| VOLATILE
-;
+/* type-qualifier */
+/* : CONST */
+/* | VOLATILE */
+/* ; */
 
-type-qualifier-list.opt
-: %empty
-| type-qualifier-list
-;
+/* type-qualifier-list.opt */
+/* : %empty */
+/* | type-qualifier-list */
+/* ; */
 
-type-qualifier-list
-: type-qualifier type-qualifier-list.opt
-;
+/* type-qualifier-list */
+/* : type-qualifier type-qualifier-list.opt */
+/* ; */
 
 declaration-specifiers
-: type-specifier type-qualifier-list.opt
-| type-qualifier declaration-specifiers
+: type-specifier
+/* : type-specifier type-qualifier-list.opt */
+/* | type-qualifier declaration-specifiers */
 ;
 
-pointer
-: '*' type-qualifier-list.opt
-;
+/* pointer */
+/* : '*' type-qualifier-list.opt */
+/* ; */
 
-pointer-list.opt
-: %empty
-| pointer-list
-;
+/* pointer-list.opt */
+/* : %empty */
+/* | pointer-list */
+/* ; */
 
-pointer-list
-: pointer pointer-list.opt
-;
+/* pointer-list */
+/* : pointer pointer-list.opt */
+/* ; */
 
 declarator
-: pointer-list.opt direct-declarator
+: direct-declarator
+/* : pointer-list.opt direct-declarator */
 ;
 
 direct-declarator
 : identifier
-| '(' declarator ')'
-| array-declarator
-| function-declarator
+/* | '(' declarator ')' */
+/* | array-declarator */
+/* | function-declarator */
 ;
 
-abstract-declarator
-: pointer-list
-| pointer-list.opt direct-abstract-declarator
+/* abstract-declarator */
+/* : pointer-list */
+/* | pointer-list.opt direct-abstract-declarator */
 
-direct-abstract-declarator
-: '(' abstract-declarator ')'
-| array-abstract-declarator
-| function-abstract-declarator
-;
+/* direct-abstract-declarator */
+/* : '(' abstract-declarator ')' */
+/* | array-abstract-declarator */
+/* | function-abstract-declarator */
+/* ; */
 
 translation-unit.opt
 : %empty
