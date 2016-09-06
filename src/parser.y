@@ -139,6 +139,13 @@ duration-specifier
 | REGISTER
 ;
 
+type-specifier
+: fundamental-specifier
+| struct-or-union-specifier
+| enum-specifier
+| typedef-name
+;
+
 type-qualifier.opt
 : %empty
 | type-qualifier
