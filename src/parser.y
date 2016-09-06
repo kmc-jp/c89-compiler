@@ -210,6 +210,15 @@ direct-declarator
 /* | function-abstract-declarator */
 /* ; */
 
+parameter-list-tail
+: %empty
+| ',' parameter-list
+;
+
+parameter-list
+: parameter-declaration parameter-list-tail
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
@@ -225,7 +234,7 @@ external-declaration
 ;
 
 function-definition-declarator
-: identifier '(' parameter-type-list ')'
+: identifier '(' parameter-list ')'
 ;
 
 function-definition
