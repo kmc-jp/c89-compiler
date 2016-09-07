@@ -174,6 +174,20 @@ declaration
 : declaration-specifiers init-declarator-list
 ;
 
+init-declarator
+: declarator
+/* | declarator '=' initializer */
+;
+
+init-declarator-list.opt
+: %empty
+| ',' init-declarator-list
+;
+
+init-declarator-list
+: init-declarator init-declarator-list.opt
+;
+
 /* pointer */
 /* : '*' type-qualifier-list.opt */
 /* ; */
