@@ -170,6 +170,10 @@ declaration-specifiers
 /* | type-qualifier declaration-specifiers */
 ;
 
+declaration
+: declaration-specifiers init-declarator-list
+;
+
 /* pointer */
 /* : '*' type-qualifier-list.opt */
 /* ; */
