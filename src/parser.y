@@ -171,6 +171,10 @@ declaration-specifiers
 ;
 
 declaration
+: declaration-specifiers declarator-list
+;
+
+init-declaration
 : declaration-specifiers init-declarator-list
 ;
 
@@ -271,7 +275,7 @@ translation-unit
 
 external-declaration
 : linkage-specifier.opt function-definition
-| linkage-specifier.opt declaration
+| linkage-specifier.opt init-declaration
 | typedef-declaration
 ;
 
