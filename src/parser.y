@@ -256,6 +256,23 @@ parameter-declaration
 /* | declaration-specifiers abstract-declarator.opt */
 ;
 
+statement
+: labeled-statement
+| compound-statement
+| expression-statement
+| selection-statement
+| iteration-statement
+| jump-statement
+;
+
+statement-list.opt
+: %empty
+;
+
+statement-list
+: statement statement-list.opt
+;
+
 compound-statement
 : '{' declaration-statement-list.opt statement-list.opt '}'
 ;
