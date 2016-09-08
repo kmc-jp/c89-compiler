@@ -192,6 +192,15 @@ typedef-declaration
 : TYPEDEF declaration-specifiers typedef-declarator-list
 ;
 
+typedef-declarator-list.opt
+: %empty
+| ',' typedef-declarator-list
+;
+
+typedef-declarator-list
+: declarator typedef-declarator-list.opt
+;
+
 /* pointer */
 /* : '*' type-qualifier-list.opt */
 /* ; */
