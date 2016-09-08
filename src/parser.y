@@ -267,7 +267,7 @@ translation-unit.opt
 
 translation-unit
 : external-declaration translation-unit.opt
-:
+;
 
 external-declaration
 : linkage-specifier.opt function-definition
