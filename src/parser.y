@@ -257,7 +257,21 @@ parameter-declaration
 ;
 
 compound-statement
-: '{' declaration-list.opt statement-list.opt '}'
+: '{' declaration-statement-list.opt statement-list.opt '}'
+;
+
+declaration-statement
+: storage-class-specifier.opt init-declaration
+| TYPEDEF declaration
+;
+
+declaration-statement-list.opt
+: %empty
+| declaration-statement-list
+;
+
+declaration-statement-list
+: declaration-statement declaration-statement-list.opt
 ;
 
 translation-unit.opt
