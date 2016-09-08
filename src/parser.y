@@ -201,19 +201,6 @@ init-declarator-list
 : init-declarator init-declarator-list.opt
 ;
 
-typedef-declaration
-: TYPEDEF declaration-specifiers typedef-declarator-list
-;
-
-typedef-declarator-list.opt
-: %empty
-| ',' typedef-declarator-list
-;
-
-typedef-declarator-list
-: declarator typedef-declarator-list.opt
-;
-
 /* pointer */
 /* : '*' type-qualifier-list.opt */
 /* ; */
@@ -285,7 +272,7 @@ translation-unit
 external-declaration
 : linkage-specifier.opt function-definition
 | linkage-specifier.opt init-declaration
-| typedef-declaration
+| TYPEDEF declaration
 ;
 
 function-definition-declarator
