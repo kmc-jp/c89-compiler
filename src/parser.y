@@ -301,6 +301,12 @@ expression-statement
 : expression.opt ';'
 ;
 
+selection-statement
+: IF '(' expression ')' statement
+| IF '(' expression ')' statement ELSE statement
+| SWITCH '(' expression ')' statement
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
