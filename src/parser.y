@@ -273,6 +273,12 @@ statement-list
 : statement statement-list.opt
 ;
 
+labeled-statement
+: identifier ':' statement
+| CASE constant-expression ':' statement
+| DEFAULT ':' statement
+;
+
 compound-statement
 : '{' declaration-statement-list.opt statement-list.opt '}'
 ;
