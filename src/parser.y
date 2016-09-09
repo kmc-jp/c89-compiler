@@ -91,6 +91,15 @@ identifier
 : IDENTIFIER
 ;
 
+expression.opt
+: %empty
+| expression
+;
+
+expression
+: INTEGER_CONSTANT
+;
+
 signed.opt
 : %empty
 | SIGNED
