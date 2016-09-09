@@ -297,6 +297,10 @@ declaration-statement-list
 : declaration-statement declaration-statement-list.opt
 ;
 
+expression-statement
+: expression.opt ';'
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
