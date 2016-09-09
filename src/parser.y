@@ -313,6 +313,13 @@ iteration-statement
 | FOR '(' expression.opt ';' expression.opt ';' expression.opt ')' statement
 ;
 
+jump-statement
+: GOTO identifier ';'
+| CONTINUE ';'
+| BREAK ';'
+| RETURN expression.opt ';'
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
