@@ -307,6 +307,12 @@ selection-statement
 | SWITCH '(' expression ')' statement
 ;
 
+iteration-statement
+: WHILE '(' expression ')' statement
+| DO statement WHILE '(' expression ')' ';'
+| FOR '(' expression.opt ';' expression.opt ';' expression.opt ')' statement
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
