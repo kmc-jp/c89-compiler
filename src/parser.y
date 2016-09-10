@@ -205,6 +205,11 @@ declaration-statement-list
 : declaration-statement declaration-statement-list.opt
 ;
 
+declaration-statement
+: storage-class-specifier.opt init-declaration
+| typedef-declaration
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
