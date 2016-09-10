@@ -291,9 +291,11 @@ statement-list
 ;
 
 labeled-statement
-: identifier ':' statement
-| CASE constant-expression ':' statement
+: CASE constant-expression ':' statement
 | DEFAULT ':' statement
+/* : identifier ':' statement */
+/* | CASE constant-expression ':' statement */
+/* | DEFAULT ':' statement */
 ;
 
 compound-statement
