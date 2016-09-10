@@ -241,6 +241,13 @@ declaration-statement
 | typedef-declaration
 ;
 
+jump-statement
+: GOTO identifier ';'
+| CONTINUE ';'
+| BREAK ';'
+| RETURN expression.opt ';'
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
