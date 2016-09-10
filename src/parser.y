@@ -91,6 +91,16 @@ identifier
 : IDENTIFIER
 ;
 
+expression.opt
+: %empty
+| expression
+;
+
+expression
+: identifier
+| INTEGER_CONSTANT
+;
+
 fundamental-specifier
 : VOID
 | INT
