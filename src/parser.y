@@ -102,6 +102,14 @@ external-declaration
 | typedef-declaration
 ;
 
+function-definition-declarator
+: identifier '(' parameter-declaration-list ')'
+;
+
+function-definition
+: declaration-specifiers function-definition-declarator compound-statement
+;
+
 %%
 
 void yyerror(const char* s) {
