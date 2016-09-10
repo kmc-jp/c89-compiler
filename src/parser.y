@@ -196,6 +196,15 @@ compound-statement
 : '{' declaration-statement-list.opt statement-list.opt '}'
 ;
 
+declaration-statement-list.opt
+: %empty
+| declaration-statement-list
+;
+
+declaration-statement-list
+: declaration-statement declaration-statement-list.opt
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
