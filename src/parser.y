@@ -280,6 +280,7 @@ statement
 
 statement-list.opt
 : %empty
+| statement-list
 ;
 
 statement-list
