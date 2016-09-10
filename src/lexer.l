@@ -1,20 +1,15 @@
 /* %option yywrap */
 %{
-#define YY_USER_INIT initialize_lexer()
-#include <stdlib.h>
-#include "ast_method.h"
-#include "stdstring.h"
 #include "parser.tab.h"
+#include <stdlib.h>
+#include "sexpr.h"
+#include "stdstring.h"
 
 int yywrap(void) {
   return 1;
 }
 
 StringRef lexer_string_literal;
-
-void initialize_lexer(void) {
-  ast_initialize_pool();
-}
 %}
 SIMPLE_ESCAPE_SEQUENCE "\\"[\'\"?\\abfnrtv]
 OCT_ESCAPE_SEQUENCE "\\"[0-7]{1,3}
@@ -43,8 +38,9 @@ WHITESPACE [ \t\n]
 }
 
 <STRING>"\"" {
-  const size_t leng = string_length(lexer_string_literal);
-  yylval = ast_make_token(string_data(lexer_string_literal), leng);
+  const char* const data = string_data(lexer_string_literal);
+  const size_t length = string_length(lexer_string_literal);
+  yylval = sexpr_new_symbol(data, length);
   string_dtor(&lexer_string_literal);
   BEGIN(INITIAL);
   return STRING_LITERAL;
@@ -58,19 +54,19 @@ WHITESPACE [ \t\n]
 }
 
 ("'"{C_CHAR}*"'"|"L'"{C_CHAR}*"'") {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return CHARACTER_CONSTANT;
 }
 
 WHITESPACE ;
 
 [0-9]*"."[0-9]*([Ee][+-]?{DIGIT10})?[FfLl]? {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return FLOATING_CONSTANT;
 }
 
 ({DIGIT8}|{DIGIT10}|{DIGIT16})({INTEGER_SUFFIX})? {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return INTEGER_CONSTANT;
 }
 
@@ -102,10 +98,7 @@ WHITESPACE ;
 "|=" return OR_ASSIGN;
 "^=" return XOR_ASSIGN;
 
-"auto" {
-  yylval = ast_make_token(yytext, yyleng);
-  return AUTO;
-}
+"auto"     return AUTO;
 "break"    return BREAK;
 "case"     return CASE;
 "char"     return CHAR;
@@ -116,34 +109,22 @@ WHITESPACE ;
 "double"   return DOUBLE;
 "else"     return ELSE;
 "enum"     return ENUM;
-"extern" {
-  yylval = ast_make_token(yytext, yyleng);
-  return EXTERN;
-}
+"extern"   return EXTERN;
 "float"    return FLOAT;
 "for"      return FOR;
 "goto"     return GOTO;
 "if"       return IF;
 "int"      return INT;
 "long"     return LONG;
-"register" {
-  yylval = ast_make_token(yytext, yyleng);
-  return REGISTER;
-}
+"register" return REGISTER;
 "return"   return RETURN;
 "short"    return SHORT;
 "signed"   return SIGNED;
 "sizeof"   return SIZEOF;
-"static" {
-  yylval = ast_make_token(yytext, yyleng);
-  return STATIC;
-}
+"static"   return STATIC;
 "struct"   return STRUCT;
 "switch"   return SWITCH;
-"typedef" {
-  yylval = ast_make_token(yytext, yyleng);
-  return TYPEDEF;
-}
+"typedef"  return TYPEDEF;
 "union"    return UNION;
 "unsigned" return UNSIGNED;
 "void"     return VOID;
@@ -151,7 +132,7 @@ WHITESPACE ;
 "while"    return WHILE;
 
 {IDENTIFIER} {
-  yylval = ast_make_token(yytext, yyleng);
+  yylval = sexpr_new_symbol(yytext, yyleng);
   return IDENTIFIER;
 }
 
