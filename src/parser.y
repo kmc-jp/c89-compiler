@@ -83,6 +83,9 @@ void set_yyin_string(const char *code);
 %token VOLATILE "volatile"
 %token WHILE "while"
 
+%precedence ONLY_IF
+%precedence ELSE
+
 %start translation-unit
 
 %%
@@ -316,7 +319,7 @@ expression-statement
 ;
 
 selection-statement
-: IF '(' expression ')' statement
+: IF '(' expression ')' statement %prec ONLY_IF
 | IF '(' expression ')' statement ELSE statement
 | SWITCH '(' expression ')' statement
 ;
