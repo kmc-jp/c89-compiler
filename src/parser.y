@@ -178,6 +178,15 @@ direct-declarator
 /* | function-declarator */
 ;
 
+parameter-declaration-list.opt
+: %empty
+| ',' parameter-declaration-list
+;
+
+parameter-declaration-list
+: parameter-declaration parameter-declaration-list.opt
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
