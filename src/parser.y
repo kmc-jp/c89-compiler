@@ -131,6 +131,10 @@ declaration-specifiers
 /* | type-qualifier declaration-specifiers */
 ;
 
+declaration
+: declaration-specifiers declarator-list
+;
+
 init-declaration
 : declaration-specifiers init-declarator-list
 ;
