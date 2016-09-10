@@ -162,6 +162,10 @@ init-declarator
 /* | declarator '=' initializer */
 ;
 
+typedef-declaration
+: TYPEDEF declaration
+;
+
 declarator
 : direct-declarator
 /* : pointer-list.opt direct-declarator */
