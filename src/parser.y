@@ -140,6 +140,11 @@ init-declarator-list
 : init-declarator init-declarator-list.opt
 ;
 
+init-declarator
+: declarator
+/* | declarator '=' initializer */
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
