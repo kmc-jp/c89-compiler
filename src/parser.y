@@ -100,6 +100,10 @@ expression
 : INTEGER_CONSTANT
 ;
 
+constant-expression
+: INTEGER_CONSTANT
+;
+
 signed.opt
 : %empty
 | SIGNED
