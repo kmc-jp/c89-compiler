@@ -150,6 +150,13 @@ declarator
 /* : pointer-list.opt direct-declarator */
 ;
 
+direct-declarator
+: identifier
+/* | '(' declarator ')' */
+/* | array-declarator */
+/* | function-declarator */
+;
+
 translation-unit.opt
 : %empty
 | translation-unit
