@@ -214,17 +214,27 @@ parameter-declaration
 ;
 
 statement-list.opt
-: %empty
-| statement-list
+: %empty {
+  $$ = NULL;
+}
+| statement-list {
+  $$ = $[statement-list];
+}
 ;
 
 statement-list
-: statement statement-list.opt
+: statement statement-list.opt {
+  $$ = cons($[statement], $[statement-list.opt]);
+}
 ;
 
 statement
-: compound-statement
-| jump-statement
+: compound-statement {
+  $$ = $[compound-statement];
+}
+| jump-statement {
+  $$ = $[jump-statement];
+}
 /* : labeled-statement */
 /* | compound-statement */
 /* | expression-statement */
@@ -234,28 +244,50 @@ statement
 ;
 
 compound-statement
-: '{' declaration-statement-list.opt statement-list.opt '}'
+: '{' declaration-statement-list.opt statement-list.opt '}' {
+  $$ = cons(sexpr_make_ast(AST_COMPOUND_STATEMENT),
+            cons($[declaration-statement-list.opt],
+                 $[statement-list.opt]));
+}
 ;
 
 declaration-statement-list.opt
-: %empty
-| declaration-statement-list
+: %empty {
+  $$ = NULL;
+}
+| declaration-statement-list {
+  $$ = $[declaration-statement-list];
+}
 ;
 
 declaration-statement-list
-: declaration-statement declaration-statement-list.opt
+: declaration-statement declaration-statement-list.opt {
+  $$ = cons($[declaration-statement], $[declaration-statement-list.opt]);
+}
 ;
 
 declaration-statement
-: storage-class-specifier.opt init-declaration
-| typedef-specifier declaration
+: storage-class-specifier.opt init-declaration {
+  $$ = cons($[storage-class-specifier.opt], $[init-declaration]);
+}
+| typedef-specifier declaration {
+  $$ = cons($[typedef-specifier], $[declaration]);
+}
 ;
 
 jump-statement
-: GOTO identifier ';'
-| CONTINUE ';'
-| BREAK ';'
-| RETURN expression.opt ';'
+: GOTO identifier ';' {
+  $$ = cons(sexpr_make_ast(AST_GOTO_STATEMENT), $[identifier]);
+}
+| CONTINUE ';' {
+  $$ = cons(sexpr_make_ast(AST_CONTINUE_STATEMENT), NULL);
+}
+| BREAK ';' {
+  $$ = cons(sexpr_make_ast(AST_BREAK_STATEMENT), NULL);
+}
+| RETURN expression.opt ';' {
+  $$ = cons(sexpr_make_ast(AST_RETURN_STATEMENT), $[expression.opt]);
+}
 ;
 
 translation-unit.opt
