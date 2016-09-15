@@ -157,59 +157,89 @@ declaration-specifiers
 ;
 
 declaration
-: declaration-specifiers declarator-list
+: declaration-specifiers declarator-list {
+  $$ = cons($[declaration-specifiers], $[declarator-list]);
+}
 ;
 
 declarator-list.opt
-: %empty
-| ',' declarator-list
+: %empty {
+  $$ = NULL;
+}
+| ',' declarator-list {
+  $$ = $[declarator-list];
+}
 ;
 
 declarator-list
-: declarator declarator-list.opt
+: declarator declarator-list.opt {
+  $$ = cons($[declarator], $[declarator-list.opt]);
+}
 ;
 
 init-declaration
-: declaration-specifiers init-declarator-list
+: declaration-specifiers init-declarator-list {
+  $$ = cons($[declaration-specifiers], $[init-declarator-list]);
+}
 ;
 
 init-declarator-list.opt
-: %empty
-| ',' init-declarator-list
+: %empty {
+  $$ = NULL;
+}
+| ',' init-declarator-list {
+  $$ = $[init-declarator-list];
+}
 ;
 
 init-declarator-list
-: init-declarator init-declarator-list.opt
+: init-declarator init-declarator-list.opt {
+  $$ = cons($[init-declarator], $[init-declarator-list.opt]);
+}
 ;
 
 init-declarator
-: declarator
+: declarator {
+  $$ = cons($[declarator], NULL);
+}
 /* | declarator '=' initializer */
 ;
 
 declarator
-: direct-declarator
+: direct-declarator {
+  $$ = $[direct-declarator];
+}
 /* : pointer-list.opt direct-declarator */
 ;
 
 direct-declarator
-: identifier
+: identifier {
+  $$ = $[identifier];
+}
 /* | '(' declarator ')' */
 /* | array-declarator */
 /* | function-declarator */
 ;
 
 parameter-declaration-list.opt
-: %empty
-| ',' parameter-declaration-list
+: %empty {
+  $$ = NULL;
+}
+| ',' parameter-declaration-list {
+  $$ = $[parameter-declaration-list];
+}
 ;
 
 parameter-declaration-list
-: parameter-declaration parameter-declaration-list.opt
+: parameter-declaration parameter-declaration-list.opt {
+  $$ = cons($[parameter-declaration], $[parameter-declaration-list.opt]);
+}
 ;
 
 parameter-declaration
-: declaration-specifiers declarator
+: declaration-specifiers declarator {
+  $$ = cons($[declaration-specifiers], $[declarator]);
+}
 /* | declaration-specifiers abstract-declarator.opt */
 ;
 
