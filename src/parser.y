@@ -139,6 +139,10 @@ linkage-specifier
 | STATIC
 ;
 
+typedef-specifier
+: TYPEDEF
+;
+
 type-specifier
 : fundamental-specifier
 /* | struct-or-union-specifier */
@@ -181,10 +185,6 @@ init-declarator-list
 init-declarator
 : declarator
 /* | declarator '=' initializer */
-;
-
-typedef-declaration
-: TYPEDEF declaration
 ;
 
 declarator
@@ -248,7 +248,7 @@ declaration-statement-list
 
 declaration-statement
 : storage-class-specifier.opt init-declaration
-| typedef-declaration
+| typedef-specifier declaration
 ;
 
 jump-statement
@@ -270,7 +270,7 @@ translation-unit
 external-declaration
 : linkage-specifier.opt function-definition
 | linkage-specifier.opt init-declaration
-| typedef-declaration
+| typedef-specifier declaration
 ;
 
 function-definition-declarator
