@@ -259,26 +259,47 @@ jump-statement
 ;
 
 translation-unit.opt
-: %empty
-| translation-unit
+: %empty {
+  $$ = NULL;
+}
+| translation-unit {
+  $$ = $[translation-unit];
+}
 ;
 
 translation-unit
-: external-declaration translation-unit.opt
+: external-declaration translation-unit.opt {
+  $$ = cons($[external-declaration], $[translation-unit.opt]);
+}
 ;
 
 external-declaration
-: linkage-specifier.opt function-definition
-| linkage-specifier.opt init-declaration
-| typedef-specifier declaration
+: linkage-specifier.opt function-definition {
+  $$ = cons(sexpr_make_ast(AST_FUNCTION_DEFINITION),
+            cons($[linkage-specifier.opt], $[function-definition]));
+}
+| linkage-specifier.opt init-declaration {
+  $$ = cons(sexpr_make_ast(AST_EXTERNAL_DECLARATION),
+            cons($[linkage-specifier.opt], $[init-declaration]));
+}
+| typedef-specifier declaration {
+  $$ = cons(sexpr_make_ast(AST_EXTERNAL_DECLARATION),
+            cons($[typedef-specifier], $[declaration]));
+}
 ;
 
 function-definition-declarator
-: identifier '(' parameter-declaration-list ')'
+: identifier '(' parameter-declaration-list ')' {
+  $$ = cons($[identifier], $[parameter-declaration-list]);
+}
 ;
 
 function-definition
-: declaration-specifiers function-definition-declarator compound-statement
+: declaration-specifiers function-definition-declarator compound-statement {
+  $$ = cons($[declaration-specifiers],
+            cons($[function-definition-declarator],
+                 $[compound-statement]));
+}
 ;
 
 %%
