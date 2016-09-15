@@ -88,22 +88,41 @@ void set_yyin_string(const char *code);
 %%
 
 identifier
-: IDENTIFIER
+: IDENTIFIER {
+  $$ = cons(sexpr_make_ast(AST_IDENTIFIER), $[IDENTIFIER]);
+}
 ;
 
 expression.opt
-: %empty
-| expression
+: %empty {
+  $$ = NULL;
+}
+| expression {
+  $$ = $[expression];
+}
 ;
 
 expression
-: identifier
-| INTEGER_CONSTANT
+: identifier {
+  $$ = $[identifier];
+}
+| integer-constant {
+  $$ = $[integer-constant];
+}
 ;
 
+integer-constant
+: INTEGER_CONSTANT {
+  $$ = cons(sexpr_make_ast(AST_INTEGER_CONSTANT), $[INTEGER_CONSTANT]);
+}
+
 fundamental-specifier
-: VOID
-| INT
+: VOID {
+  $$ = sexpr_make_ast(AST_TYPE_VOID);
+}
+| INT {
+  $$ = sexpr_make_ast(AST_TYPE_INT);
+}
 /* | CHAR */
 /* | SIGNED CHAR */
 /* | UNSIGNED CHAR */
@@ -119,39 +138,63 @@ fundamental-specifier
 ;
 
 storage-class-specifier.opt
-: %empty
-| storage-class-specifier
+: %empty {
+  $$ = NULL;
+}
+| storage-class-specifier {
+  $$ = $[storage-class-specifier];
+}
 ;
 
 storage-class-specifier
-: AUTO
-| REGISTER
-| STATIC
+: AUTO {
+  $$ = sexpr_make_ast(AST_SPEC_AUTO);
+}
+| REGISTER {
+  $$ = sexpr_make_ast(AST_SPEC_REGISTER);
+}
+| STATIC {
+  $$ = sexpr_make_ast(AST_SPEC_STATIC);
+}
 ;
 
 linkage-specifier.opt
-: %empty
-| linkage-specifier
+: %empty {
+  $$ = NULL;
+}
+| linkage-specifier {
+  $$ = $[linkage-specifier];
+}
 ;
 
 linkage-specifier
-: EXTERN
-| STATIC
+: EXTERN {
+  $$ = sexpr_make_ast(AST_SPEC_EXTERN);
+}
+| STATIC {
+  $$ = sexpr_make_ast(AST_SPEC_STATIC);
+}
 ;
 
 typedef-specifier
-: TYPEDEF
+: TYPEDEF {
+  $$ = sexpr_make_ast(AST_SPEC_TYPEDEF);
+}
 ;
 
 type-specifier
-: fundamental-specifier
+: fundamental-specifier {
+  $$ = cons($[fundamental-specifier], NULL);
+}
 /* | struct-or-union-specifier */
 /* | enum-specifier */
 /* | typedef-name */
 ;
 
 declaration-specifiers
-: type-specifier
+: type-specifier {
+  $$ = $[type-specifier];
+}
 /* : type-specifier type-qualifier-list.opt */
 /* | type-qualifier declaration-specifiers */
 ;
