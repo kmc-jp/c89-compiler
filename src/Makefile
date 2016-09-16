@@ -24,7 +24,7 @@ YACC_TARGET := parser.tab.o
 LEX := flex
 LEX_OPTION :=
 YACC := bison
-YACC_OPTION := -d
+YACC_OPTION := --debug -d
 TARGET := kmc90
 OBJS += $(AST_OBJS)
 OBJS += $(CODEGEN_OBJS)
@@ -45,3 +45,5 @@ $(LEX_INTERMEDIATE): $(LEX_SRC) $(YACC_INTERMEDIATE)
 $(LEX_TARGET): CFLAGS += -Wno-unused-function
 
 .PHONY: build
+
+main.c: $(YACC_INTERMEDIATE)

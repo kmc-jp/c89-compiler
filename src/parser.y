@@ -7,6 +7,7 @@
     YYERROR; \
   } while (false)
 
+static YYSTYPE g_ast_root;
 void yyerror(const char *);
 }
 
@@ -14,6 +15,7 @@ void yyerror(const char *);
 int yylex(void);
 void set_yyin_file(FILE* fp);
 void set_yyin_string(const char *code);
+YYSTYPE parse(FILE* fp);
 }
 
 %code requires {
@@ -83,7 +85,7 @@ void set_yyin_string(const char *code);
 %token VOLATILE "volatile"
 %token WHILE "while"
 
-%start translation-unit
+%start entry-point
 
 %%
 
@@ -281,8 +283,31 @@ function-definition
 : declaration-specifiers function-definition-declarator compound-statement
 ;
 
+entry-point
+: translation-unit {
+  g_ast_root = $[translation-unit];
+}
+
 %%
 
 void yyerror(const char* s) {
   fprintf(stderr, "%s\n", s);
+}
+
+YYSTYPE parse(FILE* fp) {
+  set_yyin_file(fp);
+  switch (yyparse()) {
+    case 0:
+      return g_ast_root;
+    case 1:
+      yyerror("invalid input in yyparse");
+      break;
+    case 2:
+      yyerror("memory exhaustion in yyparse");
+      break;
+    default:
+      yyerror("unknown error in yyparse");
+      break;
+  }
+  return NULL;
 }
