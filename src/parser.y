@@ -1,12 +1,4 @@
 %code {
-#include "utility.h"
-
-#define AST_ERROR(lhs, rhs) \
-  do { \
-    yyerror("cannot parse `" lhs "` as `" rhs "`"); \
-    YYERROR; \
-  } while (false)
-
 void yyerror(const char *);
 }
 
@@ -22,6 +14,7 @@ void set_yyin_string(const char *code);
 #define YYSTYPE SexprRef
 }
 
+%token TYPENAME
 %token IDENTIFIER
 %token FLOATING_CONSTANT
 %token INTEGER_CONSTANT
@@ -34,8 +27,6 @@ void set_yyin_string(const char *code);
 %token RIGHT_SHIFT ">>"
 %token EQUAL "=="
 %token NOT_EQUAL "!="
-%token LESS "<"
-%token GREATER ">"
 %token LESS_EQUAL "<="
 %token GREATER_EQUAL ">="
 %token AND "&&"
@@ -50,6 +41,7 @@ void set_yyin_string(const char *code);
 %token AND_ASSIGN "&="
 %token OR_ASSIGN "|="
 %token XOR_ASSIGN "^="
+%token ELLIPSIS "..."
 %token AUTO "auto"
 %token BREAK "break"
 %token CASE "case"
@@ -83,12 +75,166 @@ void set_yyin_string(const char *code);
 %token VOLATILE "volatile"
 %token WHILE "while"
 
+%precedence ONLY_IF
+%precedence ELSE
+
 %start translation-unit
 
 %%
 
+typedef-name
+: TYPENAME
+;
+
+identifier.opt
+: %empty
+| IDENTIFIER
+;
+
 identifier
 : IDENTIFIER
+;
+
+constant
+: FLOATING_CONSTANT
+| INTEGER_CONSTANT
+| CHARACTER_CONSTANT
+;
+
+string-literal
+: STRING_LITERAL
+;
+
+primary-expression
+: identifier
+| constant
+| string-literal
+| '(' expression ')'
+;
+
+postfix-expression
+: primary-expression
+| postfix-expression '[' expression ']'
+| postfix-expression '(' ')'
+| postfix-expression '(' argument-expression-list ')'
+| postfix-expression '.' identifier
+| postfix-expression "->" identifier
+| postfix-expression "++"
+| postfix-expression "--"
+;
+
+argument-expression-list
+: argument-expression
+| argument-expression-list ',' argument-expression
+;
+
+argument-expression
+: assignment-expression
+;
+
+unary-expression
+: postfix-expression
+| "++" unary-expression
+| "--" unary-expression
+| unary-operator cast-expression
+| "sizeof" unary-expression
+| "sizeof" '(' type-name ')'
+;
+
+unary-operator
+: '&'
+| '*'
+| '+'
+| '-'
+| '~'
+| '!'
+;
+
+cast-expression
+: unary-expression
+| '(' type-name ')' cast-expression
+;
+
+multiplicative-expression
+: cast-expression
+| multiplicative-expression '*' cast-expression
+| multiplicative-expression '/' cast-expression
+| multiplicative-expression '%' cast-expression
+;
+
+additive-expression
+: multiplicative-expression
+| additive-expression '+' multiplicative-expression
+| additive-expression '-' multiplicative-expression
+;
+
+shift-expression
+: additive-expression
+| shift-expression "<<" additive-expression
+| shift-expression ">>" additive-expression
+;
+
+relational-expression
+: shift-expression
+| relational-expression '<' shift-expression
+| relational-expression '>' shift-expression
+| relational-expression "<=" shift-expression
+| relational-expression ">=" shift-expression
+;
+
+equality-expression
+: relational-expression
+| equality-expression "==" relational-expression
+| equality-expression "!=" relational-expression
+;
+
+and-expression
+: equality-expression
+| and-expression '&' equality-expression
+;
+
+exclusive-or-expression
+: and-expression
+| exclusive-or-expression '^' and-expression
+;
+
+inclusive-or-expression
+: exclusive-or-expression
+| inclusive-or-expression '|' exclusive-or-expression
+;
+
+logical-and-expression
+: inclusive-or-expression
+| logical-and-expression "&&" inclusive-or-expression
+;
+
+logical-or-expression
+: logical-and-expression
+| logical-or-expression "||" logical-and-expression
+;
+
+conditional-expression
+: logical-or-expression
+| logical-or-expression '?' expression ':' conditional-expression
+;
+
+assignment-expression
+: conditional-expression
+| unary-expression assignment-operator assignment-expression
+;
+
+assignment-operator
+: '='
+| "*="
+| "/="
+| "%="
+| "+="
+| "-="
+| "<<="
+| ">>="
+| "&="
+| "^="
+| "|="
 ;
 
 expression.opt
@@ -97,120 +243,234 @@ expression.opt
 ;
 
 expression
-: identifier
-| INTEGER_CONSTANT
+: assignment-expression
+| expression ',' assignment-expression
 ;
 
-fundamental-specifier
-: VOID
-| INT
-/* | CHAR */
-/* | SIGNED CHAR */
-/* | UNSIGNED CHAR */
-/* | signed.opt SHORT int.opt */
-/* | UNSIGNED SHORT int.opt */
-/* | signed.opt int.opt */
-/* | UNSIGNED int.opt */
-/* | signed.opt LONG int.opt */
-/* | UNSIGNED LONG int.opt */
-/* | FLOAT */
-/* | DOUBLE */
-/* | LONG DOUBLE */
-;
-
-storage-class-specifier.opt
+constant-expression.opt
 : %empty
-| storage-class-specifier
+| constant-expression
 ;
 
-storage-class-specifier
-: AUTO
-| REGISTER
-| STATIC
-;
-
-linkage-specifier.opt
-: %empty
-| linkage-specifier
-;
-
-linkage-specifier
-: EXTERN
-| STATIC
-;
-
-type-specifier
-: fundamental-specifier
-/* | struct-or-union-specifier */
-/* | enum-specifier */
-/* | typedef-name */
-;
-
-declaration-specifiers
-: type-specifier
-/* : type-specifier type-qualifier-list.opt */
-/* | type-qualifier declaration-specifiers */
+constant-expression
+: conditional-expression
 ;
 
 declaration
-: declaration-specifiers declarator-list
+: declaration-specifiers ';'
+| declaration-specifiers init-declarator-list ';'
 ;
 
-declarator-list.opt
+declaration-specifiers.opt
 : %empty
-| ',' declarator-list
+| declaration-specifiers
 ;
 
-declarator-list
-: declarator declarator-list.opt
-;
-
-init-declaration
-: declaration-specifiers init-declarator-list
-;
-
-init-declarator-list.opt
-: %empty
-| ',' init-declarator-list
+declaration-specifiers
+: storage-class-specifier declaration-specifiers.opt
+| type-specifier declaration-specifiers.opt
+| type-qualifier declaration-specifiers.opt
 ;
 
 init-declarator-list
-: init-declarator init-declarator-list.opt
+: init-declarator
+| init-declarator-list ',' init-declarator
 ;
 
 init-declarator
 : declarator
-/* | declarator '=' initializer */
+| declarator '=' initializer
 ;
 
-typedef-declaration
-: TYPEDEF declaration
+storage-class-specifier
+: "typedef"
+| "extern"
+| "static"
+| "auto"
+| "register"
+;
+
+type-specifier
+: "void"
+| "char"
+| "short"
+| "int"
+| "long"
+| "float"
+| "double"
+| "signed"
+| "unsigned"
+| struct-or-union-specifier
+| enum-specifier
+| typedef-name
+;
+
+struct-or-union-specifier
+: struct-or-union identifier.opt '{' struct-declaration-list '}'
+| struct-or-union identifier
+;
+
+struct-or-union
+: "struct"
+| "union"
+;
+
+struct-declaration-list.opt
+: %empty
+| struct-declaration-list
+;
+
+struct-declaration-list
+: struct-declaration struct-declaration-list.opt
+;
+
+struct-declaration
+: specifier-qualifier-list struct-declarator-list ';'
+;
+
+specifier-qualifier-list.opt
+: %empty
+| specifier-qualifier-list
+;
+
+specifier-qualifier-list
+: specifier-qualifier specifier-qualifier-list.opt
+;
+
+specifier-qualifier
+: type-specifier
+| type-qualifier
+;
+
+struct-declarator-list
+: struct-declarator
+| struct-declarator-list ',' struct-declarator
+;
+
+struct-declarator
+: declarator
+| ':' constant-expression
+| declarator ':' constant-expression
+;
+
+enum-specifier
+: "enum" identifier.opt '{' enumerator-list '}'
+| "enum" identifier
+;
+
+enumerator-list
+: enumerator
+| enumerator-list ',' enumerator
+;
+
+enumerator
+: identifier
+| identifier '=' constant-expression
+;
+
+type-qualifier
+: "const"
+| "volatile"
 ;
 
 declarator
-: direct-declarator
-/* : pointer-list.opt direct-declarator */
+: pointer-list.opt direct-declarator
 ;
 
 direct-declarator
 : identifier
-/* | '(' declarator ')' */
-/* | array-declarator */
-/* | function-declarator */
+| '(' declarator ')'
+| direct-declarator '[' constant-expression.opt ']'
+| direct-declarator '(' parameter-declaration-list ')'
+| direct-declarator '(' parameter-declaration-list ',' "..." ')'
 ;
 
-parameter-declaration-list.opt
+pointer-list.opt
 : %empty
-| ',' parameter-declaration-list
+| pointer-list
+;
+
+pointer-list
+: '*' type-qualifier-list.opt pointer-list.opt
+;
+
+type-qualifier-list.opt
+: %empty
+| type-qualifier-list
+;
+
+type-qualifier-list
+: type-qualifier type-qualifier-list.opt
 ;
 
 parameter-declaration-list
-: parameter-declaration parameter-declaration-list.opt
+: parameter-declaration
+| parameter-declaration-list ',' parameter-declaration
 ;
 
 parameter-declaration
 : declaration-specifiers declarator
-/* | declaration-specifiers abstract-declarator.opt */
+| declaration-specifiers abstract-declarator
+| declaration-specifiers
+;
+
+type-name
+: specifier-qualifier-list
+| specifier-qualifier-list abstract-declarator
+;
+
+abstract-declarator
+: pointer-list
+| pointer-list.opt direct-abstract-declarator
+;
+
+direct-abstract-declarator
+: '(' abstract-declarator ')'
+| '[' constant-expression.opt ']'
+| direct-abstract-declarator '[' constant-expression.opt ']'
+| '(' parameter-declaration-list ')'
+| '(' parameter-declaration-list ',' "..." ')'
+| direct-abstract-declarator '(' parameter-declaration-list ')'
+| direct-abstract-declarator '(' parameter-declaration-list ',' "..." ')'
+;
+
+initializer
+: assignment-expression
+| '{' initializer-list '}'
+| '{' initializer-list ',' '}'
+;
+
+initializer-list
+: initializer
+| initializer-list ',' initializer
+;
+
+statement
+: labeled-statement
+| compound-statement
+| expression-statement
+| selection-statement
+| iteration-statement
+| jump-statement
+;
+
+labeled-statement
+: identifier ':' statement
+| "case" constant-expression ':' statement
+| "default" ':' statement
+;
+
+compound-statement
+: '{' declaration-list.opt statement-list.opt '}'
+;
+
+declaration-list.opt
+: %empty
+| declaration-list
+;
+
+declaration-list
+: declaration declaration-list.opt
 ;
 
 statement-list.opt
@@ -222,63 +482,41 @@ statement-list
 : statement statement-list.opt
 ;
 
-statement
-: compound-statement
-| jump-statement
-/* : labeled-statement */
-/* | compound-statement */
-/* | expression-statement */
-/* | selection-statement */
-/* | iteration-statement */
-/* | jump-statement */
+expression-statement
+: expression.opt ';'
 ;
 
-compound-statement
-: '{' declaration-statement-list.opt statement-list.opt '}'
+selection-statement
+: "if" '(' expression ')' statement %prec ONLY_IF
+| "if" '(' expression ')' statement "else" statement
+| "switch" '(' expression ')' statement
 ;
 
-declaration-statement-list.opt
-: %empty
-| declaration-statement-list
-;
-
-declaration-statement-list
-: declaration-statement declaration-statement-list.opt
-;
-
-declaration-statement
-: storage-class-specifier.opt init-declaration
-| typedef-declaration
+iteration-statement
+: "while" '(' expression ')' statement
+| "do" statement "while" '(' expression ')' ';'
+| "for" '(' expression.opt ';' expression.opt ';' expression.opt ')' statement
 ;
 
 jump-statement
-: GOTO identifier ';'
-| CONTINUE ';'
-| BREAK ';'
-| RETURN expression.opt ';'
-;
-
-translation-unit.opt
-: %empty
-| translation-unit
+: "goto" identifier ';'
+| "continue" ';'
+| "break" ';'
+| "return" expression.opt ';'
 ;
 
 translation-unit
-: external-declaration translation-unit.opt
+: external-declaration
+| translation-unit external-declaration
 ;
 
 external-declaration
-: linkage-specifier.opt function-definition
-| linkage-specifier.opt init-declaration
-| typedef-declaration
-;
-
-function-definition-declarator
-: identifier '(' parameter-declaration-list ')'
+: function-definition
+| declaration
 ;
 
 function-definition
-: declaration-specifiers function-definition-declarator compound-statement
+: declaration-specifiers declarator compound-statement
 ;
 
 %%

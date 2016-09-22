@@ -24,7 +24,7 @@ IDENTIFIER [_a-zA-Z][_a-zA-Z0-9]*
 DIGIT8 "0"[0-7]*
 DIGIT10 [1-9][0-9]*
 DIGIT16 ("0x"|"0X")[0-9a-fA-F]+
-SINGLE_CHARACTER_TOKEN [\[\]\(\)\{\}+\-*/%&|^!?=,:;]
+SINGLE_CHARACTER_TOKEN [\[\]\(\)\{\}+\-*/%<>&|^!?=,:;]
 INTEGER_SUFFIX ([uU][lL]?|[Ll][uU]?)
 %x PREPROCESS
 %x COMMENT
@@ -88,8 +88,6 @@ INTEGER_SUFFIX ([uU][lL]?|[Ll][uU]?)
 ">>" return RIGHT_SHIFT;
 "==" return EQUAL;
 "!=" return NOT_EQUAL;
-"<" return LESS;
-">" return GREATER;
 "<=" return LESS_EQUAL;
 ">=" return GREATER_EQUAL;
 "&&" return AND;
@@ -104,6 +102,7 @@ INTEGER_SUFFIX ([uU][lL]?|[Ll][uU]?)
 "&=" return AND_ASSIGN;
 "|=" return OR_ASSIGN;
 "^=" return XOR_ASSIGN;
+"..." return ELLIPSIS;
 
 "auto"     return AUTO;
 "break"    return BREAK;
