@@ -256,20 +256,26 @@ constant-expression
 : conditional-expression
 ;
 
-declaration
+type-declaration
 : declaration-specifiers ';'
-| declaration-specifiers init-declarator-list ';'
 ;
 
-declaration-specifiers.opt
-: %empty
-| declaration-specifiers
+declaration
+: declaration-specifiers init-declarator-list ';'
+| storage-class-specifier declaration-specifiers init-declarator-list ';'
+;
+
+global-declaration
+: declaration-specifiers init-declarator-list ';'
+| linkage-specifier declaration-specifiers init-declarator-list ';'
+;
+
+typedef-declaration
+: typedef-specifier declaration-specifiers declarator-list ';'
 ;
 
 declaration-specifiers
-: storage-class-specifier declaration-specifiers.opt
-| type-specifier declaration-specifiers.opt
-| type-qualifier declaration-specifiers.opt
+: type-qualifier-list.opt type-specifier type-qualifier-list.opt
 ;
 
 init-declarator-list
@@ -283,23 +289,65 @@ init-declarator
 ;
 
 storage-class-specifier
-: "typedef"
-| "extern"
-| "static"
+: "static"
 | "auto"
 | "register"
 ;
 
-type-specifier
+linkage-specifier
+: "extern"
+| "static"
+;
+
+typedef-specifier
+: "typedef"
+;
+
+int.opt
+: %empty
+| "int"
+;
+
+short-type
+: "short" int.opt
+| "signed" "short" int.opt
+;
+
+int-type
+: "int"
+| "signed" int.opt
+;
+
+long-type
+: "long" int.opt
+| "signed" "long" int.opt
+;
+
+long-long-type
+: "long" "long" int.opt
+| "signed" "long" "long" int.opt
+;
+
+fundamental-type-specifier
 : "void"
 | "char"
-| "short"
-| "int"
-| "long"
+| "signed" "char"
+| "unsigned" "char"
+| short-type
+| "unsigned" "short" int.opt
+| int-type
+| "unsigned" int.opt
+| long-type
+| "unsigned" "long" int.opt
+| long-long-type
+| "unsigned" "long" "long" int.opt
 | "float"
 | "double"
-| "signed"
-| "unsigned"
+| "long" "double"
+;
+
+type-specifier
+: fundamental-type-specifier
 | struct-or-union-specifier
 | enum-specifier
 | typedef-name
@@ -325,21 +373,7 @@ struct-declaration-list
 ;
 
 struct-declaration
-: specifier-qualifier-list struct-declarator-list ';'
-;
-
-specifier-qualifier-list.opt
-: %empty
-| specifier-qualifier-list
-;
-
-specifier-qualifier-list
-: specifier-qualifier specifier-qualifier-list.opt
-;
-
-specifier-qualifier
-: type-specifier
-| type-qualifier
+: declaration-specifiers struct-declarator-list ';'
 ;
 
 struct-declarator-list
@@ -373,16 +407,34 @@ type-qualifier
 | "volatile"
 ;
 
+declarator-list
+: declarator
+| declarator-list ',' declarator
+;
+
 declarator
 : pointer-list.opt direct-declarator
+| pointer-list.opt array-declarator
+| pointer-list.opt function-declarator
+| pointer-list.opt variadic-function-declarator
 ;
 
 direct-declarator
 : identifier
 | '(' declarator ')'
-| direct-declarator '[' constant-expression.opt ']'
-| direct-declarator '(' parameter-declaration-list ')'
-| direct-declarator '(' parameter-declaration-list ',' "..." ')'
+;
+
+array-declarator
+: direct-declarator '[' constant-expression.opt ']'
+| array-declarator '[' constant-expression.opt ']'
+;
+
+function-declarator
+: direct-declarator '(' parameter-declaration-list ')'
+;
+
+variadic-function-declarator
+: direct-declarator '(' parameter-declaration-list ',' "..." ')'
 ;
 
 pointer-list.opt
@@ -415,22 +467,35 @@ parameter-declaration
 ;
 
 type-name
-: specifier-qualifier-list
-| specifier-qualifier-list abstract-declarator
+: declaration-specifiers
+| declaration-specifiers abstract-declarator
 ;
 
 abstract-declarator
 : pointer-list
 | pointer-list.opt direct-abstract-declarator
+| pointer-list.opt array-abstract-declarator
+| pointer-list.opt function-abstract-declarator
+| pointer-list.opt variadic-function-abstract-declarator
 ;
 
 direct-abstract-declarator
 : '(' abstract-declarator ')'
-| '[' constant-expression.opt ']'
+;
+
+array-abstract-declarator
+: '[' constant-expression.opt ']'
 | direct-abstract-declarator '[' constant-expression.opt ']'
-| '(' parameter-declaration-list ')'
-| '(' parameter-declaration-list ',' "..." ')'
+| array-abstract-declarator '[' constant-expression.opt ']'
+;
+
+function-abstract-declarator
+: '(' parameter-declaration-list ')'
 | direct-abstract-declarator '(' parameter-declaration-list ')'
+;
+
+variadic-function-abstract-declarator
+: '(' parameter-declaration-list ',' "..." ')'
 | direct-abstract-declarator '(' parameter-declaration-list ',' "..." ')'
 ;
 
@@ -512,11 +577,14 @@ translation-unit
 
 external-declaration
 : function-definition
-| declaration
+| type-declaration
+| global-declaration
+| typedef-declaration
 ;
 
 function-definition
 : declaration-specifiers declarator compound-statement
+| linkage-specifier declaration-specifiers declarator compound-statement
 ;
 
 %%
