@@ -1,23 +1,21 @@
 %code {
-#include "utility.h"
-
-#define AST_ERROR(lhs, rhs) \
-  do { \
-    yyerror("cannot parse `" lhs "` as `" rhs "`"); \
-    YYERROR; \
-  } while (false)
-
 void yyerror(const char *);
+void type_table_initialize(void);
+void type_table_finalize(void);
+void type_table_add(StringRef typename);
 }
 
 %code provides {
+#include <stdio.h>
+#include "stdstring.h"
+#include "utility.h"
 int yylex(void);
 void set_yyin_file(FILE* fp);
 void set_yyin_string(const char *code);
+bool type_table_exists(StringRef name);
 }
 
 %code requires {
-#include <stdio.h>
 #include "sexpr.h"
 #define YYSTYPE SexprRef
 }
@@ -282,7 +280,33 @@ function-definition
 ;
 
 %%
+#include <assert.h>
+#include "use_vector.h"
+typedef VECTORREF(StringRef) TypeTableRef;
+static TypeTableRef g_type_table;
 
 void yyerror(const char* s) {
   fprintf(stderr, "%s\n", s);
+}
+
+void type_table_initialize(void) {
+  assert(!g_type_table);
+  g_type_table = VECTORFUNC(StringRef, ctor)(NULL);
+}
+void type_table_finalize(void) {
+  assert(g_type_table);
+  VECTORFUNC(StringRef, dtor)(&g_type_table);
+}
+void type_table_add(StringRef name) {
+  VECTORFUNC(StringRef, push_back)(g_type_table, name);
+}
+bool type_table_exists(StringRef name) {
+  const StringRef* it = VECTORFUNC(StringRef, begin)(g_type_table);
+  const StringRef* const end = VECTORFUNC(StringRef, end)(g_type_table);
+  for (; it != end; ++it) {
+    if (string_compare(name, *it)) {
+      return true;
+    }
+  }
+  return false;
 }
