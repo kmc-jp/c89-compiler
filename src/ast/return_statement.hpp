@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_RETURN_STATEMENT_HPP
+#define KMC_C89_COMPILER_AST_RETURN_STATEMENT_HPP
+
+class ASTReturnStatement : public ASTBase {
+};
+
+#endif

@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_WHILE_STATEMENT_HPP
+#define KMC_C89_COMPILER_AST_WHILE_STATEMENT_HPP
+
+class ASTWhileStatement : public ASTBase {
+};
+
+#endif

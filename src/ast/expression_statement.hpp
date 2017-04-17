@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_EXPRESSION_STATEMENT_HPP
+#define KMC_C89_COMPILER_AST_EXPRESSION_STATEMENT_HPP
+
+class ASTExpressionStatement : public ASTBase {
+};
+
+#endif

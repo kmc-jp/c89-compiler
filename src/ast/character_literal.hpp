@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_CHARACTER_LITERAL_HPP
+#define KMC_C89_COMPILER_AST_CHARACTER_LITERAL_HPP
+
+class ASTCharacterLiteral : public ASTBase {
+};
+
+#endif

@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_POSTFIX_EXPRESSION_HPP
+#define KMC_C89_COMPILER_AST_POSTFIX_EXPRESSION_HPP
+
+class ASTPostfixExpression : public ASTBase {
+};
+
+#endif

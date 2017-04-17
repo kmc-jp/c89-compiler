@@ -1,0 +1,7 @@
+#ifndef KMC_C89_COMPILER_AST_EXTERNAL_DECLARATION_HPP
+#define KMC_C89_COMPILER_AST_EXTERNAL_DECLARATION_HPP
+
+class ASTExternalDeclaration : public ASTBase {
+};
+
+#endif
